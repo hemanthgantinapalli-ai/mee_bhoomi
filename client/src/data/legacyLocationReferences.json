@@ -1,0 +1,1720 @@
+{
+  "districts": [
+    {
+      "code": "15",
+      "name": "Alluri Sitharama Raju",
+      "nameTe": "అల్లూరి సీతారామరాజు"
+    },
+    {
+      "code": "16",
+      "name": "Anakapalli",
+      "nameTe": "అనకాపల్లి"
+    },
+    {
+      "code": "12",
+      "name": "Ananthapuramu",
+      "nameTe": "అనంతపురం"
+    },
+    {
+      "code": "24",
+      "name": "Annamayya",
+      "nameTe": "అన్నమయ్య"
+    },
+    {
+      "code": "21",
+      "name": "Bapatla",
+      "nameTe": "బాపట్ల"
+    },
+    {
+      "code": "18",
+      "name": "Dr.B.R. Ambedkar Konaseema",
+      "nameTe": "డా. బి.ఆర్. అంబేడ్కర్ కోనసీమ"
+    },
+    {
+      "code": "19",
+      "name": "Eluru",
+      "nameTe": "ఏలూరు"
+    },
+    {
+      "code": "17",
+      "name": "Kakinada",
+      "nameTe": "కాకినాడ"
+    },
+    {
+      "code": "28",
+      "name": "Markapuram",
+      "nameTe": "మార్కాపురం"
+    },
+    {
+      "code": "26",
+      "name": "Nandyala",
+      "nameTe": "నంద్యాల"
+    },
+    {
+      "code": "20",
+      "name": "NTR",
+      "nameTe": "ఎన్.టి.ఆర్."
+    },
+    {
+      "code": "22",
+      "name": "Palnadu",
+      "nameTe": "పల్నాడు"
+    },
+    {
+      "code": "14",
+      "name": "Parvathipuram Manyam",
+      "nameTe": "పార్వతీపురం మన్యం"
+    },
+    {
+      "code": "27",
+      "name": "Polavaram",
+      "nameTe": "పోలవరం"
+    },
+    {
+      "code": "8",
+      "name": "Prakasam",
+      "nameTe": "ప్రకాశం"
+    },
+    {
+      "code": "25",
+      "name": "Sri Sathya Sai",
+      "nameTe": "శ్రీ సత్యసాయి"
+    },
+    {
+      "code": "1",
+      "name": "Srikakulam",
+      "nameTe": "శ్రీకాకుళం"
+    },
+    {
+      "code": "23",
+      "name": "Tirupati",
+      "nameTe": "తిరుపతి"
+    },
+    {
+      "code": "2",
+      "name": "Vizianagaram",
+      "nameTe": "విజయనగరం"
+    },
+    {
+      "code": "5",
+      "name": "Westgodavari",
+      "nameTe": "పశ్చిమ గోదావరి"
+    }
+  ],
+  "mandals": [
+    {
+      "districtCode": "1",
+      "code": "101",
+      "name": "Srikakulam Urban",
+      "nameTe": "శ్రీకాకుళం అర్బన్"
+    },
+    {
+      "districtCode": "1",
+      "code": "102",
+      "name": "Srikakulam Rural",
+      "nameTe": "శ్రీకాకుళం రూరల్"
+    },
+    {
+      "districtCode": "1",
+      "code": "103",
+      "name": "Amadalavalasa",
+      "nameTe": "ఆమదాలవలస"
+    },
+    {
+      "districtCode": "1",
+      "code": "104",
+      "name": "Narasannapeta",
+      "nameTe": "నరసన్నపేట"
+    },
+    {
+      "districtCode": "1",
+      "code": "105",
+      "name": "Tekkali",
+      "nameTe": "టెక్కలి"
+    },
+    {
+      "districtCode": "1",
+      "code": "106",
+      "name": "Palasa",
+      "nameTe": "పలాస"
+    },
+    {
+      "districtCode": "1",
+      "code": "107",
+      "name": "Sompeta",
+      "nameTe": "సోంపేట"
+    },
+    {
+      "districtCode": "1",
+      "code": "108",
+      "name": "Ichchapuram",
+      "nameTe": "ఇచ్చాపురం"
+    },
+    {
+      "districtCode": "1",
+      "code": "109",
+      "name": "Kotabommali",
+      "nameTe": "కోటబొమ్మాళి"
+    },
+    {
+      "districtCode": "1",
+      "code": "110",
+      "name": "Gara",
+      "nameTe": "గార"
+    },
+    {
+      "districtCode": "2",
+      "code": "201",
+      "name": "Vizianagaram Urban",
+      "nameTe": "విజినగరం అర్బన్"
+    },
+    {
+      "districtCode": "2",
+      "code": "202",
+      "name": "Vizianagaram Rural",
+      "nameTe": "విజినగరం రురల్"
+    },
+    {
+      "districtCode": "2",
+      "code": "203",
+      "name": "Gajapathinagaram",
+      "nameTe": "గజపతినగరం"
+    },
+    {
+      "districtCode": "2",
+      "code": "204",
+      "name": "Nellimarla",
+      "nameTe": "నెల్లిమర్ల"
+    },
+    {
+      "districtCode": "2",
+      "code": "205",
+      "name": "Cheepurupalli",
+      "nameTe": "చీపురుపల్లి"
+    },
+    {
+      "districtCode": "2",
+      "code": "206",
+      "name": "Srungavarapukota",
+      "nameTe": "శృంగవరపుకోట"
+    },
+    {
+      "districtCode": "2",
+      "code": "207",
+      "name": "Bhogapuram",
+      "nameTe": "భోగాపురం"
+    },
+    {
+      "districtCode": "2",
+      "code": "208",
+      "name": "Kothavalasa",
+      "nameTe": "కొత్తవలస"
+    },
+    {
+      "districtCode": "2",
+      "code": "209",
+      "name": "Denkada",
+      "nameTe": "డెంకాడ"
+    },
+    {
+      "districtCode": "2",
+      "code": "210",
+      "name": "Garividi",
+      "nameTe": "గరివిడి"
+    },
+    {
+      "districtCode": "3",
+      "code": "303",
+      "name": "Bheemunipatnam",
+      "nameTe": "భీమునిపట్నం"
+    },
+    {
+      "districtCode": "3",
+      "code": "304",
+      "name": "Gajuwaka",
+      "nameTe": "గాజువాక"
+    },
+    {
+      "districtCode": "3",
+      "code": "305",
+      "name": "Pendurthi",
+      "nameTe": "పెందుర్తి"
+    },
+    {
+      "districtCode": "3",
+      "code": "306",
+      "name": "Gopalapatnam",
+      "nameTe": "గోపాలపట్నం"
+    },
+    {
+      "districtCode": "3",
+      "code": "307",
+      "name": "Maharanipeta",
+      "nameTe": "మహారాణిపేట"
+    },
+    {
+      "districtCode": "3",
+      "code": "308",
+      "name": "Seethammadhara",
+      "nameTe": "సీతమ్మధార"
+    },
+    {
+      "districtCode": "3",
+      "code": "309",
+      "name": "Anandapuram",
+      "nameTe": "ఆనందపురం"
+    },
+    {
+      "districtCode": "3",
+      "code": "310",
+      "name": "Padmanabham",
+      "nameTe": "పద్మనాభం"
+    },
+    {
+      "districtCode": "4",
+      "code": "401",
+      "name": "Rajamahendravaram Urban",
+      "nameTe": "రాజమహేంద్రవరం అర్బన్"
+    },
+    {
+      "districtCode": "4",
+      "code": "402",
+      "name": "Rajamahendravaram Rural",
+      "nameTe": "రాజమహేంద్రవరం రురల్"
+    },
+    {
+      "districtCode": "4",
+      "code": "403",
+      "name": "Kovvur",
+      "nameTe": "కొవ్వూరు"
+    },
+    {
+      "districtCode": "4",
+      "code": "404",
+      "name": "Nidadavole",
+      "nameTe": "నిడదవోలు"
+    },
+    {
+      "districtCode": "4",
+      "code": "405",
+      "name": "Anaparthi",
+      "nameTe": "అనపర్తి"
+    },
+    {
+      "districtCode": "4",
+      "code": "406",
+      "name": "Kadiam",
+      "nameTe": "కడియం"
+    },
+    {
+      "districtCode": "4",
+      "code": "407",
+      "name": "Gopalapuram",
+      "nameTe": "గోపాలపురం"
+    },
+    {
+      "districtCode": "4",
+      "code": "408",
+      "name": "Devarapalli",
+      "nameTe": "దేవరపల్లి"
+    },
+    {
+      "districtCode": "4",
+      "code": "409",
+      "name": "Rangampeta",
+      "nameTe": "రంగంపేట"
+    },
+    {
+      "districtCode": "4",
+      "code": "410",
+      "name": "Korukonda",
+      "nameTe": "కోరుకొండ"
+    },
+    {
+      "districtCode": "5",
+      "code": "501",
+      "name": "Bhimavaram Urban",
+      "nameTe": "భీమవరం అర్బన్"
+    },
+    {
+      "districtCode": "5",
+      "code": "502",
+      "name": "Bhimavaram Rural",
+      "nameTe": "భీమవరం రూరల్"
+    },
+    {
+      "districtCode": "5",
+      "code": "503",
+      "name": "Narasapuram",
+      "nameTe": "నరసాపురం"
+    },
+    {
+      "districtCode": "5",
+      "code": "504",
+      "name": "Palakollu",
+      "nameTe": "పాలకొల్లు"
+    },
+    {
+      "districtCode": "5",
+      "code": "505",
+      "name": "Tanuku",
+      "nameTe": "తణుకు"
+    },
+    {
+      "districtCode": "5",
+      "code": "506",
+      "name": "Tadepalligudem",
+      "nameTe": "తాడేపల్లిగూడెం"
+    },
+    {
+      "districtCode": "5",
+      "code": "507",
+      "name": "Akividu",
+      "nameTe": "ఆకివీడు"
+    },
+    {
+      "districtCode": "5",
+      "code": "508",
+      "name": "Undi",
+      "nameTe": "ఉంది"
+    },
+    {
+      "districtCode": "5",
+      "code": "509",
+      "name": "Mogalthur",
+      "nameTe": "మొగల్తూరు"
+    },
+    {
+      "districtCode": "5",
+      "code": "510",
+      "name": "Penugonda",
+      "nameTe": "పెనుగొండ"
+    },
+    {
+      "districtCode": "6",
+      "code": "604",
+      "name": "Avanigadda",
+      "nameTe": "అవనిగడ్డ"
+    },
+    {
+      "districtCode": "6",
+      "code": "605",
+      "name": "Pamarru",
+      "nameTe": "పామర్రు"
+    },
+    {
+      "districtCode": "6",
+      "code": "606",
+      "name": "Pedana",
+      "nameTe": "పెడన"
+    },
+    {
+      "districtCode": "6",
+      "code": "607",
+      "name": "Movva",
+      "nameTe": "మొవ్వ"
+    },
+    {
+      "districtCode": "6",
+      "code": "608",
+      "name": "Challapalli",
+      "nameTe": "చల్లపల్లి"
+    },
+    {
+      "districtCode": "6",
+      "code": "609",
+      "name": "Bantumilli",
+      "nameTe": "బంటుమిల్లి"
+    },
+    {
+      "districtCode": "6",
+      "code": "610",
+      "name": "Ghantasala",
+      "nameTe": "ఘంటసాల"
+    },
+    {
+      "districtCode": "7",
+      "code": "706",
+      "name": "Ponnur",
+      "nameTe": "పొన్నూరు"
+    },
+    {
+      "districtCode": "7",
+      "code": "707",
+      "name": "Tadikonda",
+      "nameTe": "తాడికొండ"
+    },
+    {
+      "districtCode": "7",
+      "code": "708",
+      "name": "Prathipadu",
+      "nameTe": "ప్రత్తిపాడు"
+    },
+    {
+      "districtCode": "7",
+      "code": "709",
+      "name": "Chebrolu",
+      "nameTe": "చేబ్రోలు"
+    },
+    {
+      "districtCode": "7",
+      "code": "710",
+      "name": "Duggirala",
+      "nameTe": "దుగ్గిరాల"
+    },
+    {
+      "districtCode": "7",
+      "code": "711",
+      "name": "Pedakakani",
+      "nameTe": "పెదకాకాని"
+    },
+    {
+      "districtCode": "7",
+      "code": "712",
+      "name": "Medikonduru",
+      "nameTe": "మేడికొండూరు"
+    },
+    {
+      "districtCode": "8",
+      "code": "801",
+      "name": "Ongole Urban",
+      "nameTe": "ఒంగోలు అర్బన్"
+    },
+    {
+      "districtCode": "8",
+      "code": "802",
+      "name": "Ongole Rural",
+      "nameTe": "ఒంగోలు రూరల్"
+    },
+    {
+      "districtCode": "8",
+      "code": "803",
+      "name": "Kandukur",
+      "nameTe": "కందుకూరు"
+    },
+    {
+      "districtCode": "8",
+      "code": "804",
+      "name": "Singarayakonda",
+      "nameTe": "సింగరాయకొండ"
+    },
+    {
+      "districtCode": "8",
+      "code": "805",
+      "name": "Chimakurthy",
+      "nameTe": "చీమకుర్తి"
+    },
+    {
+      "districtCode": "8",
+      "code": "806",
+      "name": "Santhanuthalapadu",
+      "nameTe": "సంతనూతలపాడు"
+    },
+    {
+      "districtCode": "8",
+      "code": "807",
+      "name": "Kothapatnam",
+      "nameTe": "కొత్తపట్నం"
+    },
+    {
+      "districtCode": "8",
+      "code": "808",
+      "name": "Maddipadu",
+      "nameTe": "మద్దిపాడు"
+    },
+    {
+      "districtCode": "8",
+      "code": "809",
+      "name": "Tangutur",
+      "nameTe": "టంగుటూరు"
+    },
+    {
+      "districtCode": "8",
+      "code": "810",
+      "name": "Zarugumalli",
+      "nameTe": "జరుగుమల్లి"
+    },
+    {
+      "districtCode": "9",
+      "code": "901",
+      "name": "Nellore Urban",
+      "nameTe": "నెల్లూరు అర్బన్"
+    },
+    {
+      "districtCode": "9",
+      "code": "902",
+      "name": "Nellore Rural",
+      "nameTe": "నెల్లూరు రూరల్"
+    },
+    {
+      "districtCode": "9",
+      "code": "903",
+      "name": "Kavali",
+      "nameTe": "కావాలి"
+    },
+    {
+      "districtCode": "9",
+      "code": "904",
+      "name": "Kovur",
+      "nameTe": "కోవూరు"
+    },
+    {
+      "districtCode": "9",
+      "code": "905",
+      "name": "Atmakur",
+      "nameTe": "ఆత్మకూరు"
+    },
+    {
+      "districtCode": "9",
+      "code": "906",
+      "name": "Buchireddypalem",
+      "nameTe": "బుచ్చిరెడ్డిపాళెం"
+    },
+    {
+      "districtCode": "9",
+      "code": "907",
+      "name": "Indukurpet",
+      "nameTe": "ఇందుకూరుపేట"
+    },
+    {
+      "districtCode": "9",
+      "code": "908",
+      "name": "Allur",
+      "nameTe": "అల్లూరి"
+    },
+    {
+      "districtCode": "9",
+      "code": "909",
+      "name": "Podalakur",
+      "nameTe": "పొదలకూరు"
+    },
+    {
+      "districtCode": "9",
+      "code": "910",
+      "name": "Venkatachalam",
+      "nameTe": "వెంకటాచలం"
+    },
+    {
+      "districtCode": "10",
+      "code": "1003",
+      "name": "Punganur",
+      "nameTe": "పుంగనూరు"
+    },
+    {
+      "districtCode": "10",
+      "code": "1004",
+      "name": "Nagari",
+      "nameTe": "నగరి"
+    },
+    {
+      "districtCode": "10",
+      "code": "1005",
+      "name": "Palamaner",
+      "nameTe": "పలమనేరు"
+    },
+    {
+      "districtCode": "10",
+      "code": "1006",
+      "name": "Kuppam",
+      "nameTe": "కుప్పం"
+    },
+    {
+      "districtCode": "10",
+      "code": "1007",
+      "name": "Karvetinagar",
+      "nameTe": "కార్వేటినగర్"
+    },
+    {
+      "districtCode": "10",
+      "code": "1008",
+      "name": "Bangarupalem",
+      "nameTe": "బంగారుపాలెం"
+    },
+    {
+      "districtCode": "10",
+      "code": "1009",
+      "name": "GD Nellore",
+      "nameTe": "జీడీ నెల్లూరు"
+    },
+    {
+      "districtCode": "10",
+      "code": "1010",
+      "name": "Vedurukuppam",
+      "nameTe": "వెదురుకుప్పం"
+    },
+    {
+      "districtCode": "11",
+      "code": "1101",
+      "name": "Kadapa Urban",
+      "nameTe": "కడప అర్బన్"
+    },
+    {
+      "districtCode": "11",
+      "code": "1102",
+      "name": "Kadapa Rural",
+      "nameTe": "కడప రురల్"
+    },
+    {
+      "districtCode": "11",
+      "code": "1103",
+      "name": "Proddatur",
+      "nameTe": "ప్రొద్దటూరు"
+    },
+    {
+      "districtCode": "11",
+      "code": "1104",
+      "name": "Jammalamadugu",
+      "nameTe": "జమ్మలమడుగు"
+    },
+    {
+      "districtCode": "11",
+      "code": "1105",
+      "name": "Pulivendula",
+      "nameTe": "పులివెందుల"
+    },
+    {
+      "districtCode": "11",
+      "code": "1106",
+      "name": "Mydukur",
+      "nameTe": "మైదుకూరు"
+    },
+    {
+      "districtCode": "11",
+      "code": "1107",
+      "name": "Badvel",
+      "nameTe": "బద్వేల్"
+    },
+    {
+      "districtCode": "11",
+      "code": "1108",
+      "name": "Kamalapuram",
+      "nameTe": "కమలాపురం"
+    },
+    {
+      "districtCode": "11",
+      "code": "1109",
+      "name": "Vempalli",
+      "nameTe": "వేంపల్లి"
+    },
+    {
+      "districtCode": "11",
+      "code": "1110",
+      "name": "Chennur",
+      "nameTe": "చెన్నూర్"
+    },
+    {
+      "districtCode": "12",
+      "code": "1201",
+      "name": "Anantapur Urban",
+      "nameTe": "అనంతపూర్ అర్బన్"
+    },
+    {
+      "districtCode": "12",
+      "code": "1202",
+      "name": "Anantapur Rural",
+      "nameTe": "అనంతపూర్ రురల్"
+    },
+    {
+      "districtCode": "12",
+      "code": "1203",
+      "name": "Gooty",
+      "nameTe": "గుత్తి"
+    },
+    {
+      "districtCode": "12",
+      "code": "1204",
+      "name": "Guntakal",
+      "nameTe": "గుంతకల్"
+    },
+    {
+      "districtCode": "12",
+      "code": "1205",
+      "name": "Tadipatri",
+      "nameTe": "తాడిపత్రి"
+    },
+    {
+      "districtCode": "12",
+      "code": "1206",
+      "name": "Rayadurgam",
+      "nameTe": "రాయదుర్గం"
+    },
+    {
+      "districtCode": "12",
+      "code": "1207",
+      "name": "Kalyandurgam",
+      "nameTe": "కళ్యాణదుర్గం"
+    },
+    {
+      "districtCode": "12",
+      "code": "1208",
+      "name": "Uravakonda",
+      "nameTe": "ఉరవకొండ"
+    },
+    {
+      "districtCode": "12",
+      "code": "1209",
+      "name": "Singanamala",
+      "nameTe": "సింగనమల"
+    },
+    {
+      "districtCode": "12",
+      "code": "1210",
+      "name": "Pamidi",
+      "nameTe": "పామిడి"
+    },
+    {
+      "districtCode": "13",
+      "code": "1301",
+      "name": "Kurnool Urban",
+      "nameTe": "కర్నూల్ అర్బన్"
+    },
+    {
+      "districtCode": "13",
+      "code": "1302",
+      "name": "Kurnool Rural",
+      "nameTe": "కర్నూల్ రురల్"
+    },
+    {
+      "districtCode": "13",
+      "code": "1303",
+      "name": "Adoni",
+      "nameTe": "ఆదోని"
+    },
+    {
+      "districtCode": "13",
+      "code": "1304",
+      "name": "Yemmiganur",
+      "nameTe": "యెమ్మిగనూరు"
+    },
+    {
+      "districtCode": "13",
+      "code": "1305",
+      "name": "Kodumur",
+      "nameTe": "కోడుమూరు"
+    },
+    {
+      "districtCode": "13",
+      "code": "1306",
+      "name": "Pattikonda",
+      "nameTe": "పత్తికొండ"
+    },
+    {
+      "districtCode": "13",
+      "code": "1307",
+      "name": "Alur",
+      "nameTe": "ఆలూర్"
+    },
+    {
+      "districtCode": "13",
+      "code": "1308",
+      "name": "Mantralayam",
+      "nameTe": "మంత్రాలయం"
+    },
+    {
+      "districtCode": "13",
+      "code": "1309",
+      "name": "Dhone",
+      "nameTe": "ధోన్"
+    },
+    {
+      "districtCode": "13",
+      "code": "1310",
+      "name": "Orvakal",
+      "nameTe": "ఓర్వకల్"
+    },
+    {
+      "districtCode": "14",
+      "code": "1401",
+      "name": "Parvathipuram",
+      "nameTe": "పార్వతీపురం"
+    },
+    {
+      "districtCode": "14",
+      "code": "1402",
+      "name": "Bobbili",
+      "nameTe": "బొబ్బిలి"
+    },
+    {
+      "districtCode": "14",
+      "code": "1403",
+      "name": "Salur",
+      "nameTe": "సాలూరు"
+    },
+    {
+      "districtCode": "14",
+      "code": "1404",
+      "name": "Kurupam",
+      "nameTe": "కురూపం"
+    },
+    {
+      "districtCode": "14",
+      "code": "1405",
+      "name": "Palakonda",
+      "nameTe": "పాలకొండ"
+    },
+    {
+      "districtCode": "14",
+      "code": "1406",
+      "name": "Seethampeta",
+      "nameTe": "సీతంపేట"
+    },
+    {
+      "districtCode": "14",
+      "code": "1407",
+      "name": "Balijipeta",
+      "nameTe": "బలిజిపేట"
+    },
+    {
+      "districtCode": "14",
+      "code": "1408",
+      "name": "Makkuva",
+      "nameTe": "మక్కువ"
+    },
+    {
+      "districtCode": "14",
+      "code": "1409",
+      "name": "Komarada",
+      "nameTe": "కొమరాడ"
+    },
+    {
+      "districtCode": "14",
+      "code": "1410",
+      "name": "Garugubilli",
+      "nameTe": "గరుగుబిల్లి"
+    },
+    {
+      "districtCode": "15",
+      "code": "1501",
+      "name": "Paderu",
+      "nameTe": "పాడేరు"
+    },
+    {
+      "districtCode": "15",
+      "code": "1502",
+      "name": "Araku Valley",
+      "nameTe": "అరకు వాలీ"
+    },
+    {
+      "districtCode": "15",
+      "code": "1503",
+      "name": "Ananthagiri",
+      "nameTe": "అనంతగిరి"
+    },
+    {
+      "districtCode": "15",
+      "code": "1504",
+      "name": "Chintapalli",
+      "nameTe": "చింతపల్లి"
+    },
+    {
+      "districtCode": "15",
+      "code": "1505",
+      "name": "Rampachodavaram",
+      "nameTe": "రంపచోడవరం"
+    },
+    {
+      "districtCode": "15",
+      "code": "1506",
+      "name": "Maredumilli",
+      "nameTe": "మారేడుమిల్లి"
+    },
+    {
+      "districtCode": "15",
+      "code": "1507",
+      "name": "Addateegala",
+      "nameTe": "అడ్డతీగల"
+    },
+    {
+      "districtCode": "15",
+      "code": "1508",
+      "name": "G.K. Veedhi",
+      "nameTe": "జి.కే. వీధి"
+    },
+    {
+      "districtCode": "15",
+      "code": "1509",
+      "name": "Hukumpeta",
+      "nameTe": "హుకుంపేట"
+    },
+    {
+      "districtCode": "15",
+      "code": "1510",
+      "name": "Dumbriguda",
+      "nameTe": "డుంబ్రిగుడ"
+    },
+    {
+      "districtCode": "16",
+      "code": "1601",
+      "name": "Anakapalli",
+      "nameTe": "అనకాపల్లి"
+    },
+    {
+      "districtCode": "16",
+      "code": "1602",
+      "name": "Kasimkota",
+      "nameTe": "కశింకోట"
+    },
+    {
+      "districtCode": "16",
+      "code": "1603",
+      "name": "Chodavaram",
+      "nameTe": "చోడవరం"
+    },
+    {
+      "districtCode": "16",
+      "code": "1604",
+      "name": "Madugula",
+      "nameTe": "మాడుగుల"
+    },
+    {
+      "districtCode": "16",
+      "code": "1605",
+      "name": "Yelamanchili",
+      "nameTe": "ఎలమంచిలి"
+    },
+    {
+      "districtCode": "16",
+      "code": "1606",
+      "name": "Narsipatnam",
+      "nameTe": "నర్సీపట్నం"
+    },
+    {
+      "districtCode": "16",
+      "code": "1607",
+      "name": "Payakaraopeta",
+      "nameTe": "పాయకరావుపేట"
+    },
+    {
+      "districtCode": "16",
+      "code": "1608",
+      "name": "Atchutapuram",
+      "nameTe": "అచుతాపురం"
+    },
+    {
+      "districtCode": "16",
+      "code": "1609",
+      "name": "Rambilli",
+      "nameTe": "రాంబిల్లి"
+    },
+    {
+      "districtCode": "16",
+      "code": "1610",
+      "name": "Kotauratla",
+      "nameTe": "కోటవురట్ల"
+    },
+    {
+      "districtCode": "17",
+      "code": "1701",
+      "name": "Kakinada Urban",
+      "nameTe": "కాకినాడ అర్బన్"
+    },
+    {
+      "districtCode": "17",
+      "code": "1702",
+      "name": "Kakinada Rural",
+      "nameTe": "కాకినాడ రూరల్"
+    },
+    {
+      "districtCode": "17",
+      "code": "1703",
+      "name": "Samalkota",
+      "nameTe": "సమాల్కోట"
+    },
+    {
+      "districtCode": "17",
+      "code": "1704",
+      "name": "Pithapuram",
+      "nameTe": "పిఠాపురం"
+    },
+    {
+      "districtCode": "17",
+      "code": "1705",
+      "name": "Peddapuram",
+      "nameTe": "పెద్దాపురం"
+    },
+    {
+      "districtCode": "17",
+      "code": "1706",
+      "name": "Tuni",
+      "nameTe": "తుని"
+    },
+    {
+      "districtCode": "17",
+      "code": "1707",
+      "name": "Prattipadu",
+      "nameTe": "ప్రత్తిపాడు"
+    },
+    {
+      "districtCode": "17",
+      "code": "1708",
+      "name": "Jaggampeta",
+      "nameTe": "జగ్గంపేట"
+    },
+    {
+      "districtCode": "17",
+      "code": "1709",
+      "name": "Karapa",
+      "nameTe": "కరప"
+    },
+    {
+      "districtCode": "17",
+      "code": "1710",
+      "name": "Gollaprolu",
+      "nameTe": "గొల్లప్రోలు"
+    },
+    {
+      "districtCode": "17",
+      "code": "1711",
+      "name": "Kotananduru",
+      "nameTe": "కోటనందూరు"
+    },
+    {
+      "districtCode": "17",
+      "code": "1712",
+      "name": "Thallarevu",
+      "nameTe": "తాళ్లరేవు"
+    },
+    {
+      "districtCode": "18",
+      "code": "1801",
+      "name": "Amalapuram",
+      "nameTe": "అమలాపురం"
+    },
+    {
+      "districtCode": "18",
+      "code": "1802",
+      "name": "Razole",
+      "nameTe": "రాజోలు"
+    },
+    {
+      "districtCode": "18",
+      "code": "1803",
+      "name": "Ramachandrapuram",
+      "nameTe": "రామచంద్రపురం"
+    },
+    {
+      "districtCode": "18",
+      "code": "1804",
+      "name": "Mandapeta",
+      "nameTe": "మండపేట"
+    },
+    {
+      "districtCode": "18",
+      "code": "1805",
+      "name": "Mummidivaram",
+      "nameTe": "ముమ్మిడివరం"
+    },
+    {
+      "districtCode": "18",
+      "code": "1806",
+      "name": "Kothapeta",
+      "nameTe": "కొత్తపేట"
+    },
+    {
+      "districtCode": "18",
+      "code": "1807",
+      "name": "Ravulapalem",
+      "nameTe": "రావులపాలెం"
+    },
+    {
+      "districtCode": "18",
+      "code": "1808",
+      "name": "Allavaram",
+      "nameTe": "అల్లవరం"
+    },
+    {
+      "districtCode": "18",
+      "code": "1809",
+      "name": "Malkipuram",
+      "nameTe": "మల్కిపురం"
+    },
+    {
+      "districtCode": "18",
+      "code": "1810",
+      "name": "Ainavilli",
+      "nameTe": "అయినవిల్లి"
+    },
+    {
+      "districtCode": "19",
+      "code": "1901",
+      "name": "Eluru Urban",
+      "nameTe": "ఏలూరు అర్బన్"
+    },
+    {
+      "districtCode": "19",
+      "code": "1902",
+      "name": "Eluru Rural",
+      "nameTe": "ఏలూరు రూరల్"
+    },
+    {
+      "districtCode": "19",
+      "code": "1903",
+      "name": "Denduluru",
+      "nameTe": "దెందులూరు"
+    },
+    {
+      "districtCode": "19",
+      "code": "1904",
+      "name": "Bhimadole",
+      "nameTe": "భీమడోలు"
+    },
+    {
+      "districtCode": "19",
+      "code": "1905",
+      "name": "Unguturu",
+      "nameTe": "ఉంగుటూరు"
+    },
+    {
+      "districtCode": "19",
+      "code": "1906",
+      "name": "Jangareddygudem",
+      "nameTe": "జంగారెడ్డిగూడెం"
+    },
+    {
+      "districtCode": "19",
+      "code": "1907",
+      "name": "Nuzvid",
+      "nameTe": "నుజ్విడ్"
+    },
+    {
+      "districtCode": "19",
+      "code": "1908",
+      "name": "Chintalapudi",
+      "nameTe": "చింతలపూడి"
+    },
+    {
+      "districtCode": "19",
+      "code": "1909",
+      "name": "Kaikaluru",
+      "nameTe": "కైకలూరు"
+    },
+    {
+      "districtCode": "19",
+      "code": "1910",
+      "name": "Musunuru",
+      "nameTe": "ముసునూరు"
+    },
+    {
+      "districtCode": "20",
+      "code": "2001",
+      "name": "Vijayawada Central",
+      "nameTe": "విజయవాడ సెంట్రల్"
+    },
+    {
+      "districtCode": "20",
+      "code": "2002",
+      "name": "Vijayawada East",
+      "nameTe": "విజయవాడ ఈస్ట్"
+    },
+    {
+      "districtCode": "20",
+      "code": "2003",
+      "name": "Vijayawada West",
+      "nameTe": "విజయవాడ వెస్ట్"
+    },
+    {
+      "districtCode": "20",
+      "code": "2004",
+      "name": "Vijayawada Rural",
+      "nameTe": "విజయవాడ రూరల్"
+    },
+    {
+      "districtCode": "20",
+      "code": "2005",
+      "name": "Ibrahimpatnam",
+      "nameTe": "ఇబ్రహీంపట్నం"
+    },
+    {
+      "districtCode": "20",
+      "code": "2006",
+      "name": "Mylavaram",
+      "nameTe": "మైలవరం"
+    },
+    {
+      "districtCode": "20",
+      "code": "2007",
+      "name": "Jaggaiahpeta",
+      "nameTe": "జగ్గయ్యపేట"
+    },
+    {
+      "districtCode": "20",
+      "code": "2008",
+      "name": "Nandigama",
+      "nameTe": "నందిగామ"
+    },
+    {
+      "districtCode": "20",
+      "code": "2009",
+      "name": "Tiruvuru",
+      "nameTe": "తిరువూరు"
+    },
+    {
+      "districtCode": "20",
+      "code": "2010",
+      "name": "Penamaluru",
+      "nameTe": "పెనమలూరు"
+    },
+    {
+      "districtCode": "21",
+      "code": "2101",
+      "name": "Bapatla",
+      "nameTe": "బాపట్ల"
+    },
+    {
+      "districtCode": "21",
+      "code": "2102",
+      "name": "Chirala",
+      "nameTe": "చీరాల"
+    },
+    {
+      "districtCode": "21",
+      "code": "2103",
+      "name": "Vetapalem",
+      "nameTe": "వేటపాలెం"
+    },
+    {
+      "districtCode": "21",
+      "code": "2104",
+      "name": "Repalle",
+      "nameTe": "రేపల్లె"
+    },
+    {
+      "districtCode": "21",
+      "code": "2105",
+      "name": "Vemuru",
+      "nameTe": "వేమూరు"
+    },
+    {
+      "districtCode": "21",
+      "code": "2106",
+      "name": "Addanki",
+      "nameTe": "అడ్డంకి"
+    },
+    {
+      "districtCode": "21",
+      "code": "2107",
+      "name": "Karamchedu",
+      "nameTe": "కారంచేడు"
+    },
+    {
+      "districtCode": "21",
+      "code": "2108",
+      "name": "Nizampatnam",
+      "nameTe": "నిజాంపట్నం"
+    },
+    {
+      "districtCode": "21",
+      "code": "2109",
+      "name": "Bhattiprolu",
+      "nameTe": "భట్టిప్రోలు"
+    },
+    {
+      "districtCode": "21",
+      "code": "2110",
+      "name": "Parchur",
+      "nameTe": "పర్చూరు"
+    },
+    {
+      "districtCode": "22",
+      "code": "2201",
+      "name": "Narasaraopet",
+      "nameTe": "నరసరావుపేట"
+    },
+    {
+      "districtCode": "22",
+      "code": "2202",
+      "name": "Chilakaluripet",
+      "nameTe": "చిలకలూరిపేట"
+    },
+    {
+      "districtCode": "22",
+      "code": "2203",
+      "name": "Sattenapalle",
+      "nameTe": "సత్తెనపల్లె"
+    },
+    {
+      "districtCode": "22",
+      "code": "2204",
+      "name": "Vinukonda",
+      "nameTe": "వినుకొండ"
+    },
+    {
+      "districtCode": "22",
+      "code": "2205",
+      "name": "Gurazala",
+      "nameTe": "గురజాల"
+    },
+    {
+      "districtCode": "22",
+      "code": "2206",
+      "name": "Macherla",
+      "nameTe": "మాచెర్ల"
+    },
+    {
+      "districtCode": "22",
+      "code": "2207",
+      "name": "Piduguralla",
+      "nameTe": "పిడుగురాళ్ల"
+    },
+    {
+      "districtCode": "22",
+      "code": "2208",
+      "name": "Dachepalli",
+      "nameTe": "దాచేపల్లి"
+    },
+    {
+      "districtCode": "22",
+      "code": "2209",
+      "name": "Bellamkonda",
+      "nameTe": "బెల్లంకొండ"
+    },
+    {
+      "districtCode": "22",
+      "code": "2210",
+      "name": "Muppalla",
+      "nameTe": "ముప్పాళ్ల"
+    },
+    {
+      "districtCode": "23",
+      "code": "2301",
+      "name": "Tirupati Urban",
+      "nameTe": "తిరుపతి అర్బన్"
+    },
+    {
+      "districtCode": "23",
+      "code": "2302",
+      "name": "Tirupati Rural",
+      "nameTe": "తిరుపతి రూరల్"
+    },
+    {
+      "districtCode": "23",
+      "code": "2303",
+      "name": "Chandragiri",
+      "nameTe": "చంద్రగిరి"
+    },
+    {
+      "districtCode": "23",
+      "code": "2304",
+      "name": "Srikalahasti",
+      "nameTe": "శ్రీకాళహస్తి"
+    },
+    {
+      "districtCode": "23",
+      "code": "2305",
+      "name": "Renigunta",
+      "nameTe": "రేణిగుంట"
+    },
+    {
+      "districtCode": "23",
+      "code": "2306",
+      "name": "Venkatagiri",
+      "nameTe": "వేంకటగిరి"
+    },
+    {
+      "districtCode": "23",
+      "code": "2307",
+      "name": "Gudur",
+      "nameTe": "గూడూరు"
+    },
+    {
+      "districtCode": "23",
+      "code": "2308",
+      "name": "Sullurpeta",
+      "nameTe": "సూళ్లూరుపేట"
+    },
+    {
+      "districtCode": "23",
+      "code": "2309",
+      "name": "Naidupeta",
+      "nameTe": "నాయుడుపేట"
+    },
+    {
+      "districtCode": "23",
+      "code": "2310",
+      "name": "Yerpedu",
+      "nameTe": "ఏర్పేడు"
+    },
+    {
+      "districtCode": "24",
+      "code": "2401",
+      "name": "Rayachoti",
+      "nameTe": "రాయచోటి"
+    },
+    {
+      "districtCode": "24",
+      "code": "2402",
+      "name": "Madanapalle",
+      "nameTe": "మదనపల్లె"
+    },
+    {
+      "districtCode": "24",
+      "code": "2403",
+      "name": "Rajampeta",
+      "nameTe": "రాజంపేట"
+    },
+    {
+      "districtCode": "24",
+      "code": "2404",
+      "name": "Pileru",
+      "nameTe": "పీలేరు"
+    },
+    {
+      "districtCode": "24",
+      "code": "2405",
+      "name": "Railway Koduru",
+      "nameTe": "రైల్వే కోడూరు"
+    },
+    {
+      "districtCode": "24",
+      "code": "2406",
+      "name": "Tamballapalle",
+      "nameTe": "తంబళ్లపల్లె"
+    },
+    {
+      "districtCode": "24",
+      "code": "2407",
+      "name": "Valmikipuram",
+      "nameTe": "వాల్మీకిపురం"
+    },
+    {
+      "districtCode": "24",
+      "code": "2408",
+      "name": "B.Kothakota",
+      "nameTe": "బి.కొత్తకోట"
+    },
+    {
+      "districtCode": "24",
+      "code": "2409",
+      "name": "Galiveedu",
+      "nameTe": "గాలివీడు"
+    },
+    {
+      "districtCode": "24",
+      "code": "2410",
+      "name": "Nimmanapalle",
+      "nameTe": "నిమ్మనపల్లె"
+    },
+    {
+      "districtCode": "25",
+      "code": "2501",
+      "name": "Puttaparthi",
+      "nameTe": "పుట్టపర్తి"
+    },
+    {
+      "districtCode": "25",
+      "code": "2502",
+      "name": "Dharmavaram",
+      "nameTe": "ధర్మవరం"
+    },
+    {
+      "districtCode": "25",
+      "code": "2503",
+      "name": "Kadiri",
+      "nameTe": "కదిరి"
+    },
+    {
+      "districtCode": "25",
+      "code": "2504",
+      "name": "Hindupur",
+      "nameTe": "హిందూపూర్"
+    },
+    {
+      "districtCode": "25",
+      "code": "2505",
+      "name": "Penukonda",
+      "nameTe": "పెనుకొండ"
+    },
+    {
+      "districtCode": "25",
+      "code": "2506",
+      "name": "Madakasira",
+      "nameTe": "మడకశిర"
+    },
+    {
+      "districtCode": "25",
+      "code": "2507",
+      "name": "Bukkapatnam",
+      "nameTe": "బుక్కపట్నం"
+    },
+    {
+      "districtCode": "25",
+      "code": "2508",
+      "name": "Kothacheruvu",
+      "nameTe": "కొత్తచెరువు"
+    },
+    {
+      "districtCode": "25",
+      "code": "2509",
+      "name": "Gorantla",
+      "nameTe": "గోరంట్ల"
+    },
+    {
+      "districtCode": "25",
+      "code": "2510",
+      "name": "Somandepalle",
+      "nameTe": "సోమందేపల్లె"
+    },
+    {
+      "districtCode": "26",
+      "code": "2601",
+      "name": "Nandyal Urban",
+      "nameTe": "నంద్యాల అర్బన్"
+    },
+    {
+      "districtCode": "26",
+      "code": "2602",
+      "name": "Nandyal Rural",
+      "nameTe": "నంద్యాల రురల్"
+    },
+    {
+      "districtCode": "26",
+      "code": "2603",
+      "name": "Allagadda",
+      "nameTe": "ఆళ్లగడ్డ"
+    },
+    {
+      "districtCode": "26",
+      "code": "2604",
+      "name": "Banaganapalle",
+      "nameTe": "బనగానపల్లె"
+    },
+    {
+      "districtCode": "26",
+      "code": "2605",
+      "name": "Koilkuntla",
+      "nameTe": "కోయిలకుంట్ల"
+    },
+    {
+      "districtCode": "26",
+      "code": "2606",
+      "name": "Atmakur",
+      "nameTe": "ఆత్మకూరు"
+    },
+    {
+      "districtCode": "26",
+      "code": "2607",
+      "name": "Nandikotkur",
+      "nameTe": "నందికొట్కూరు"
+    },
+    {
+      "districtCode": "26",
+      "code": "2608",
+      "name": "Srisailam",
+      "nameTe": "శ్రీశైలం"
+    },
+    {
+      "districtCode": "26",
+      "code": "2609",
+      "name": "Chagalamarri",
+      "nameTe": "చాగలమర్రి"
+    },
+    {
+      "districtCode": "26",
+      "code": "2610",
+      "name": "Panyam",
+      "nameTe": "పాణ్యం"
+    },
+    {
+      "districtCode": "27",
+      "code": "2701",
+      "name": "Polavaram",
+      "nameTe": "పోలవరం"
+    },
+    {
+      "districtCode": "27",
+      "code": "2702",
+      "name": "Buttayagudem",
+      "nameTe": "బుట్టాయగూడెం"
+    },
+    {
+      "districtCode": "27",
+      "code": "2703",
+      "name": "Jeelugumilli",
+      "nameTe": "జీలుగుమిల్లి"
+    },
+    {
+      "districtCode": "27",
+      "code": "2704",
+      "name": "Koyyalagudem",
+      "nameTe": "కొయ్యలగూడెం"
+    },
+    {
+      "districtCode": "27",
+      "code": "2705",
+      "name": "Kukunoor",
+      "nameTe": "కుకునూర్"
+    },
+    {
+      "districtCode": "27",
+      "code": "2706",
+      "name": "Velerupadu",
+      "nameTe": "వేలేరుపాడు"
+    },
+    {
+      "districtCode": "27",
+      "code": "2707",
+      "name": "T.Narasapuram",
+      "nameTe": "ట్.నరసాపురం"
+    },
+    {
+      "districtCode": "28",
+      "code": "2801",
+      "name": "Markapuram",
+      "nameTe": "మార్కాపురం"
+    },
+    {
+      "districtCode": "28",
+      "code": "2802",
+      "name": "Giddalur",
+      "nameTe": "గిద్దలూరు"
+    },
+    {
+      "districtCode": "28",
+      "code": "2803",
+      "name": "Yerragondapalem",
+      "nameTe": "యర్రగొండపాలెం"
+    },
+    {
+      "districtCode": "28",
+      "code": "2804",
+      "name": "Podili",
+      "nameTe": "పొదిలి"
+    },
+    {
+      "districtCode": "28",
+      "code": "2805",
+      "name": "Kanigiri",
+      "nameTe": "కనిగిరి"
+    },
+    {
+      "districtCode": "28",
+      "code": "2806",
+      "name": "Cumbum",
+      "nameTe": "కమ్బుమ్"
+    },
+    {
+      "districtCode": "28",
+      "code": "2807",
+      "name": "Bestavaripeta",
+      "nameTe": "బెస్తవారిపేట"
+    },
+    {
+      "districtCode": "28",
+      "code": "2808",
+      "name": "Tarlupadu",
+      "nameTe": "తర్లుపాడు"
+    },
+    {
+      "districtCode": "28",
+      "code": "2809",
+      "name": "Komarolu",
+      "nameTe": "కొమరోలు"
+    },
+    {
+      "districtCode": "28",
+      "code": "2810",
+      "name": "Racherla",
+      "nameTe": "రాచెర్ల"
+    }
+  ]
+}

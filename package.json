@@ -1,0 +1,17 @@
+{
+  "name": "meebhoomi-ap-mern",
+  "version": "1.0.0",
+  "description": "MeeBhoomi Andhra Pradesh Reference Recreation - Full MERN Stack Application",
+  "scripts": {
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "npx -y concurrently \"npm run server\" \"npm run client\"",
+    "seed": "npm run seed --prefix server",
+    "test": "npm run test --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "author": "MeeBhoomi Engineering Team",
+  "license": "ISC"
+}

@@ -1,0 +1,239 @@
+import { useEffect, useRef, useState } from 'react';
+import { apiService } from '../services/apiService';
+import legacyLocationReferences from '../data/legacyLocationReferences.json';
+
+const normalizeCode = (code) => String(code).replace(/^0+(?=\d)/, '');
+
+const toReferenceOptions = (items) => items.map((item) => ({
+  ...item,
+  value: item.code,
+  source: 'reference',
+  label: `${item.nameTe} (${item.name})`
+}));
+
+const legacyDistrictOptions = toReferenceOptions(legacyLocationReferences.districts);
+const legacyMandalOptions = toReferenceOptions(legacyLocationReferences.mandals);
+
+const toOptions = (items, locationType) => {
+  if (!Array.isArray(items)) {
+    throw new Error(`The ${locationType} response did not contain a list.`);
+  }
+
+  return items.map((item) => {
+    if (!item || typeof item.code !== 'string') {
+      throw new Error(`The ${locationType} response contains an invalid code.`);
+    }
+
+    const nameEn = item.nameEn || '';
+    const nameTe = item.nameTe || '';
+    return {
+      ...item,
+      value: item.code,
+      label: nameEn && nameTe ? `${nameTe} (${nameEn})` : nameTe || nameEn
+    };
+  });
+};
+
+const getResponseOptions = (response, locationType) => {
+  if (!response?.success) {
+    throw new Error(response?.message || `Failed to load ${locationType}.`);
+  }
+  return toOptions(response.data, locationType);
+};
+
+export function useLandLocations(initialSelection = null, { includeLegacyOptions = false } = {}) {
+  const [districts, setDistricts] = useState([]);
+  const [mandalsList, setMandalsList] = useState([]);
+  const [villagesList, setVillagesList] = useState([]);
+  const [district, setDistrict] = useState('0');
+  const [mandal, setMandal] = useState('0');
+  const [village, setVillage] = useState('0');
+  const [locationError, setLocationError] = useState('');
+  const [loadingDistricts, setLoadingDistricts] = useState(false);
+  const [loadingMandals, setLoadingMandals] = useState(false);
+  const [loadingVillages, setLoadingVillages] = useState(false);
+  const requestSequence = useRef(0);
+
+  useEffect(() => {
+    let isCurrent = true;
+    const requestId = ++requestSequence.current;
+
+    const loadLocations = async () => {
+      setLocationError('');
+      setLoadingDistricts(true);
+      setLoadingMandals(false);
+      setLoadingVillages(false);
+
+      try {
+        const districtOptions = getResponseOptions(
+          await apiService.getDistricts(),
+          'districts'
+        );
+        if (!isCurrent || requestId !== requestSequence.current) return;
+        setDistricts(includeLegacyOptions
+          ? [...districtOptions, ...legacyDistrictOptions]
+          : districtOptions);
+        setLoadingDistricts(false);
+
+        if (!initialSelection) return;
+        if (!districtOptions.some((item) => item.value === initialSelection.districtCode)) {
+          throw new Error('The selected district is unavailable.');
+        }
+        setDistrict(initialSelection.districtCode);
+
+        setLoadingMandals(true);
+        const mandalOptions = getResponseOptions(
+          await apiService.getMandals(initialSelection.districtCode),
+          'mandals'
+        );
+        if (!isCurrent || requestId !== requestSequence.current) return;
+        setMandalsList(mandalOptions);
+        setLoadingMandals(false);
+
+        if (!mandalOptions.some((item) => item.value === initialSelection.mandalCode)) {
+          throw new Error('The selected mandal is unavailable.');
+        }
+        setMandal(initialSelection.mandalCode);
+
+        setLoadingVillages(true);
+        const villageOptions = getResponseOptions(
+          await apiService.getVillages(initialSelection.mandalCode, initialSelection.districtCode),
+          'villages'
+        );
+        if (!isCurrent || requestId !== requestSequence.current) return;
+        setVillagesList(villageOptions);
+        setLoadingVillages(false);
+
+        if (!villageOptions.some((item) => item.value === initialSelection.villageCode)) {
+          throw new Error('The selected village is unavailable.');
+        }
+        setVillage(initialSelection.villageCode);
+      } catch (error) {
+        if (isCurrent && requestId === requestSequence.current) {
+          setLocationError(error.message || 'Failed to load land locations.');
+        }
+      } finally {
+        if (isCurrent && requestId === requestSequence.current) {
+          setLoadingDistricts(false);
+          setLoadingMandals(false);
+          setLoadingVillages(false);
+        }
+      }
+    };
+
+    loadLocations();
+
+    return () => {
+      isCurrent = false;
+      requestSequence.current += 1;
+    };
+  }, [initialSelection, includeLegacyOptions]);
+
+  const handleDistrictChange = async (value) => {
+    const requestId = ++requestSequence.current;
+    setDistrict(value);
+    setMandal('0');
+    setVillage('0');
+    setMandalsList([]);
+    setVillagesList([]);
+    setLocationError('');
+    setLoadingMandals(false);
+    setLoadingVillages(false);
+
+    if (value === '0') return;
+
+    const selectedDistrict = districts.find((item) => item.value === value);
+    if (selectedDistrict?.source === 'reference') {
+      setMandalsList(legacyMandalOptions.filter(
+        (item) => normalizeCode(item.districtCode) === normalizeCode(value)
+      ));
+      return;
+    }
+
+    setLoadingMandals(true);
+    try {
+      const mandals = getResponseOptions(await apiService.getMandals(value), 'mandals');
+      if (requestId === requestSequence.current) {
+        setMandalsList(mandals);
+      }
+    } catch (error) {
+      if (requestId === requestSequence.current) {
+        setLocationError(error.message || 'Failed to load mandals.');
+      }
+    } finally {
+      if (requestId === requestSequence.current) setLoadingMandals(false);
+    }
+  };
+
+  const handleMandalChange = async (value) => {
+    const requestId = ++requestSequence.current;
+    setMandal(value);
+    setVillage('0');
+    setVillagesList([]);
+    setLocationError('');
+    setLoadingVillages(false);
+
+    if (value === '0') return;
+
+    if (mandalsList.find((item) => item.value === value)?.source === 'reference') return;
+
+    setLoadingVillages(true);
+    try {
+      const villages = getResponseOptions(
+        await apiService.getVillages(value, district),
+        'villages'
+      );
+      if (requestId === requestSequence.current) setVillagesList(villages);
+    } catch (error) {
+      if (requestId === requestSequence.current) {
+        setLocationError(error.message || 'Failed to load villages.');
+      }
+    } finally {
+      if (requestId === requestSequence.current) setLoadingVillages(false);
+    }
+  };
+
+  const isReferenceLocation = districts.find((item) => item.value === district)?.source === 'reference'
+    || mandalsList.find((item) => item.value === mandal)?.source === 'reference';
+  const districtPlaceholder = loadingDistricts
+    ? 'జిల్లాలు లోడ్ అవుతున్నాయి... (Loading districts...)'
+    : districts.length === 0
+      ? 'జిల్లాలు అందుబాటులో లేవు (No districts available)'
+      : 'జిల్లా ఎంచుకోండి (Select district)';
+  const mandalPlaceholder = loadingMandals
+    ? 'మండలాలు లోడ్ అవుతున్నాయి... (Loading mandals...)'
+    : district === '0'
+      ? 'ముందుగా జిల్లాను ఎంచుకోండి (Select district first)'
+      : mandalsList.length === 0
+        ? 'ఈ జిల్లాలో మండలాలు అందుబాటులో లేవు (No mandals available)'
+        : 'మండలం ఎంచుకోండి (Select mandal)';
+  const villagePlaceholder = loadingVillages
+    ? 'గ్రామాలు లోడ్ అవుతున్నాయి... (Loading villages...)'
+    : mandal === '0'
+      ? 'ముందుగా మండలాన్ని ఎంచుకోండి (Select mandal first)'
+      : isReferenceLocation
+        ? 'ఈ ఎంపికకు గ్రామాల వివరాలు అందుబాటులో లేవు (Village list unavailable for this selection)'
+        : villagesList.length === 0
+          ? 'ఈ మండలంలో గ్రామాలు అందుబాటులో లేవు (No villages available)'
+          : 'గ్రామం ఎంచుకోండి (Select village)';
+
+  return {
+    districts,
+    mandalsList,
+    villagesList,
+    district,
+    mandal,
+    village,
+    isReferenceLocation,
+    districtPlaceholder,
+    mandalPlaceholder,
+    villagePlaceholder,
+    setVillage,
+    handleDistrictChange,
+    handleMandalChange,
+    locationError,
+    loadingDistricts,
+    loadingMandals,
+    loadingVillages
+  };
+}
