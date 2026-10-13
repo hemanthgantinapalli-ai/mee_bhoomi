@@ -7,11 +7,23 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+const FRONTEND_URL = process.env.FRONTEND_URL || process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+const FRONTEND_ORIGINS = new Set([
+  FRONTEND_URL,
+  process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
+  ...(process.env.NODE_ENV === 'production'
+    ? []
+    : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000'])
+].filter(Boolean));
 
 // Middleware
 app.use(cors({
-  origin: [CLIENT_ORIGIN, 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000'],
+  origin: (origin, callback) => {
+    if (!origin || FRONTEND_ORIGINS.has(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Origin not allowed by CORS'));
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -31,6 +43,16 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Routes
+app.use('/api', async (req, res, next) => {
+  try {
+    if (!getIsConnected()) {
+      await connectDB();
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 app.use('/api', apiRoutes);
 
 // Root route

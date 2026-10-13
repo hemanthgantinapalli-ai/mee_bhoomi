@@ -77,6 +77,31 @@ npm install
 npm run dev
 ```
 
+### 5. Vercel Multi-Service Deployment
+
+The root `vercel.json` defines a Vite `client` service and an Express `server`
+service. Select **Services** as the Vercel project framework preset. Requests
+under `/api/` route to Express without changing the path; other requests route
+to the Vite frontend. The browser uses the same-origin `/api` URL, while the
+Vite development proxy continues to forward local API calls to port 5000.
+
+Configure these variables in Vercel project settings:
+
+- `MONGODB_URI`: the existing Atlas connection string.
+- `CAPTCHA_SECRET`: a long, private random value.
+- `FRONTEND_URL`: optional; set to the deployed frontend origin when using a
+  custom domain. Vercel's `VERCEL_URL` is used for deployment URLs by default.
+- `NODE_ENV=production`: ensure the backend runs with production behavior.
+
+Do not prefix backend secrets with `VITE_`, commit `.env` files, or enable
+`ALLOW_IN_MEMORY_FALLBACK` in production. MongoDB Atlas connectivity from Vercel
+must be authorized through a restricted network access configuration. Vercel
+uses dynamic egress IPs by default; use Vercel Static IPs or Secure Compute and
+allowlist those addresses rather than opening Atlas to `0.0.0.0/0`.
+
+The login OTP remains a local demo flow and does not send SMS. No SMS provider
+credentials are used or supported by the current implementation.
+
 ---
 
 ## 🛡️ CAPTCHA Verification Security
