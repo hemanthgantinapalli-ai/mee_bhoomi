@@ -2,6 +2,7 @@
 **/.env
 **/.env.*
 !**/.env.example
+dist/
 client/dist/
 client/vite.config.js.timestamp-*.mjs
 npm-debug.log*
