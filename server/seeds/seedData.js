@@ -25,9 +25,24 @@ const fallbackDistricts = [
 
 const fallbackMandals = [
   // Guntur (07)
+  { code: '709', districtCode: '07', nameEn: 'Chebrolu', nameTe: 'చేబ్రోలు' },
+  { code: '710', districtCode: '07', nameEn: 'Duggirala', nameTe: 'దుగ్గిరాల' },
+  { code: '713', districtCode: '07', nameEn: 'Guntur East', nameTe: 'గుంటూరు ఈస్ట్' },
+  { code: '714', districtCode: '07', nameEn: 'Guntur West', nameTe: 'గుంటూరు వెస్ట్' },
+  { code: '715', districtCode: '07', nameEn: 'Kakumanu', nameTe: 'కాకుమాను' },
+  { code: '716', districtCode: '07', nameEn: 'Kollipara', nameTe: 'కొల్లిపర' },
   { code: '0701', districtCode: '07', nameEn: 'Mangalagiri', nameTe: 'మంగళగిరి' },
-  { code: '0702', districtCode: '07', nameEn: 'Tenali', nameTe: 'తెనాలి' },
+  { code: '712', districtCode: '07', nameEn: 'Medikonduru', nameTe: 'మేడికొండూరు' },
+  { code: '711', districtCode: '07', nameEn: 'Pedakakani', nameTe: 'పెదకాకాని' },
+  { code: '717', districtCode: '07', nameEn: 'Pedanandipadu', nameTe: 'పెదనందిపాడు' },
+  { code: '718', districtCode: '07', nameEn: 'Phirangipuram', nameTe: 'ఫిరంగిపురం' },
+  { code: '706', districtCode: '07', nameEn: 'Ponnur', nameTe: 'పొన్నూరు' },
+  { code: '708', districtCode: '07', nameEn: 'Prathipadu', nameTe: 'ప్రత్తిపాడు' },
+  { code: '719', districtCode: '07', nameEn: 'Tadepalle', nameTe: 'తాడేపల్లి' },
   { code: '0703', districtCode: '07', nameEn: 'Tadikonda', nameTe: 'తాడికొండ' },
+  { code: '0702', districtCode: '07', nameEn: 'Tenali', nameTe: 'తెనాలి' },
+  { code: '720', districtCode: '07', nameEn: 'Thullur', nameTe: 'తుళ్లూరు' },
+  { code: '721', districtCode: '07', nameEn: 'Vatticherukuru', nameTe: 'వట్టిచెరుకూరు' },
   { code: '0704', districtCode: '07', nameEn: 'Amaravati', nameTe: 'అమరావతి' },
   { code: '0705', districtCode: '07', nameEn: 'Guntur Urban', nameTe: 'గుంటూరు అర్బన్' },
   // Krishna (06)

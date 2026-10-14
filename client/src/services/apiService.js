@@ -172,6 +172,20 @@ export const apiService = {
       const res = await fetch(`${API_BASE}/villages?${params}`);
       return await safeParseJson(res, 'Failed to load villages.');
     } catch {
+      if (Array.isArray(legacyLocationReferences.villages)) {
+        const normM = normCode(mandalCode);
+        const matched = legacyLocationReferences.villages.filter(
+          (v) => normCode(v.mandalCode) === normM
+        );
+        if (matched.length > 0) {
+          return {
+            success: true,
+            count: matched.length,
+            data: matched
+          };
+        }
+      }
+
       // Generate default offline villages for this mandal
       const mMatch = legacyLocationReferences.mandals.find((m) => String(m.code) === String(mandalCode));
       const mNameEn = mMatch ? mMatch.name : `Mandal ${mandalCode}`;

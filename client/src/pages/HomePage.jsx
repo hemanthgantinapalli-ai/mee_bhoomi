@@ -255,15 +255,17 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     href="#adangal"
                     onClick={(e) => { e.preventDefault(); onSelectService('adangal'); }}
                     style={vadangalLinkStyle}
+                    title="ఆంధ్రప్రదేశ్ అన్ని 28 జిల్లాలు మరియు 286 మండలాలు (All 28 Districts & 286 Mandals of AP)"
                   >
-                    మీ అడంగల్/గ్రామ అడంగల్ (గుంటూరు - Guntur)
+                    మీ అడంగల్/గ్రామ అడంగల్ (గుంటూరు & అన్ని AP మండలాలు)
                   </a>
                   <a
                     href="#1b"
                     onClick={(e) => { e.preventDefault(); onSelectService('1b'); }}
                     style={vadangalLinkStyle}
+                    title="ఆంధ్రప్రదేశ్ అన్ని 28 జిల్లాలు మరియు 286 మండలాలు (All 28 Districts & 286 Mandals of AP)"
                   >
-                    మీ 1-బి/గ్రామ 1-బి (గుంటూరు - Guntur)
+                    మీ 1-బి/గ్రామ 1-బి (గుంటూరు & అన్ని AP మండలాలు)
                   </a>
                   <a
                     href="#lp-map"
