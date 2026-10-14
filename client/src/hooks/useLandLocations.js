@@ -70,44 +70,42 @@ export function useLandLocations(initialSelection = null, { includeLegacyOptions
           'districts'
         );
         if (!isCurrent || requestId !== requestSequence.current) return;
-        setDistricts(includeLegacyOptions
+        const effectiveDistricts = includeLegacyOptions
           ? [...districtOptions, ...legacyDistrictOptions]
-          : districtOptions);
+          : districtOptions;
+        setDistricts(effectiveDistricts);
         setLoadingDistricts(false);
 
-        if (!initialSelection) return;
-        if (!districtOptions.some((item) => item.value === initialSelection.districtCode)) {
-          throw new Error('The selected district is unavailable.');
+        const targetDistrict = initialSelection?.districtCode || '07';
+        if (effectiveDistricts.some((item) => item.value === targetDistrict)) {
+          setDistrict(targetDistrict);
+
+          setLoadingMandals(true);
+          const mandalOptions = getResponseOptions(
+            await apiService.getMandals(targetDistrict),
+            'mandals'
+          );
+          if (!isCurrent || requestId !== requestSequence.current) return;
+          setMandalsList(mandalOptions);
+          setLoadingMandals(false);
+
+          if (initialSelection?.mandalCode && mandalOptions.some((item) => item.value === initialSelection.mandalCode)) {
+            setMandal(initialSelection.mandalCode);
+
+            setLoadingVillages(true);
+            const villageOptions = getResponseOptions(
+              await apiService.getVillages(initialSelection.mandalCode, targetDistrict),
+              'villages'
+            );
+            if (!isCurrent || requestId !== requestSequence.current) return;
+            setVillagesList(villageOptions);
+            setLoadingVillages(false);
+
+            if (initialSelection?.villageCode && villageOptions.some((item) => item.value === initialSelection.villageCode)) {
+              setVillage(initialSelection.villageCode);
+            }
+          }
         }
-        setDistrict(initialSelection.districtCode);
-
-        setLoadingMandals(true);
-        const mandalOptions = getResponseOptions(
-          await apiService.getMandals(initialSelection.districtCode),
-          'mandals'
-        );
-        if (!isCurrent || requestId !== requestSequence.current) return;
-        setMandalsList(mandalOptions);
-        setLoadingMandals(false);
-
-        if (!mandalOptions.some((item) => item.value === initialSelection.mandalCode)) {
-          throw new Error('The selected mandal is unavailable.');
-        }
-        setMandal(initialSelection.mandalCode);
-
-        setLoadingVillages(true);
-        const villageOptions = getResponseOptions(
-          await apiService.getVillages(initialSelection.mandalCode, initialSelection.districtCode),
-          'villages'
-        );
-        if (!isCurrent || requestId !== requestSequence.current) return;
-        setVillagesList(villageOptions);
-        setLoadingVillages(false);
-
-        if (!villageOptions.some((item) => item.value === initialSelection.villageCode)) {
-          throw new Error('The selected village is unavailable.');
-        }
-        setVillage(initialSelection.villageCode);
       } catch (error) {
         if (isCurrent && requestId === requestSequence.current) {
           setLocationError(error.message || 'Failed to load land locations.');

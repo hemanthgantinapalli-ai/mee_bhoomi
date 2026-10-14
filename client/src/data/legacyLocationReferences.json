@@ -1,6 +1,46 @@
 {
   "districts": [
     {
+      "code": "07",
+      "name": "Guntur",
+      "nameTe": "గుంటూరు"
+    },
+    {
+      "code": "06",
+      "name": "Krishna",
+      "nameTe": "కృష్ణా"
+    },
+    {
+      "code": "03",
+      "name": "Visakhapatnam",
+      "nameTe": "విశాఖపట్నం"
+    },
+    {
+      "code": "10",
+      "name": "Chittoor",
+      "nameTe": "చిత్తూరు"
+    },
+    {
+      "code": "04",
+      "name": "East Godavari",
+      "nameTe": "తూర్పు గోదావరి"
+    },
+    {
+      "code": "13",
+      "name": "Kurnool",
+      "nameTe": "కర్నూలు"
+    },
+    {
+      "code": "11",
+      "name": "YSR Kadapa",
+      "nameTe": "వైఎస్ఆర్ కడప"
+    },
+    {
+      "code": "09",
+      "name": "Nellore",
+      "nameTe": "నెల్లూరు"
+    },
+    {
       "code": "15",
       "name": "Alluri Sitharama Raju",
       "nameTe": "అల్లూరి సీతారామరాజు"
@@ -102,6 +142,36 @@
     }
   ],
   "mandals": [
+    {
+      "districtCode": "07",
+      "code": "0701",
+      "name": "Mangalagiri",
+      "nameTe": "మంగళగిరి"
+    },
+    {
+      "districtCode": "07",
+      "code": "0702",
+      "name": "Tenali",
+      "nameTe": "తెనాలి"
+    },
+    {
+      "districtCode": "07",
+      "code": "0703",
+      "name": "Tadikonda",
+      "nameTe": "తాడికొండ"
+    },
+    {
+      "districtCode": "07",
+      "code": "0704",
+      "name": "Amaravati",
+      "nameTe": "అమరావతి"
+    },
+    {
+      "districtCode": "07",
+      "code": "0705",
+      "name": "Guntur Urban",
+      "nameTe": "గుంటూరు అర్బన్"
+    },
     {
       "districtCode": "1",
       "code": "101",

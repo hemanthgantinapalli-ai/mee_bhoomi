@@ -256,14 +256,14 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     onClick={(e) => { e.preventDefault(); onSelectService('adangal'); }}
                     style={vadangalLinkStyle}
                   >
-                    మీ అడంగల్/గ్రామ అడంగల్
+                    మీ అడంగల్/గ్రామ అడంగల్ (గుంటూరు - Guntur)
                   </a>
                   <a
                     href="#1b"
                     onClick={(e) => { e.preventDefault(); onSelectService('1b'); }}
                     style={vadangalLinkStyle}
                   >
-                    మీ 1-బి/గ్రామ 1-బి
+                    మీ 1-బి/గ్రామ 1-బి (గుంటూరు - Guntur)
                   </a>
                   <a
                     href="#lp-map"
