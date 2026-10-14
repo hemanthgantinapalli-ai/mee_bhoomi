@@ -19,9 +19,19 @@ const FRONTEND_ORIGINS = new Set([
 // Middleware
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || FRONTEND_ORIGINS.has(origin)) {
-      return callback(null, true);
+    if (!origin) return callback(null, true);
+    if (FRONTEND_ORIGINS.has(origin)) return callback(null, true);
+
+    // In development mode, allow any localhost or 127.0.0.1 port (e.g. 5173, 5174, 5175, 3000)
+    if (process.env.NODE_ENV !== 'production') {
+      try {
+        const { hostname } = new URL(origin);
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return callback(null, true);
+        }
+      } catch (err) {}
     }
+
     return callback(new Error('Origin not allowed by CORS'));
   },
   credentials: true
