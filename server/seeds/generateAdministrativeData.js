@@ -267,14 +267,5 @@ fs.writeFileSync(serverOutPath, JSON.stringify({
   }
 }, null, 2), 'utf-8');
 
-// Also write to client/src/data/administrativeData.json for frontend offline fallback
-const clientOutPath = path.resolve(__dirname, '../../client/src/data/administrativeData.json');
-fs.writeFileSync(clientOutPath, JSON.stringify({
-  districts: requestedDistricts,
-  mandals: compiledMandals,
-  villages: compiledVillages
-}, null, 2), 'utf-8');
+console.log('Written successfully to: ' + serverOutPath);
 
-console.log('Written successfully to:');
-console.log(' - ' + serverOutPath);
-console.log(' - ' + clientOutPath);
