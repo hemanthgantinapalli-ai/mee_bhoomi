@@ -2,7 +2,20 @@ import { useEffect, useRef, useState } from 'react';
 import { apiService } from '../services/apiService';
 import legacyLocationReferences from '../data/legacyLocationReferences.json';
 
-const normalizeCode = (code) => String(code).replace(/^0+(?=\d)/, '');
+const normalizeCode = (code) => String(code || '').replace(/^0+(?=\d)/, '');
+
+const dedupeOptions = (items) => {
+  if (!Array.isArray(items)) return [];
+  const seen = new Set();
+  return items.filter((item) => {
+    if (!item) return false;
+    const rawVal = item.value !== undefined ? item.value : item.code;
+    const key = normalizeCode(rawVal);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
 
 const toReferenceOptions = (items) => items.map((item) => ({
   ...item,
@@ -11,8 +24,29 @@ const toReferenceOptions = (items) => items.map((item) => ({
   label: `${item.nameTe} (${item.name})`
 }));
 
-const legacyDistrictOptions = toReferenceOptions(legacyLocationReferences.districts);
-const legacyMandalOptions = toReferenceOptions(legacyLocationReferences.mandals);
+const legacyDistrictOptions = toReferenceOptions(legacyLocationReferences.districts || []);
+const legacyMandalOptions = toReferenceOptions(legacyLocationReferences.mandals || []);
+
+const addRayapudiVillage = (villages, districtCode, mandalCode) => {
+  const list = Array.isArray(villages) ? [...villages] : [];
+  if (normalizeCode(districtCode) === '7' && normalizeCode(mandalCode) === '720') {
+    if (!list.some(village =>
+      normalizeCode(village.code || village.value) === '72005' ||
+      village.nameEn?.toLowerCase() === 'rayapudi'
+    )) {
+      list.push({
+        code: '72005',
+        value: '72005',
+        districtCode: '07',
+        mandalCode: '720',
+        nameEn: 'Rayapudi',
+        nameTe: 'రాయపూడి',
+        label: 'రాయపూడి (Rayapudi)'
+      });
+    }
+  }
+  return dedupeOptions(list);
+};
 
 const toOptions = (items, locationType) => {
   if (!Array.isArray(items)) {
@@ -65,14 +99,16 @@ export function useLandLocations(initialSelection = null, { includeLegacyOptions
       setLoadingVillages(false);
 
       try {
-        const districtOptions = getResponseOptions(
+        const rawDistricts = getResponseOptions(
           await apiService.getDistricts(),
           'districts'
         );
         if (!isCurrent || requestId !== requestSequence.current) return;
-        const effectiveDistricts = includeLegacyOptions
-          ? [...districtOptions, ...legacyDistrictOptions]
-          : districtOptions;
+        const effectiveDistricts = dedupeOptions(
+          includeLegacyOptions
+            ? [...rawDistricts, ...legacyDistrictOptions]
+            : rawDistricts
+        );
         setDistricts(effectiveDistricts);
         setLoadingDistricts(false);
 
@@ -81,10 +117,10 @@ export function useLandLocations(initialSelection = null, { includeLegacyOptions
           setDistrict(targetDistrict);
 
           setLoadingMandals(true);
-          const mandalOptions = getResponseOptions(
+          const mandalOptions = dedupeOptions(getResponseOptions(
             await apiService.getMandals(targetDistrict),
             'mandals'
-          );
+          ));
           if (!isCurrent || requestId !== requestSequence.current) return;
           setMandalsList(mandalOptions);
           setLoadingMandals(false);
@@ -93,9 +129,13 @@ export function useLandLocations(initialSelection = null, { includeLegacyOptions
             setMandal(initialSelection.mandalCode);
 
             setLoadingVillages(true);
-            const villageOptions = getResponseOptions(
-              await apiService.getVillages(initialSelection.mandalCode, targetDistrict),
-              'villages'
+            const villageOptions = addRayapudiVillage(
+              getResponseOptions(
+                await apiService.getVillages(initialSelection.mandalCode, targetDistrict),
+                'villages'
+              ),
+              targetDistrict,
+              initialSelection.mandalCode
             );
             if (!isCurrent || requestId !== requestSequence.current) return;
             setVillagesList(villageOptions);
@@ -140,23 +180,22 @@ export function useLandLocations(initialSelection = null, { includeLegacyOptions
 
     if (value === '0') return;
 
-    const selectedDistrict = districts.find((item) => item.value === value);
-    if (selectedDistrict?.source === 'reference') {
-      setMandalsList(legacyMandalOptions.filter(
-        (item) => normalizeCode(item.districtCode) === normalizeCode(value)
-      ));
-      return;
-    }
-
     setLoadingMandals(true);
     try {
-      const mandals = getResponseOptions(await apiService.getMandals(value), 'mandals');
+      const mandals = dedupeOptions(getResponseOptions(await apiService.getMandals(value), 'mandals'));
       if (requestId === requestSequence.current) {
         setMandalsList(mandals);
       }
     } catch (error) {
       if (requestId === requestSequence.current) {
-        setLocationError(error.message || 'Failed to load mandals.');
+        const legacy = dedupeOptions(legacyMandalOptions.filter(
+          (item) => normalizeCode(item.districtCode) === normalizeCode(value)
+        ));
+        if (legacy.length > 0) {
+          setMandalsList(legacy);
+        } else {
+          setLocationError(error.message || 'Failed to load mandals.');
+        }
       }
     } finally {
       if (requestId === requestSequence.current) setLoadingMandals(false);
@@ -173,18 +212,26 @@ export function useLandLocations(initialSelection = null, { includeLegacyOptions
 
     if (value === '0') return;
 
-    if (mandalsList.find((item) => item.value === value)?.source === 'reference') return;
-
     setLoadingVillages(true);
     try {
-      const villages = getResponseOptions(
+      const rawVillages = getResponseOptions(
         await apiService.getVillages(value, district),
         'villages'
       );
+      const villages = addRayapudiVillage(rawVillages, district, value);
       if (requestId === requestSequence.current) setVillagesList(villages);
     } catch (error) {
       if (requestId === requestSequence.current) {
-        setLocationError(error.message || 'Failed to load villages.');
+        const normM = normalizeCode(value);
+        const legacyV = (legacyLocationReferences.villages || [])
+          .filter((v) => normalizeCode(v.mandalCode) === normM)
+          .map((v) => ({ ...v, value: v.code, label: `${v.nameTe} (${v.nameEn})` }));
+        const merged = addRayapudiVillage(legacyV, district, value);
+        if (merged.length > 0) {
+          setVillagesList(merged);
+        } else {
+          setLocationError(error.message || 'Failed to load villages.');
+        }
       }
     } finally {
       if (requestId === requestSequence.current) setLoadingVillages(false);

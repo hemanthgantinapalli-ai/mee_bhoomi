@@ -58,10 +58,11 @@ app.use('/api', async (req, res, next) => {
     if (!getIsConnected()) {
       await connectDB();
     }
-    next();
   } catch (error) {
-    next(error);
+    // Proceed with fallback data rather than blocking API requests
+    console.warn(`[API] DB connection deferred: ${error.message}`);
   }
+  next();
 });
 app.use('/api', apiRoutes);
 
@@ -73,12 +74,19 @@ app.get('/', (req, res) => {
   });
 });
 
+// Also support Vercel serverless where /api prefix may be stripped
+app.use('/', apiRoutes);
+
 // Centralized Error Handler
 app.use(errorHandler);
 
 // Start server
 const startServer = async () => {
-  await connectDB();
+  try {
+    await connectDB();
+  } catch (error) {
+    console.warn(`[Startup] MongoDB connection warning: ${error.message}`);
+  }
   app.listen(PORT, () => {
     console.log(`=======================================================`);
     console.log(`MeeBhoomi Backend Server running on port ${PORT}`);

@@ -14,58 +14,78 @@ const landRecordSchema = new mongoose.Schema({
   villageNameTe: { type: String, required: true },
 
   surveyNo: { type: String, required: true, index: true },
-  subDivisionNo: { type: String, default: '1' },
+  subDivisionNo: { type: String, default: '' },
   lpNo: { type: String, index: true },
   khataNo: { type: String, required: true, index: true },
 
   pattadarNameEn: { type: String, required: true, index: true },
   pattadarNameTe: { type: String, required: true },
-  fatherOrHusbandNameEn: { type: String, required: true },
-  fatherOrHusbandNameTe: { type: String, required: true },
+  gender: { type: String, default: '' },
+  fatherOrHusbandNameEn: { type: String, default: '' },
+  fatherOrHusbandNameTe: { type: String, default: '' },
+  displayFatherName: { type: String, default: '' },
 
   cultivatorNameEn: { type: String, default: '' },
   cultivatorNameTe: { type: String, default: '' },
 
   totalExtentAcres: { type: Number, required: true },
-  cultivableExtentAcres: { type: Number, required: true },
+  extentDisplay: { type: String, default: '' },
+  cultivableExtentAcres: { type: Number, default: 0 },
   uncultivableExtentAcres: { type: Number, default: 0 },
 
   landClassification: { 
     type: String, 
-    enum: ['Dry (మెట్ట)', 'Wet (మాగాణి)', 'Garden (తోట)'],
     default: 'Dry (మెట్ట)' 
+  },
+  landType: { 
+    type: String, 
+    default: 'మెట్ట' 
   },
   landNature: { 
     type: String, 
     default: 'Patta Land (రైత్వారీ పట్టా)' 
   },
+  landTransferType: { 
+    type: String, 
+    default: 'డి పట్టా' 
+  },
+  mutationDate: { 
+    type: String, 
+    default: '---' 
+  },
+  dataSource: {
+    type: String,
+    default: 'demo',
+    index: true
+  },
+  aliases: [{ type: String }],
+
   waterSource: { 
     type: String, 
-    default: 'Borewell (బోరు బావి)' 
+    default: 'Rain-fed (వర్షాధారం)' 
   },
   cropDetails: {
     type: String,
-    default: 'Paddy / Cotton (వరి / పత్తి)'
+    default: ''
   },
 
-  aadhaarSeeded: { type: Boolean, default: true },
-  aadhaarLast4: { type: String, default: '5421' },
+  aadhaarSeeded: { type: Boolean, default: false },
+  aadhaarLast4: { type: String, default: '' },
 
   passbookNumber: { type: String, index: true },
   passbookIssuedDate: { type: Date, default: Date.now },
 
   disputeStatus: { 
     type: String, 
-    enum: ['Clear / No Dispute', 'Civil Dispute Pending', 'Court Injunction'],
     default: 'Clear / No Dispute' 
   },
 
-  lpMapSvg: { type: String }, // SVG path or polygon data for LP Map
+  lpMapSvg: { type: String },
   neighboringSurveys: {
-    north: { type: String, default: '124/1' },
-    south: { type: String, default: '126/3' },
-    east: { type: String, default: '125/2' },
-    west: { type: String, default: '122' }
+    north: { type: String, default: '' },
+    south: { type: String, default: '' },
+    east: { type: String, default: '' },
+    west: { type: String, default: '' }
   },
 
   isSimulatedDemo: { type: Boolean, default: true }
@@ -74,6 +94,9 @@ const landRecordSchema = new mongoose.Schema({
 // Compound indexes for high-speed revenue searches
 landRecordSchema.index({ villageCode: 1, surveyNo: 1 });
 landRecordSchema.index({ villageCode: 1, khataNo: 1 });
-landRecordSchema.index({ villageCode: 1, pattadarNameEn: 'text', pattadarNameTe: 'text' });
+landRecordSchema.index({ villageCode: 1, subDivisionNo: 1 });
+landRecordSchema.index({ districtCode: 1, mandalCode: 1, villageCode: 1 });
+landRecordSchema.index({ villageCode: 1, pattadarNameEn: 1, pattadarNameTe: 1 });
 
 module.exports = mongoose.model('LandRecord', landRecordSchema);
+

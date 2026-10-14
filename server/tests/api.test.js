@@ -1,6 +1,7 @@
 const assert = require('assert');
 const CaptchaService = require('../services/captchaService');
 const recordController = require('../controllers/recordController');
+const districtController = require('../controllers/districtController');
 const { validateSearchInput } = require('../middleware/validator');
 const { getVillageAdangal, getVillage1B } = recordController;
 const { inMemoryData, upsertMissing } = require('../seeds/seedData');
@@ -85,6 +86,34 @@ async function runTests() {
     assert(mangalagiriMandal, 'Mangalagiri mandal must belong to Guntur');
   });
 
+  await testAsync('Hierarchy: Rayapudi is available in Thullur village options', async () => {
+    const response = {
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    };
+
+    await districtController.getVillages({
+      query: { districtCode: '07', mandalCode: '720' }
+    }, response, (error) => {
+      throw error;
+    });
+
+    assert.strictEqual(response.statusCode, 200);
+    assert(response.body.data.some(village =>
+      village.code === '72005' &&
+      village.nameEn === 'Rayapudi' &&
+      village.nameTe === 'రాయపూడి'
+    ));
+  });
+
   // 3. Search Query Tests
   test('Records: Survey No search in Chinakakani village', () => {
     const records = inMemoryData.records.filter(r => 
@@ -102,6 +131,63 @@ async function runTests() {
     assert(record, 'Khata 315 must exist');
     assert.strictEqual(record.pattadarNameEn, 'Guntupalli Lakshmi Devi');
     assert.strictEqual(record.landClassification, 'Dry (మెట్ట)');
+  });
+
+  await testAsync('Records: Khata 461 returns the Rayapudi report details', async () => {
+    const challenge = CaptchaService.createChallenge();
+    const response = {
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    };
+
+    await recordController.searchRecords({
+      body: {
+        districtCode: '07',
+        mandalCode: '720',
+        villageCode: '72005',
+        searchType: 'khataNo',
+        searchValue: '461',
+        captchaToken: challenge.token,
+        captchaAnswer: challenge.testCode
+      }
+    }, response, (error) => {
+      throw error;
+    });
+
+    assert.strictEqual(response.statusCode, 200);
+    assert.strictEqual(response.body.count, 1);
+    assert.deepStrictEqual(
+      {
+        districtNameEn: response.body.data[0].districtNameEn,
+        mandalNameEn: response.body.data[0].mandalNameEn,
+        villageNameEn: response.body.data[0].villageNameEn,
+        pattadarNameTe: response.body.data[0].pattadarNameTe,
+        fatherOrHusbandNameTe: response.body.data[0].fatherOrHusbandNameTe,
+        surveyNo: response.body.data[0].surveyNo,
+        subDivisionNo: response.body.data[0].subDivisionNo,
+        khataNo: response.body.data[0].khataNo,
+        totalExtentAcres: response.body.data[0].totalExtentAcres
+      },
+      {
+        districtNameEn: 'Guntur',
+        mandalNameEn: 'Thullur',
+        villageNameEn: 'Rayapudi',
+        pattadarNameTe: 'ఎం. నాగరాజు',
+        fatherOrHusbandNameTe: 'రమేష్',
+        surveyNo: '378',
+        subDivisionNo: '1-B',
+        khataNo: '461',
+        totalExtentAcres: 2.70
+      }
+    );
   });
 
   await testAsync('Records: record detail responses never expose Aadhaar last four digits', async () => {

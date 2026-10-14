@@ -20304,6 +20304,19 @@
       "isActive": true
     },
     {
+      "code": "72005",
+      "villageCode": "72005",
+      "mandalCode": "720",
+      "districtCode": "07",
+      "nameEn": "Rayapudi",
+      "villageNameEn": "Rayapudi",
+      "nameTe": "రాయపూడి",
+      "villageNameTe": "రాయపూడి",
+      "label": "Rayapudi - రాయపూడి",
+      "active": true,
+      "isActive": true
+    },
+    {
       "code": "72102",
       "villageCode": "72102",
       "mandalCode": "721",

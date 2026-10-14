@@ -4,10 +4,11 @@ const API_BASE = (import.meta.env.VITE_API_URL
   ? import.meta.env.VITE_API_URL.replace(/\/+$/, '')
   : '') + '/api';
 
-const normCode = (c) => String(c).replace(/^0+/, '') || '0';
+const normCode = (c) => String(c || '').replace(/^0+(?=\d)/, '') || String(c || '');
 
-// Fallback demo land records when backend is offline
+// Fallback demo land records when backend is offline or returns an error
 const fallbackRecords = [
+  // ── Mangalagiri / Chinakakani records ──
   {
     districtCode: '07',
     districtNameEn: 'Guntur',
@@ -26,6 +27,7 @@ const fallbackRecords = [
     pattadarNameTe: 'కొల్లిపర వెంకట సుబ్బారావు',
     fatherOrHusbandNameEn: 'Kollipara Ramaswamy',
     fatherOrHusbandNameTe: 'కొల్లిపర రామస్వామి',
+    displayFatherName: 'కొల్లిపర రామస్వామి',
     cultivatorNameEn: 'Self / Kollipara Venkata Subbarao',
     cultivatorNameTe: 'స్వయంగా / కొల్లిపర వెంకట సుబ్బారావు',
     totalExtentAcres: 2.45,
@@ -36,8 +38,10 @@ const fallbackRecords = [
     waterSource: 'Krishna Canal Ayacut (కృష్ణా కాలువ)',
     cropDetails: 'Paddy (వరి)',
     aadhaarSeeded: true,
+    aadhaarLast4: '4321',
     passbookNumber: 'AP/PPB/2023/070104-102',
     disputeStatus: 'Clear / No Dispute',
+    aliases: ['Kollipara Venkata Subbarao'],
     neighboringSurveys: { north: '124', south: '126/1', east: '125/2', west: '120' }
   },
   {
@@ -58,6 +62,7 @@ const fallbackRecords = [
     pattadarNameTe: 'బొడ్డు సాంబశివరావు',
     fatherOrHusbandNameEn: 'Boddu Venkata Ratnam',
     fatherOrHusbandNameTe: 'బొడ్డు వెంకట రత్నం',
+    displayFatherName: 'బొడ్డు వెంకట రత్నం',
     cultivatorNameEn: 'Self / Boddu Sambasiva Rao',
     cultivatorNameTe: 'స్వయంగా / బొడ్డు సాంబశివరావు',
     totalExtentAcres: 1.80,
@@ -68,11 +73,278 @@ const fallbackRecords = [
     waterSource: 'Krishna Canal (కృష్ణా కాలువ)',
     cropDetails: 'Black Gram / Paddy (మినుము / వరి)',
     aadhaarSeeded: true,
+    aadhaarLast4: '8812',
     passbookNumber: 'AP/PPB/2023/070104-204',
     disputeStatus: 'Clear / No Dispute',
+    aliases: ['Boddu Sambasiva Rao'],
     neighboringSurveys: { north: '124', south: '126/2', east: '127', west: '125/1' }
+  },
+  // ── Tulluru / Rayapudi records (khata 461) ──
+  {
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '22',
+    subDivisionNo: '---',
+    lpNo: 'LP/07/720/22',
+    khataNo: '461',
+    pattadarNameEn: 'Pulibandha Thayamma',
+    pattadarNameTe: 'పులిబంధ తాయారమ్మ',
+    gender: 'Female / స్త్రీ',
+    genderTe: 'స్త్రీ',
+    fatherOrHusbandNameEn: 'Suryanarayana',
+    fatherOrHusbandNameTe: 'సూర్యనారాయణ',
+    displayFatherName: 'సూర్యనారాయణ',
+    cultivatorNameEn: 'Pulibandha Thayamma',
+    cultivatorNameTe: 'పులిబంధ తాయారమ్మ',
+    totalExtentAcres: 0.2300,
+    extentDisplay: '0.2300',
+    cultivableExtentAcres: 0.2300,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'జానువంశికము',
+    acquisitionType: 'జానువంశికము',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'మెట్ట',
+    mutationDate: '---',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461-1',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Pulibandha Thayamma', 'పులిబంధ తాయారమ్మ', 'Thayamma', 'తాయారమ్మ'],
+    isSimulatedDemo: true
+  },
+  {
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '378/1-B',
+    subDivisionNo: '1-B',
+    lpNo: 'LP/07/720/378-1B',
+    khataNo: '461',
+    pattadarNameEn: 'Mallikanti Nagamani',
+    pattadarNameTe: 'మల్లికంటి నాగమణి',
+    gender: 'Female / స్త్రీ',
+    fatherOrHusbandNameEn: 'Ramesh',
+    fatherOrHusbandNameTe: 'రమేష్',
+    displayFatherName: 'రమేష్',
+    cultivatorNameEn: 'Mallikanti Nagamani',
+    cultivatorNameTe: 'మల్లికంటి నాగమణి',
+    totalExtentAcres: 2.70,
+    extentDisplay: '2.70 acres',
+    cultivableExtentAcres: 2.70,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'డి పట్టా',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['M. Nagamani', 'M Nagamani', 'Mallikanti Nagamani'],
+    isSimulatedDemo: true
+  },
+  {
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '378',
+    subDivisionNo: '378/2A',
+    lpNo: 'LP/07/720/378-2A',
+    khataNo: '461',
+    pattadarNameEn: 'Kotikala Babu',
+    pattadarNameTe: 'కోటికాల బాబు',
+    gender: 'Male / పురుషుడు',
+    fatherOrHusbandNameEn: '---',
+    fatherOrHusbandNameTe: '---',
+    displayFatherName: '---',
+    cultivatorNameEn: 'Kotikala Babu',
+    cultivatorNameTe: 'కోటికాల బాబు',
+    totalExtentAcres: 3.70,
+    extentDisplay: '3.70 acres',
+    cultivableExtentAcres: 3.70,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'రైత్వారీ పట్టా',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461-2',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Kotikala Babu'],
+    isSimulatedDemo: true
+  },
+  {
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '378',
+    subDivisionNo: '378/2-C',
+    lpNo: 'LP/07/720/378-2C',
+    khataNo: '461',
+    pattadarNameEn: 'Shaik Yashin',
+    pattadarNameTe: 'షేక్ యాసిన్',
+    gender: 'Male / పురుషుడు',
+    fatherOrHusbandNameEn: 'Masthan',
+    fatherOrHusbandNameTe: 'మస్తాన్',
+    displayFatherName: 'SHAIK YASHIN S/O MASTHAN',
+    cultivatorNameEn: 'Shaik Yashin',
+    cultivatorNameTe: 'షేక్ యాసిన్',
+    totalExtentAcres: 2.00,
+    extentDisplay: '2.00 acres',
+    cultivableExtentAcres: 2.00,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'రైత్వారీ పట్టా',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461-3',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Shaik Yashin', 'SHAIK YASHIN'],
+    isSimulatedDemo: true
+  },
+  // ── Markapuram / Viranchipuram records ──
+  {
+    districtCode: '28',
+    districtNameEn: 'Markapuram',
+    districtNameTe: 'మార్కాపురం',
+    mandalCode: '2801',
+    mandalNameEn: 'Chandrasekarapuram',
+    mandalNameTe: 'చంద్రశేఖరపురం',
+    villageCode: '280101',
+    villageNameEn: 'Viranchipuram',
+    villageNameTe: 'వీరాంచిపురం',
+    surveyNo: '29',
+    subDivisionNo: '---',
+    lpNo: 'LP/28/2801/29',
+    khataNo: '461',
+    pattadarNameEn: 'Manikonda Anjaneyulu',
+    pattadarNameTe: 'మానికొండ ఆంజనేయులు',
+    gender: 'పురుషుడు',
+    fatherOrHusbandNameEn: 'Kotaiah',
+    fatherOrHusbandNameTe: 'కోటయ్య',
+    displayFatherName: 'కోటయ్య',
+    cultivatorNameEn: 'Manikonda Anjaneyulu',
+    cultivatorNameTe: 'మానికొండ ఆంజనేయులు',
+    totalExtentAcres: 0.80,
+    extentDisplay: '0.8000',
+    cultivableExtentAcres: 0.80,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/280101-461-29',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Manikonda Anjaneyulu', 'మానికొండ ఆంజనేయులు'],
+    isSimulatedDemo: true
+  },
+  {
+    districtCode: '28',
+    districtNameEn: 'Markapuram',
+    districtNameTe: 'మార్కాపురం',
+    mandalCode: '2801',
+    mandalNameEn: 'Chandrasekarapuram',
+    mandalNameTe: 'చంద్రశేఖరపురం',
+    villageCode: '280101',
+    villageNameEn: 'Viranchipuram',
+    villageNameTe: 'వీరాంచిపురం',
+    surveyNo: '30',
+    subDivisionNo: '---',
+    lpNo: 'LP/28/2801/30',
+    khataNo: '461',
+    pattadarNameEn: 'Manikonda Anjaneyulu',
+    pattadarNameTe: 'మానికొండ ఆంజనేయులు',
+    gender: 'పురుషుడు',
+    fatherOrHusbandNameEn: 'Kotaiah',
+    fatherOrHusbandNameTe: 'కోటయ్య',
+    displayFatherName: 'కోటయ్య',
+    cultivatorNameEn: 'Manikonda Anjaneyulu',
+    cultivatorNameTe: 'మానికొండ ఆంజనేయులు',
+    totalExtentAcres: 1.27,
+    extentDisplay: '1.2700',
+    cultivableExtentAcres: 1.27,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/280101-461-30',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Manikonda Anjaneyulu', 'మానికొండ ఆంజనేయులు'],
+    isSimulatedDemo: true
   }
 ];
+
+
+const fallbackRecordsForLocation = ({ districtCode, mandalCode, villageCode }) => {
+  const nd = normCode(districtCode);
+  const nm = normCode(mandalCode);
+  const nv = normCode(villageCode);
+  return fallbackRecords.filter(record =>
+    normCode(record.districtCode) === nd &&
+    normCode(record.mandalCode) === nm &&
+    normCode(record.villageCode) === nv
+  );
+};
+
+const matchesFallbackSearch = (record, searchType, searchValue) => {
+  if (!searchValue || !searchValue.trim()) return true; // village adangal - return all
+  const val = searchValue.trim();
+  if (searchType === 'surveyNo') {
+    return record.surveyNo === val ||
+      record.subDivisionNo === val ||
+      `${record.surveyNo}/${record.subDivisionNo}` === val;
+  }
+  if (searchType === 'khataNo') return record.khataNo === val;
+  if (searchType === 'aadhaar') {
+    return record.aadhaarSeeded && record.aadhaarLast4 === val.slice(-4);
+  }
+  if (searchType === 'pattadarName') {
+    const lval = val.toLowerCase();
+    const nameEn = (record.pattadarNameEn || '').toLowerCase();
+    const nameTe = record.pattadarNameTe || '';
+    const aliases = (record.aliases || []).map(a => a.toLowerCase());
+    return nameEn.includes(lval) ||
+      nameTe.includes(val) ||
+      aliases.some(a => a.includes(lval));
+  }
+  return false;
+};
 
 // Helper to generate a client-side fallback SVG captcha
 function generateFallbackCaptcha() {
@@ -222,31 +494,25 @@ export const apiService = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(params)
       });
-      return await safeParseJson(res, 'Failed to search records.');
+      // If server responded with success, use server data
+      const data = await safeParseJson(res, 'Server error');
+      if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
+        return data;
+      }
+      // Server returned empty or error — fall through to client fallback
     } catch {
-      // Fallback search response
-      const matched = fallbackRecords.filter((r) => {
-        if (params.searchType === 'surveyNo') return r.surveyNo === params.searchValue || `${r.surveyNo}/${r.subDivisionNo}` === params.searchValue;
-        if (params.searchType === 'khataNo') return r.khataNo === params.searchValue;
-        if (params.searchType === 'pattadarName') return r.pattadarNameEn.toLowerCase().includes(params.searchValue.toLowerCase());
-        return true;
-      });
-
-      const results = matched.length > 0 ? matched : [
-        {
-          ...fallbackRecords[0],
-          surveyNo: params.searchValue || '125',
-          subDivisionNo: '1',
-          lpNo: `LP/07/0701/${params.searchValue || '125'}-1`
-        }
-      ];
-
-      return {
-        success: true,
-        count: results.length,
-        data: results
-      };
+      // Network error or server error — use client-side demo data
     }
+
+    // Client-side demo fallback
+    const results = fallbackRecordsForLocation(params)
+      .filter(record => matchesFallbackSearch(record, params.searchType, params.searchValue));
+    return {
+      success: true,
+      count: results.length,
+      data: results,
+      source: 'client-demo'
+    };
   },
 
   // Village Adangal
@@ -256,14 +522,15 @@ export const apiService = {
       const res = await fetch(`${API_BASE}/records/village-adangal?${params}`, {
         headers: { 'X-Captcha-Token': captchaToken, 'X-Captcha-Answer': captchaAnswer }
       });
-      return await safeParseJson(res, 'Failed to fetch village adangal.');
+      const data = await safeParseJson(res, 'Server error');
+      if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
+        return data;
+      }
     } catch {
-      return {
-        success: true,
-        count: fallbackRecords.length,
-        data: fallbackRecords
-      };
+      // fall through to client demo
     }
+    const records = fallbackRecordsForLocation({ districtCode, mandalCode, villageCode });
+    return { success: true, count: records.length, data: records, source: 'client-demo' };
   },
 
   // Village 1-B
@@ -273,14 +540,15 @@ export const apiService = {
       const res = await fetch(`${API_BASE}/records/village-1b?${params}`, {
         headers: { 'X-Captcha-Token': captchaToken, 'X-Captcha-Answer': captchaAnswer }
       });
-      return await safeParseJson(res, 'Failed to fetch village 1-B.');
+      const data = await safeParseJson(res, 'Server error');
+      if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
+        return data;
+      }
     } catch {
-      return {
-        success: true,
-        count: fallbackRecords.length,
-        data: fallbackRecords
-      };
+      // fall through to client demo
     }
+    const records = fallbackRecordsForLocation({ districtCode, mandalCode, villageCode });
+    return { success: true, count: records.length, data: records, source: 'client-demo' };
   },
 
   // Single Record by ID

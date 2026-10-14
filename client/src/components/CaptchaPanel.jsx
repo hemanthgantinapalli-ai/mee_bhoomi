@@ -18,7 +18,7 @@ export default function CaptchaPanel({ captchaValue, onChange, onTokenReceived, 
       setSvgContent(res.data.svg);
       onTokenReceived(res.data.token);
     } catch (err) {
-      console.error('Error fetching captcha:', err);
+      console.warn('Notice fetching captcha:', err?.message || err);
       setFetchError(true);
       setSvgContent('');
       onTokenReceived('');

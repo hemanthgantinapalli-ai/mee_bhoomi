@@ -202,8 +202,8 @@ export default function AdangalPage({ isVillageAdangal = false }) {
                       style={officialSelectStyle}
                     >
                       <option value="0">{districtPlaceholder}</option>
-                      {districts.map((d) => (
-                        <option key={d.value} value={d.value}>{d.label}</option>
+                      {districts.map((d, idx) => (
+                        <option key={`dst-${d.value}-${idx}`} value={d.value}>{d.label}</option>
                       ))}
                     </select>
                   </div>
@@ -226,8 +226,8 @@ export default function AdangalPage({ isVillageAdangal = false }) {
                       style={officialSelectStyle}
                     >
                       <option value="0">{mandalPlaceholder}</option>
-                      {mandalsList.map((m) => (
-                        <option key={m.value} value={m.value}>{m.label}</option>
+                      {mandalsList.map((m, idx) => (
+                        <option key={`mdl-${m.value}-${idx}`} value={m.value}>{m.label}</option>
                       ))}
                     </select>
                   </div>
@@ -250,8 +250,8 @@ export default function AdangalPage({ isVillageAdangal = false }) {
                       style={officialSelectStyle}
                     >
                       <option value="0">{villagePlaceholder}</option>
-                      {villagesList.map((v) => (
-                        <option key={v.value} value={v.value}>{v.label}</option>
+                      {villagesList.map((v, idx) => (
+                        <option key={`vlg-${v.value}-${idx}`} value={v.value}>{v.label}</option>
                       ))}
                     </select>
                   </div>
@@ -447,97 +447,199 @@ export default function AdangalPage({ isVillageAdangal = false }) {
             )}
 
             {/* ── Result View: Adangal Records Table ── */}
+
             {showResult && resultsList.length > 0 && (
               <div
                 ref={resultsRef}
                 id="div3"
                 style={{
-                  maxWidth: '1000px',
+                  maxWidth: '1100px',
                   margin: '30px auto',
                   backgroundColor: '#ffffff',
                   border: '1px solid #cbd5e1',
                   borderRadius: '6px',
                   boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-                  padding: '20px'
+                  padding: '24px'
                 }}
               >
-                {/* Print & Back buttons */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '14px', gap: '12px' }}>
+                {/* ── Action Navigation Icons (Back / Print / Home) ── */}
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                   <button
                     onClick={() => setShowResult(false)}
                     id="backpage"
-                    style={iconBtnStyle}
+                    title="వెనుకకు / Back"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '18px',
+                      color: '#15803d',
+                      fontWeight: 700,
+                      padding: '4px 6px'
+                    }}
                   >
-                    ← వెనుకకు (Back)
+                    ←
                   </button>
+                  <span style={{ color: '#15803d', fontWeight: 700 }}>/</span>
                   <button
                     onClick={() => window.print()}
                     id="btnPrints"
-                    style={iconBtnStyle}
+                    title="ప్రింట్ / Print"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '18px',
+                      color: '#15803d',
+                      padding: '4px 6px'
+                    }}
                   >
-                    🖨 ప్రింట్ (Print)
+                    🖨
                   </button>
+                  <span style={{ color: '#15803d', fontWeight: 700 }}>/</span>
+                  <a
+                    href="#home"
+                    title="హోమ్ / Home"
+                    style={{
+                      textDecoration: 'none',
+                      fontSize: '18px',
+                      color: '#15803d',
+                      padding: '4px 6px',
+                      display: 'inline-flex',
+                      alignItems: 'center'
+                    }}
+                  >
+                    🏠
+                  </a>
                 </div>
 
                 <div id="GetAdangal">
-                  <div style={{
-                    backgroundColor: '#145808',
-                    color: '#ffffff',
-                    padding: '10px 16px',
-                    borderRadius: '4px 4px 0 0',
-                    fontSize: '15px',
+                  {/* ── Official Report Title ── */}
+                  <h2 style={{
+                    textAlign: 'center',
+                    color: '#0f5132',
+                    fontSize: '22px',
                     fontWeight: 700,
-                    textAlign: 'center'
+                    margin: '8px 0 18px 0',
+                    fontFamily: "'Segoe UI', Roboto, 'Nirmala UI', sans-serif"
                   }}>
-                    నమూనా డేటా — అడంగల్ / పహణీ నకలు (Demo Adangal Pahani)
-                  </div>
+                    ROR1b Report
+                  </h2>
 
-                  <div style={{ overflowX: 'auto' }}>
+                  {/* ── Official 10-Column Grid Table ── */}
+                  <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
                     <table style={{
                       width: '100%',
-                      minWidth: '900px',
+                      minWidth: '950px',
                       borderCollapse: 'collapse',
-                      fontSize: '13px',
-                      color: '#1e293b'
+                      border: '1px solid #717171',
+                      fontSize: '12px',
+                      color: '#111827',
+                      fontFamily: "'Segoe UI', Roboto, 'Nirmala UI', sans-serif"
                     }}>
-                    <thead>
-                      <tr style={{ backgroundColor: '#e2e8f0', borderBottom: '2px solid #cbd5e1' }}>
-                        <th style={thStyle}>సర్వే నెం</th>
-                        <th style={thStyle}>ఖాతా నెం</th>
-                        <th style={thStyle}>పట్టాదారు పేరు</th>
-                        <th style={thStyle}>తండ్రి పేరు</th>
-                        <th style={thStyle}>విస్తీర్ణం (ఎకరాలు)</th>
-                        <th style={thStyle}>భూమి స్వభావం</th>
-                        <th style={thStyle}>సాగుదారు వివరాలు</th>
-                        <th style={thStyle}>ఆధార్ లింకింగ్ స్థితి</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {resultsList.map((rec, idx) => (
-                        <tr key={idx} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                          <td style={tdStyle}><strong>{rec.surveyNo}</strong></td>
-                          <td style={tdStyle}>{rec.khataNo}</td>
-                          <td style={tdStyle}>{rec.pattadarNameTe}</td>
-                          <td style={tdStyle}>{rec.fatherOrHusbandNameTe}</td>
-                          <td style={tdStyle}>{rec.totalExtentAcres}</td>
-                          <td style={tdStyle}>{rec.landClassification}</td>
-                          <td style={tdStyle}>{rec.cropDetails || 'వరి (Paddy)'}</td>
-                          <td style={tdStyle}>
-                            {rec.aadhaarSeeded ? (
-                              <span style={{ color: '#15803d', fontWeight: 700 }}>
-                                లింక్ అయింది (నమూనా; సంఖ్య చూపించబడదు)
-                              </span>
-                            ) : (
-                              <span style={{ color: '#b91c1c', fontWeight: 700 }}>లింక్ కాలేదు (Not linked)</span>
-                            )}
+                      <tbody>
+                        {/* ── Location Header Row ── */}
+                        <tr style={{ backgroundColor: '#ffffff' }}>
+                          <td colSpan={2} style={locCellStyle}>
+                            <strong>జిల్లా:</strong> {resultsList[0].districtNameEn} - {resultsList[0].districtNameTe}
                           </td>
+                          <td colSpan={2} style={locCellStyle}>
+                            <strong>మండలం:</strong> {String(resultsList[0].mandalNameEn || '').toUpperCase()} , {resultsList[0].mandalNameTe}
+                          </td>
+                          <td colSpan={2} style={locCellStyle}>
+                            <strong>గ్రామం:</strong> {String(resultsList[0].villageNameEn || '').toUpperCase()} , {resultsList[0].villageNameTe}
+                          </td>
+                          <td colSpan={3} style={locCellStyle}>
+                            <strong>Khata No::</strong> {resultsList[0].khataNo}
+                          </td>
+                          <td style={locCellStyle}></td>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+
+                        {/* ── Table Column Headers (Telugu Official) ── */}
+                        <tr style={{ backgroundColor: '#a2d2a2', color: '#000000', fontWeight: 700, textAlign: 'center' }}>
+                          <td style={{ ...thCellOfficial, width: '5%' }}>క్రమ సంఖ్య</td>
+                          <td style={{ ...thCellOfficial, width: '16%' }}>పట్టాదారుని పేరు</td>
+                          <td style={{ ...thCellOfficial, width: '10%' }}>లింగము (స్త్రీ/పురుషుడు/ఇతరులు)</td>
+                          <td style={{ ...thCellOfficial, width: '14%' }}>తండ్రి/ భర్త పేరు</td>
+                          <td style={{ ...thCellOfficial, width: '7%' }}>ఖాతా నెంబరు</td>
+                          <td style={{ ...thCellOfficial, width: '11%' }}>సర్వే నెం./ సబ్ డివిజన్ నంబరు</td>
+                          <td style={{ ...thCellOfficial, width: '8%' }}>భూమి వివరణ</td>
+                          <td style={{ ...thCellOfficial, width: '8%' }}>విస్తీర్ణం</td>
+                          <td style={{ ...thCellOfficial, width: '13%' }}>పట్టాదారుకు ఏ విధంగా సంక్రమించింది/ సాగు చేశారా</td>
+                          <td style={{ ...thCellOfficial, width: '8%' }}>మ్యుటేషన్ ఆమోదించిన తేదీ</td>
+                        </tr>
+
+                        {/* ── Column Numbering Row (1 to 10) ── */}
+                        <tr style={{ backgroundColor: '#ffffff', color: '#64748b', fontSize: '11px', textAlign: 'center' }}>
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                            <td key={num} style={numCellOfficial}>{num}</td>
+                          ))}
+                        </tr>
+
+                        {/* ── Land Records Data Rows ── */}
+                        {resultsList.map((rec, idx) => {
+                          const genderStr = rec.genderTe || (
+                            rec.gender && rec.gender.toLowerCase().includes('female')
+                              ? 'స్త్రీ'
+                              : rec.gender && rec.gender.toLowerCase().includes('male')
+                              ? 'పురుషుడు'
+                              : '---'
+                          );
+                          const fatherNameStr = rec.fatherOrHusbandNameTe || rec.fatherOrHusbandNameEn || '---';
+                          const surveyDisplay = rec.surveyNo || '---';
+                          const landDesc = rec.landClassification && rec.landClassification.includes('Dry')
+                            ? 'మెట్ట'
+                            : (rec.landType || (rec.landClassification ? rec.landClassification.replace(/\(.*?\)/g, '').trim() : 'మెట్ట'));
+                          const extentFormatted = rec.totalExtentAcres !== undefined
+                            ? Number(rec.totalExtentAcres).toFixed(4)
+                            : (rec.extentDisplay || '0.0000');
+                          const transferStr = rec.landTransferType || rec.acquisitionType || 'జానువంశికము';
+                          const mutationStr = rec.mutationDate || '---';
+
+                          return (
+                            <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? '#ffffff' : '#f9fafb' }}>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{idx + 1}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'left', fontWeight: 500 }}>
+                                {rec.pattadarNameTe || rec.pattadarNameEn}
+                              </td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{genderStr}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'left' }}>{fatherNameStr}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{rec.khataNo}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{surveyDisplay}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{landDesc}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{extentFormatted}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{transferStr}</td>
+                              <td style={{ ...tdCellOfficial, textAlign: 'center' }}>{mutationStr}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
-                  <p style={{ margin: '10px 0', color: '#64748b', fontSize: '12px' }}>
-                    Aadhaar linking status shown here is synthetic demo metadata; it is not an official MeeBhoomi or UIDAI verification.
+
+                  {/* ── Official Print Timestamp Notice in Telugu ── */}
+                  <p style={{
+                    textAlign: 'center',
+                    fontSize: '13px',
+                    color: '#1e293b',
+                    marginTop: '28px',
+                    marginBottom: '16px',
+                    fontFamily: "'Segoe UI', Roboto, 'Nirmala UI', sans-serif"
+                  }}>
+                    ఈ రెవిన్యూ రికార్డు ను మీ భూమి వెబ్ సైట్ నుండి , {new Date().toLocaleDateString('en-GB')} {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} తేదీనా ద్వారా ప్రింట్ చేయబడినది.
+                  </p>
+
+                  {/* ── Official Legal Disclaimer in English ── */}
+                  <p style={{
+                    textAlign: 'center',
+                    fontSize: '12px',
+                    color: '#334155',
+                    lineHeight: '1.65',
+                    maxWidth: '920px',
+                    margin: '0 auto 16px auto',
+                    fontFamily: "'Segoe UI', Roboto, sans-serif"
+                  }}>
+                    The information contained made available through this web site is for information only and cannot be utilised as certified / authenticated copy for producing in any court or for enforcing any legal claims etc. under the existing relevant Acts / Rules framed by the Government of Andhra Pradesh in this context.
                   </p>
                 </div>
               </div>
@@ -595,4 +697,42 @@ const thStyle = {
 
 const tdStyle = {
   padding: '10px 12px'
+};
+
+const locCellStyle = {
+  border: '1px solid #717171',
+  padding: '6px 8px',
+  fontSize: '12.5px',
+  fontWeight: 500,
+  color: '#111827',
+  backgroundColor: '#ffffff'
+};
+
+const thCellOfficial = {
+  border: '1px solid #717171',
+  padding: '7px 4px',
+  fontSize: '11.5px',
+  fontWeight: 700,
+  lineHeight: '1.3',
+  verticalAlign: 'middle',
+  color: '#000000'
+};
+
+const numCellOfficial = {
+  border: '1px solid #717171',
+  padding: '3px 4px',
+  fontSize: '11px',
+  color: '#475569',
+  fontWeight: 500,
+  textAlign: 'center',
+  backgroundColor: '#ffffff'
+};
+
+const tdCellOfficial = {
+  border: '1px solid #717171',
+  padding: '6px 6px',
+  fontSize: '12px',
+  color: '#1e293b',
+  verticalAlign: 'middle',
+  lineHeight: '1.4'
 };

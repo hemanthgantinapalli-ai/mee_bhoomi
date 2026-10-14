@@ -10,8 +10,8 @@ const connectDB = async () => {
   connectionPromise = (async () => {
     const uri = process.env.MONGODB_URI;
     const allowInMemoryFallback =
-      process.env.NODE_ENV === 'development' &&
-      process.env.ALLOW_IN_MEMORY_FALLBACK === 'true';
+      process.env.ALLOW_IN_MEMORY_FALLBACK === 'true' ||
+      process.env.NODE_ENV !== 'production';
 
     if (!uri) {
       if (allowInMemoryFallback) {
@@ -26,7 +26,7 @@ const connectDB = async () => {
     try {
       mongoose.set('strictQuery', false);
       const conn = await mongoose.connect(uri, {
-        serverSelectionTimeoutMS: 2500,
+        serverSelectionTimeoutMS: 3000,
       });
       isConnected = true;
       console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}`);
@@ -35,7 +35,7 @@ const connectDB = async () => {
       isConnected = false;
 
       if (allowInMemoryFallback) {
-        console.warn(`[MongoDB] Connection failed (${error.name}); using in-memory demo data by configuration.`);
+        console.warn(`[MongoDB] Connection failed (${error.name}); using in-memory demo data.`);
         return false;
       }
 

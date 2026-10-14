@@ -219,8 +219,8 @@ export default function MutationStatusPage({ initialMode = 'mutation' }) {
                       style={officialSelectStyle}
                     >
                       <option value="0">{districtPlaceholder}</option>
-                      {districts.map((d) => (
-                        <option key={d.value} value={d.value}>{d.label}</option>
+                      {districts.map((d, idx) => (
+                        <option key={`dst-${d.value}-${idx}`} value={d.value}>{d.label}</option>
                       ))}
                     </select>
                   </div>
@@ -243,8 +243,8 @@ export default function MutationStatusPage({ initialMode = 'mutation' }) {
                       style={officialSelectStyle}
                     >
                       <option value="0">{mandalPlaceholder}</option>
-                      {mandalsList.map((m) => (
-                        <option key={m.value} value={m.value}>{m.label}</option>
+                      {mandalsList.map((m, idx) => (
+                        <option key={`mdl-${m.value}-${idx}`} value={m.value}>{m.label}</option>
                       ))}
                     </select>
                   </div>
@@ -267,8 +267,8 @@ export default function MutationStatusPage({ initialMode = 'mutation' }) {
                       style={officialSelectStyle}
                     >
                       <option value="0">{villagePlaceholder}</option>
-                      {villagesList.map((v) => (
-                        <option key={v.value} value={v.value}>{v.label}</option>
+                      {villagesList.map((v, idx) => (
+                        <option key={`vlg-${v.value}-${idx}`} value={v.value}>{v.label}</option>
                       ))}
                     </select>
                   </div>

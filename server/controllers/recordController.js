@@ -4,21 +4,29 @@ const CaptchaService = require('../services/captchaService');
 const { getIsConnected } = require('../config/db');
 const { inMemoryData } = require('../seeds/seedData');
 
-const hasValidLocation = async (districtCode, mandalCode, villageCode) => {
-  if (!getIsConnected()) {
-    return inMemoryData.villages.some(village =>
-      village.districtCode === districtCode &&
-      village.mandalCode === mandalCode &&
-      village.code === villageCode
-    );
-  }
+const normCode = (code) => String(code || '').replace(/^0+(?=\d)/, '');
 
-  return Boolean(await Village.exists({
-    districtCode,
-    mandalCode,
-    code: villageCode,
-    isActive: true
-  }));
+const hasValidLocation = async (districtCode, mandalCode, villageCode) => {
+  const normDist = normCode(districtCode);
+  const normMand = normCode(mandalCode);
+  const normVill = normCode(villageCode);
+
+  const check = (v) =>
+    normCode(v.districtCode) === normDist &&
+    normCode(v.mandalCode) === normMand &&
+    normCode(v.code) === normVill;
+
+  if (inMemoryData.villages.some(check)) return true;
+
+  if (!getIsConnected()) return false;
+
+  const villageExists = await Village.exists({
+    $or: [
+      { districtCode, mandalCode, code: villageCode, isActive: true },
+      { districtCode: normDist, mandalCode: normMand, code: normVill, isActive: true }
+    ]
+  });
+  return Boolean(villageExists);
 };
 
 const withoutAadhaarLastFour = (record) => {
@@ -28,6 +36,60 @@ const withoutAadhaarLastFour = (record) => {
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+const matchesCriteria = (record, { qKhata, qSurvey, qSubDiv, qPattadar, qAadhaar }) => {
+  if (qKhata && record.khataNo !== qKhata) {
+    return false;
+  }
+
+  if (qSurvey && record.surveyNo !== qSurvey) {
+    return false;
+  }
+
+  if (qSubDiv) {
+    const rSub = (record.subDivisionNo || '').toLowerCase();
+    const qSub = qSubDiv.toLowerCase();
+    const matchSub = rSub === qSub || rSub.endsWith('/' + qSub) || qSub.endsWith('/' + rSub);
+    if (!matchSub) return false;
+  }
+
+  if (qPattadar) {
+    const q = qPattadar.toLowerCase().trim();
+    const pEn = (record.pattadarNameEn || '').toLowerCase();
+    const pTe = (record.pattadarNameTe || '');
+    const dFa = (record.displayFatherName || '').toLowerCase();
+    const aliases = (record.aliases || []).map(a => a.toLowerCase());
+
+    const matchesName =
+      pEn === q ||
+      pEn.includes(q) ||
+      pTe.includes(qPattadar.trim()) ||
+      dFa.includes(q) ||
+      aliases.some(a => a === q || a.includes(q));
+
+    if (!matchesName) return false;
+  }
+
+  if (qAadhaar) {
+    if (!record.aadhaarSeeded || record.aadhaarLast4 !== qAadhaar.slice(-4)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const findDemoRecords = (districtCode, mandalCode, villageCode) => {
+  const normDist = normCode(districtCode);
+  const normMand = normCode(mandalCode);
+  const normVill = normCode(villageCode);
+
+  return inMemoryData.records.filter(record =>
+    normCode(record.districtCode) === normDist &&
+    normCode(record.mandalCode) === normMand &&
+    normCode(record.villageCode) === normVill
+  );
+};
+
 // POST /api/records/search
 exports.searchRecords = async (req, res, next) => {
   try {
@@ -35,8 +97,13 @@ exports.searchRecords = async (req, res, next) => {
       districtCode, 
       mandalCode, 
       villageCode, 
-      searchType = 'surveyNo', 
+      searchType, 
       searchValue,
+      khataNo,
+      surveyNo,
+      subDivisionNo,
+      pattadarName,
+      aadhaar,
       captchaToken,
       captchaAnswer
     } = req.body;
@@ -64,23 +131,25 @@ exports.searchRecords = async (req, res, next) => {
       });
     }
 
-    if (!searchValue || String(searchValue).trim() === '') {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Search value cannot be blank.' 
-      });
-    }
+    // Extract search terms from specific fields or searchType/searchValue
+    const rawVal = searchValue ? String(searchValue).trim() : '';
+    const qKhata = String(khataNo || (searchType === 'khataNo' ? rawVal : '') || '').trim();
+    let qSurvey = String(surveyNo || (searchType === 'surveyNo' ? rawVal : '') || '').trim();
+    let qSubDiv = String(subDivisionNo || '').trim();
+    const qPattadar = String(pattadarName || (searchType === 'pattadarName' ? rawVal : '') || '').trim();
+    const qAadhaar = String(aadhaar || (searchType === 'aadhaar' ? rawVal : '') || '').trim();
 
-    const val = String(searchValue).trim();
-
-    if (!['surveyNo', 'khataNo', 'aadhaar', 'pattadarName'].includes(searchType)) {
-      return res.status(400).json({ success: false, message: 'Invalid search type.' });
-    }
-
-    if (searchType === 'aadhaar' && !/^\d{4}$/.test(val)) {
+    if (qAadhaar && !/^\d{4}$/.test(qAadhaar)) {
       return res.status(400).json({
         success: false,
         message: 'Aadhaar lookup accepts only the last 4 digits. Do not submit a full Aadhaar number.'
+      });
+    }
+
+    if (!qKhata && !qSurvey && !qSubDiv && !qPattadar && !qAadhaar) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Search value cannot be blank.' 
       });
     }
 
@@ -91,62 +160,78 @@ exports.searchRecords = async (req, res, next) => {
       });
     }
 
-    // Query builder
+    const criteria = { qKhata, qSurvey, qSubDiv, qPattadar, qAadhaar };
     let records = [];
 
     if (!getIsConnected()) {
-      // In-memory query
-      records = inMemoryData.records.filter(r => {
-        const matchesLocation = r.districtCode === districtCode && 
-                                r.mandalCode === mandalCode && 
-                                r.villageCode === villageCode;
-        if (!matchesLocation) return false;
-
-        if (searchType === 'surveyNo') {
-          return r.surveyNo === val || `${r.surveyNo}/${r.subDivisionNo}` === val;
-        } else if (searchType === 'khataNo') {
-          return r.khataNo === val;
-        } else if (searchType === 'aadhaar') {
-          return r.aadhaarSeeded === true && r.aadhaarLast4 === val.slice(-4);
-        } else if (searchType === 'pattadarName') {
-          return r.pattadarNameEn.toLowerCase().includes(val.toLowerCase()) || 
-                 r.pattadarNameTe.includes(val);
-        }
-        return false;
-      });
+      records = findDemoRecords(districtCode, mandalCode, villageCode)
+        .filter(record => matchesCriteria(record, criteria));
     } else {
-      // MongoDB query
-      const filter = { districtCode, mandalCode, villageCode };
+      const normDist = normCode(districtCode);
+      const normMand = normCode(mandalCode);
+      const normVill = normCode(villageCode);
 
-      if (searchType === 'surveyNo') {
-        if (val.includes('/')) {
-          const [sNo, subDiv] = val.split('/');
-          filter.surveyNo = sNo;
-          filter.subDivisionNo = subDiv;
-        } else {
-          filter.surveyNo = val;
-        }
-      } else if (searchType === 'khataNo') {
-        filter.khataNo = val;
-      } else if (searchType === 'aadhaar') {
-        filter.aadhaarSeeded = true;
-        filter.aadhaarLast4 = val.slice(-4);
-      } else if (searchType === 'pattadarName') {
-        const escapedValue = escapeRegExp(val);
-        filter.$or = [
-          { pattadarNameEn: { $regex: escapedValue, $options: 'i' } },
-          { pattadarNameTe: { $regex: escapedValue, $options: 'i' } }
-        ];
+      const filter = {
+        $and: [
+          {
+            $or: [
+              { districtCode, mandalCode, villageCode },
+              { districtCode: normDist, mandalCode: normMand, villageCode: normVill }
+            ]
+          }
+        ]
+      };
+
+      if (qKhata) {
+        filter.$and.push({ khataNo: qKhata });
+      }
+
+      if (qSurvey) {
+        filter.$and.push({ surveyNo: qSurvey });
+      }
+
+      if (qSubDiv) {
+        const escapedSub = escapeRegExp(qSubDiv);
+        filter.$and.push({
+          $or: [
+            { subDivisionNo: { $regex: `^${escapedSub}$`, $options: 'i' } },
+            { subDivisionNo: { $regex: `/${escapedSub}$`, $options: 'i' } }
+          ]
+        });
+      }
+
+      if (qPattadar) {
+        const escapedName = escapeRegExp(qPattadar);
+        filter.$and.push({
+          $or: [
+            { pattadarNameEn: { $regex: escapedName, $options: 'i' } },
+            { pattadarNameTe: { $regex: escapedName } },
+            { displayFatherName: { $regex: escapedName, $options: 'i' } },
+            { aliases: { $in: [new RegExp(escapedName, 'i')] } }
+          ]
+        });
+      }
+
+      if (qAadhaar) {
+        filter.$and.push({
+          aadhaarSeeded: true,
+          aadhaarLast4: qAadhaar.slice(-4)
+        });
       }
 
       records = await LandRecord.find(filter).lean();
+      if (records.length === 0) {
+        records = findDemoRecords(districtCode, mandalCode, villageCode)
+          .filter(record => matchesCriteria(record, criteria));
+      }
     }
 
     return res.json({
       success: true,
       count: records.length,
       data: records.map(withoutAadhaarLastFour),
-      disclaimer: 'Simulated demonstration record for MeeBhoomi recreation. Not an official AP Government legal document.'
+      disclaimer: 'DEMO DATA — NOT AN OFFICIAL GOVERNMENT LAND RECORD',
+      message: records.length === 0 ? 'No matching demo records found' : undefined
     });
 
   } catch (error) {
@@ -176,6 +261,9 @@ exports.getVillageAdangal = async (req, res, next) => {
       );
     } else {
       records = await LandRecord.find({ districtCode, mandalCode, villageCode }).lean();
+      if (records.length === 0) {
+        records = findDemoRecords(districtCode, mandalCode, villageCode);
+      }
     }
 
     res.json({
@@ -211,6 +299,9 @@ exports.getVillage1B = async (req, res, next) => {
       );
     } else {
       records = await LandRecord.find({ districtCode, mandalCode, villageCode }).lean();
+      if (records.length === 0) {
+        records = findDemoRecords(districtCode, mandalCode, villageCode);
+      }
     }
 
     res.json({

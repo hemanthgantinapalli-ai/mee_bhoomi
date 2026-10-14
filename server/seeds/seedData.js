@@ -14,6 +14,7 @@ try {
 
 const fallbackDistricts = [
   { code: '07', nameEn: 'Guntur', nameTe: 'గుంటూరు', headquarters: 'Guntur' },
+  { code: '28', nameEn: 'Markapuram', nameTe: 'మార్కాపురం', headquarters: 'Markapuram' },
   { code: '06', nameEn: 'Krishna', nameTe: 'కృష్ణా', headquarters: 'Machilipatnam' },
   { code: '03', nameEn: 'Visakhapatnam', nameTe: 'విశాఖపట్నం', headquarters: 'Visakhapatnam' },
   { code: '10', nameEn: 'Chittoor', nameTe: 'చిత్తూరు', headquarters: 'Chittoor' },
@@ -41,10 +42,12 @@ const fallbackMandals = [
   { code: '719', districtCode: '07', nameEn: 'Tadepalle', nameTe: 'తాడేపల్లి' },
   { code: '0703', districtCode: '07', nameEn: 'Tadikonda', nameTe: 'తాడికొండ' },
   { code: '0702', districtCode: '07', nameEn: 'Tenali', nameTe: 'తెనాలి' },
-  { code: '720', districtCode: '07', nameEn: 'Thullur', nameTe: 'తుళ్లూరు' },
+  { code: '720', districtCode: '07', nameEn: 'Tulluru', nameTe: 'తుళ్లూరు' },
   { code: '721', districtCode: '07', nameEn: 'Vatticherukuru', nameTe: 'వట్టిచెరుకూరు' },
   { code: '0704', districtCode: '07', nameEn: 'Amaravati', nameTe: 'అమరావతి' },
   { code: '0705', districtCode: '07', nameEn: 'Guntur Urban', nameTe: 'గుంటూరు అర్బన్' },
+  // Markapuram (28)
+  { code: '2801', districtCode: '28', nameEn: 'Chandrasekarapuram', nameTe: 'చంద్రశేఖరపురం' },
   // Krishna (06)
   { code: '0601', districtCode: '06', nameEn: 'Vijayawada Rural', nameTe: 'విజయవాడ రూరల్' },
   { code: '0602', districtCode: '06', nameEn: 'Gannavaram', nameTe: 'గన్నవరం' },
@@ -203,19 +206,317 @@ const fallbackVillages = [
   { code: '090203', mandalCode: '0902', districtCode: '09', nameEn: 'Inamadugu', nameTe: 'ఇనమడుగు', censusCode: '592112' }
 ];
 
-const seedDistricts = (adminDataset && Array.isArray(adminDataset.districts) && adminDataset.districts.length > 0)
+const rawDistricts = (adminDataset && Array.isArray(adminDataset.districts) && adminDataset.districts.length > 0)
   ? adminDataset.districts
   : fallbackDistricts;
 
-const seedMandals = (adminDataset && Array.isArray(adminDataset.mandals) && adminDataset.mandals.length > 0)
+const districtMap = new Map(rawDistricts.map(d => [d.code, { ...d, isActive: true }]));
+fallbackDistricts.forEach(d => {
+  if (!districtMap.has(d.code)) {
+    districtMap.set(d.code, { ...d, isActive: true });
+  }
+});
+const seedDistricts = Array.from(districtMap.values());
+
+const rawMandals = (adminDataset && Array.isArray(adminDataset.mandals) && adminDataset.mandals.length > 0)
   ? adminDataset.mandals
   : fallbackMandals;
 
-const seedVillages = (adminDataset && Array.isArray(adminDataset.villages) && adminDataset.villages.length > 0)
+const mandalMap = new Map(rawMandals.map(m => [`${m.districtCode}_${m.code}`, { ...m, isActive: true }]));
+fallbackMandals.forEach(m => {
+  const key = `${m.districtCode}_${m.code}`;
+  if (!mandalMap.has(key)) {
+    mandalMap.set(key, { ...m, isActive: true });
+  } else {
+    // Ensure Tulluru name is updated
+    if (m.code === '720') {
+      mandalMap.set(key, { ...mandalMap.get(key), nameEn: 'Tulluru', nameTe: 'తుళ్లూరు', isActive: true });
+    }
+  }
+});
+const seedMandals = Array.from(mandalMap.values());
+
+const administrativeVillages = (adminDataset && Array.isArray(adminDataset.villages) && adminDataset.villages.length > 0)
   ? adminDataset.villages
   : fallbackVillages;
 
+const villageMap = new Map(administrativeVillages.map(v => [`${v.districtCode}_${v.mandalCode}_${v.code}`, { ...v, isActive: true }]));
+[
+  {
+    code: '72005',
+    mandalCode: '720',
+    districtCode: '07',
+    nameEn: 'Rayapudi',
+    nameTe: 'రాయపూడి',
+    censusCode: '587625',
+    isActive: true
+  },
+  {
+    code: '280101',
+    mandalCode: '2801',
+    districtCode: '28',
+    nameEn: 'Viranchipuram',
+    nameTe: 'వీరాంచిపురం',
+    censusCode: '588901',
+    isActive: true
+  }
+].forEach(v => {
+  villageMap.set(`${v.districtCode}_${v.mandalCode}_${v.code}`, v);
+});
+const seedVillages = Array.from(villageMap.values());
+
 const seedRecords = [
+  // ── Record 0: Pulibandha Thayamma (MeeBhoomi Template Record) ──
+  {
+    dataSource: 'demo',
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '22',
+    subDivisionNo: '---',
+    lpNo: 'LP/07/720/22',
+    khataNo: '461',
+    pattadarNameEn: 'Pulibandha Thayamma',
+    pattadarNameTe: 'పులిబంధ తాయారమ్మ',
+    gender: 'Female / స్త్రీ',
+    fatherOrHusbandNameEn: 'Suryanarayana',
+    fatherOrHusbandNameTe: 'సూర్యనారాయణ',
+    displayFatherName: 'సూర్యనారాయణ',
+    cultivatorNameEn: 'Pulibandha Thayamma',
+    cultivatorNameTe: 'పులిబంధ తాయారమ్మ',
+    totalExtentAcres: 0.2300,
+    extentDisplay: '0.2300',
+    cultivableExtentAcres: 0.2300,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'జానువంశికము',
+    mutationDate: '---',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'మెట్ట',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461-1',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Pulibandha Thayamma', 'పులిబంధ తాయారమ్మ', 'Thayamma', 'తాయారమ్మ'],
+    neighboringSurveys: {
+      north: '20',
+      south: '24',
+      east: '23',
+      west: '21'
+    }
+  },
+  // ── Record 1: Mallikanti Nagamani ──
+  {
+    dataSource: 'demo',
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '378/1-B',
+    subDivisionNo: '1-B',
+    lpNo: 'LP/07/720/378-1B',
+    khataNo: '461',
+    pattadarNameEn: 'Mallikanti Nagamani',
+    pattadarNameTe: 'మల్లికంటి నాగమణి',
+    gender: 'Female / స్త్రీ',
+    fatherOrHusbandNameEn: 'Ramesh',
+    fatherOrHusbandNameTe: 'రమేష్',
+    displayFatherName: 'రమేష్',
+    cultivatorNameEn: 'Mallikanti Nagamani',
+    cultivatorNameTe: 'మల్లికంటి నాగమణి',
+    totalExtentAcres: 2.70,
+    extentDisplay: '2.70 acres',
+    cultivableExtentAcres: 2.70,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'డి పట్టా',
+    mutationDate: '---',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['M. Nagamani', 'M Nagamani', 'Mallikanti Nagamani'],
+    isSimulatedDemo: true
+  },
+  // ── Record 2: Kotikala Babu ──
+  {
+    dataSource: 'demo',
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '378',
+    subDivisionNo: '378/2A',
+    lpNo: 'LP/07/720/378-2A',
+    khataNo: '461',
+    pattadarNameEn: 'Kotikala Babu',
+    pattadarNameTe: 'కోటికాల బాబు',
+    gender: 'Male / పురుషుడు',
+    fatherOrHusbandNameEn: '---',
+    fatherOrHusbandNameTe: '---',
+    displayFatherName: '---',
+    cultivatorNameEn: 'Kotikala Babu',
+    cultivatorNameTe: 'కోటికాల బాబు',
+    totalExtentAcres: 3.70,
+    extentDisplay: '3.70 acres',
+    cultivableExtentAcres: 3.70,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'రైత్వారీ పట్టా',
+    mutationDate: '---',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461-2',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Kotikala Babu'],
+    isSimulatedDemo: true
+  },
+  // ── Record 3: Shaik Yashin ──
+  {
+    dataSource: 'demo',
+    districtCode: '07',
+    districtNameEn: 'Guntur',
+    districtNameTe: 'గుంటూరు',
+    mandalCode: '720',
+    mandalNameEn: 'Tulluru',
+    mandalNameTe: 'తుళ్లూరు',
+    villageCode: '72005',
+    villageNameEn: 'Rayapudi',
+    villageNameTe: 'రాయపూడి',
+    surveyNo: '378',
+    subDivisionNo: '378/2-C',
+    lpNo: 'LP/07/720/378-2C',
+    khataNo: '461',
+    pattadarNameEn: 'Shaik Yashin',
+    pattadarNameTe: 'షేక్ యాసిన్',
+    gender: 'Male / పురుషుడు',
+    fatherOrHusbandNameEn: 'Masthan',
+    fatherOrHusbandNameTe: 'మస్తాన్',
+    displayFatherName: 'SHAIK YASHIN S/O MASTHAN',
+    cultivatorNameEn: 'Shaik Yashin',
+    cultivatorNameTe: 'షేక్ యాసిన్',
+    totalExtentAcres: 2.00,
+    extentDisplay: '2.00 acres',
+    cultivableExtentAcres: 2.00,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'రైత్వారీ పట్టా',
+    mutationDate: '---',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/72005-461-3',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Shaik Yashin', 'SHAIK YASHIN'],
+    isSimulatedDemo: true
+  },
+  // ── Record 4: Manikonda Anjaneyulu (Survey 29) ──
+  {
+    dataSource: 'demo',
+    districtCode: '28',
+    districtNameEn: 'Markapuram',
+    districtNameTe: 'మార్కాపురం',
+    mandalCode: '2801',
+    mandalNameEn: 'Chandrasekarapuram',
+    mandalNameTe: 'చంద్రశేఖరపురం',
+    villageCode: '280101',
+    villageNameEn: 'Viranchipuram',
+    villageNameTe: 'వీరాంచిపురం',
+    surveyNo: '29',
+    subDivisionNo: '---',
+    lpNo: 'LP/28/2801/29',
+    khataNo: '461',
+    pattadarNameEn: 'Manikonda Anjaneyulu',
+    pattadarNameTe: 'మానికొండ ఆంజనేయులు',
+    gender: 'పురుషుడు',
+    fatherOrHusbandNameEn: 'Kotaiah',
+    fatherOrHusbandNameTe: 'కోటయ్య',
+    displayFatherName: 'కోటయ్య',
+    cultivatorNameEn: 'Manikonda Anjaneyulu',
+    cultivatorNameTe: 'మానికొండ ఆంజనేయులు',
+    totalExtentAcres: 0.80,
+    extentDisplay: '0.8000',
+    cultivableExtentAcres: 0.80,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'డి పట్టా',
+    mutationDate: '---',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/280101-461-29',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Manikonda Anjaneyulu', 'మానికొండ ఆంజనేయులు'],
+    isSimulatedDemo: true
+  },
+  // ── Record 5: Manikonda Anjaneyulu (Survey 30) ──
+  {
+    dataSource: 'demo',
+    districtCode: '28',
+    districtNameEn: 'Markapuram',
+    districtNameTe: 'మార్కాపురం',
+    mandalCode: '2801',
+    mandalNameEn: 'Chandrasekarapuram',
+    mandalNameTe: 'చంద్రశేఖరపురం',
+    villageCode: '280101',
+    villageNameEn: 'Viranchipuram',
+    villageNameTe: 'వీరాంచిపురం',
+    surveyNo: '30',
+    subDivisionNo: '---',
+    lpNo: 'LP/28/2801/30',
+    khataNo: '461',
+    pattadarNameEn: 'Manikonda Anjaneyulu',
+    pattadarNameTe: 'మానికొండ ఆంజనేయులు',
+    gender: 'పురుషుడు',
+    fatherOrHusbandNameEn: 'Kotaiah',
+    fatherOrHusbandNameTe: 'కోటయ్య',
+    displayFatherName: 'కోటయ్య',
+    cultivatorNameEn: 'Manikonda Anjaneyulu',
+    cultivatorNameTe: 'మానికొండ ఆంజనేయులు',
+    totalExtentAcres: 1.27,
+    extentDisplay: '1.2700',
+    cultivableExtentAcres: 1.27,
+    uncultivableExtentAcres: 0.00,
+    landClassification: 'Dry (మెట్ట)',
+    landType: 'మెట్ట',
+    landNature: 'Patta Land (రైత్వారీ పట్టా)',
+    landTransferType: 'డి పట్టా',
+    mutationDate: '---',
+    waterSource: 'Rain-fed (వర్షాధారం)',
+    cropDetails: 'Demo record (నమూనా)',
+    aadhaarSeeded: false,
+    passbookNumber: 'AP/PPB/2026/280101-461-30',
+    disputeStatus: 'Clear / No Dispute',
+    aliases: ['Manikonda Anjaneyulu', 'మానికొండ ఆంజనేయులు'],
+    isSimulatedDemo: true
+  },
   {
     districtCode: '07',
     districtNameEn: 'Guntur',
@@ -598,7 +899,7 @@ const upsertMissing = async (Model, documents, keyFields) => {
   await Model.bulkWrite(documents.map((document) => ({
     updateOne: {
       filter: Object.fromEntries(keyFields.map((field) => [field, document[field]])),
-      update: { $setOnInsert: document },
+      update: { $set: document },
       upsert: true
     }
   })), { ordered: true });
@@ -612,6 +913,15 @@ const runSeed = async () => {
     if (!connected) {
       throw new Error('Seeding requires a live MongoDB connection.');
     }
+
+    // Clean up outdated placeholder record in Rayapudi so Mallikanti Nagamani's updated record is authoritative
+    await LandRecord.deleteMany({
+      districtCode: '07',
+      mandalCode: '720',
+      villageCode: '72005',
+      khataNo: '461',
+      pattadarNameEn: { $in: ['M. Nagaraju', 'M. Nagamani', 'ఎం. నాగరాజు'] }
+    });
 
     await upsertMissing(District, seedDistricts, ['code']);
     await upsertMissing(Mandal, seedMandals, ['districtCode', 'code']);
