@@ -394,11 +394,11 @@ export default function AadhaarStatusPage() {
               <div className="form-group">
                 <p style={{
                   borderRadius: '5px',
-                  padding: '12px 14px',
+                  padding: '8px 12px',
                   boxShadow: '1px 1px 2px 2px #0094ff',
                   backgroundColor: 'azure',
-                  fontSize: '12px',
-                  lineHeight: '1.5',
+                  fontSize: '10px',
+                  lineHeight: '1.45',
                   color: '#212529',
                   margin: 0
                 }}>
@@ -411,9 +411,9 @@ export default function AadhaarStatusPage() {
                       value="Cnfrm"
                       checked={consentChecked}
                       onChange={(e) => setConsentChecked(e.target.checked)}
-                      style={{ marginTop: '3px', cursor: 'pointer' }}
+                      style={{ marginTop: '2px', cursor: 'pointer', width: '13px', height: '13px' }}
                     />
-                    <span>
+                    <span style={{ fontSize: '10px', lineHeight: '1.45' }}>
                       Demo consent: I agree to check the synthetic land-record data in this application. This demo does not contact UIDAI, request OTP/biometrics, or verify a real Aadhaar number.<br />
                       (డెమో సమ్మతి: ఈ అప్లికేషన్‌లోని నమూనా భూ రికార్డులను పరిశీలించడానికి అంగీకరిస్తున్నాను. ఈ డెమో UIDAIని సంప్రదించదు; OTP/బయోమెట్రిక్స్ అడగదు; నిజమైన ఆధార్‌ను ధృవీకరించదు.)
                     </span>

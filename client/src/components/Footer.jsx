@@ -24,13 +24,19 @@ export default function Footer() {
       {/* Official: light gray-blue background #e9ecef */}
       <div className="address-bar">
         <p style={{ margin: 0 }}>
-          O/o The Chief Commissioner of Land Administration , APIIC Towers,
+          O/o The Chief Commissioner of Land Administration, APIIC Towers,
         </p>
         <p style={{ margin: 0 }}>
-          1st &amp; 3rd Floors, IT Park, Auto Nagar , Mangalagiri 522503.
+          1st &amp; 3rd Floors, IT Park, Auto Nagar, Mangalagiri - 522503.
         </p>
         <p style={{ margin: 0 }}>
-          e-mail: ccla[hyphen]as[hyphen]cmro[at]ap[dot]gov[dot]in
+          e-mail:{' '}
+          <a
+            href="mailto:ccla-as-cmro@ap.gov.in"
+            style={{ color: '#095c8c', textDecoration: 'none', fontWeight: 600 }}
+          >
+            ccla-as-cmro@ap.gov.in
+          </a>
         </p>
       </div>
 

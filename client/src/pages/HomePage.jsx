@@ -9,7 +9,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
   const VALID_OTP = '975310';
 
   // Login form state
-  const [mobileNumber, setMobileNumber] = useState('8675432104');
+  const [mobileNumber, setMobileNumber] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [otpValue, setOtpValue] = useState('');
   const [captchaCode, setCaptchaCode] = useState('7834');
@@ -257,7 +257,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     style={vadangalLinkStyle}
                     title="ఆంధ్రప్రదేశ్ అన్ని 28 జిల్లాలు మరియు 286 మండలాలు (All 28 Districts & 286 Mandals of AP)"
                   >
-                    మీ అడంగల్/గ్రామ అడంగల్ (గుంటూరు & అన్ని AP మండలాలు)
+                    మీ అడంగల్/గ్రామ అడంగల్
                   </a>
                   <a
                     href="#1b"
@@ -265,7 +265,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     style={vadangalLinkStyle}
                     title="ఆంధ్రప్రదేశ్ అన్ని 28 జిల్లాలు మరియు 286 మండలాలు (All 28 Districts & 286 Mandals of AP)"
                   >
-                    మీ 1-బి/గ్రామ 1-బి (గుంటూరు & అన్ని AP మండలాలు)
+                    మీ 1-బి/గ్రామ 1-బి
                   </a>
                   <a
                     href="#lp-map"

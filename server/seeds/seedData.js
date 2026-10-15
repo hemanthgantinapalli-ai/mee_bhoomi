@@ -266,52 +266,6 @@ const villageMap = new Map(administrativeVillages.map(v => [`${v.districtCode}_$
 const seedVillages = Array.from(villageMap.values());
 
 const seedRecords = [
-  // ── Record 0: Pulibandha Thayamma (MeeBhoomi Template Record) ──
-  {
-    dataSource: 'demo',
-    districtCode: '07',
-    districtNameEn: 'Guntur',
-    districtNameTe: 'గుంటూరు',
-    mandalCode: '720',
-    mandalNameEn: 'Tulluru',
-    mandalNameTe: 'తుళ్లూరు',
-    villageCode: '72005',
-    villageNameEn: 'Rayapudi',
-    villageNameTe: 'రాయపూడి',
-    surveyNo: '22',
-    subDivisionNo: '---',
-    lpNo: 'LP/07/720/22',
-    khataNo: '461',
-    pattadarNameEn: 'Pulibandha Thayamma',
-    pattadarNameTe: 'పులిబంధ తాయారమ్మ',
-    gender: 'Female / స్త్రీ',
-    fatherOrHusbandNameEn: 'Suryanarayana',
-    fatherOrHusbandNameTe: 'సూర్యనారాయణ',
-    displayFatherName: 'సూర్యనారాయణ',
-    cultivatorNameEn: 'Pulibandha Thayamma',
-    cultivatorNameTe: 'పులిబంధ తాయారమ్మ',
-    totalExtentAcres: 0.2300,
-    extentDisplay: '0.2300',
-    cultivableExtentAcres: 0.2300,
-    uncultivableExtentAcres: 0.00,
-    landClassification: 'Dry (మెట్ట)',
-    landType: 'మెట్ట',
-    landNature: 'Patta Land (రైత్వారీ పట్టా)',
-    landTransferType: 'జానువంశికము',
-    mutationDate: '---',
-    waterSource: 'Rain-fed (వర్షాధారం)',
-    cropDetails: 'మెట్ట',
-    aadhaarSeeded: false,
-    passbookNumber: 'AP/PPB/2026/72005-461-1',
-    disputeStatus: 'Clear / No Dispute',
-    aliases: ['Pulibandha Thayamma', 'పులిబంధ తాయారమ్మ', 'Thayamma', 'తాయారమ్మ'],
-    neighboringSurveys: {
-      north: '20',
-      south: '24',
-      east: '23',
-      west: '21'
-    }
-  },
   // ── Record 1: Mallikanti Nagamani ──
   {
     dataSource: 'demo',

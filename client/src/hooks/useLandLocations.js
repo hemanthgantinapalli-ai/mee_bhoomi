@@ -112,8 +112,8 @@ export function useLandLocations(initialSelection = null, { includeLegacyOptions
         setDistricts(effectiveDistricts);
         setLoadingDistricts(false);
 
-        const targetDistrict = initialSelection?.districtCode || '07';
-        if (effectiveDistricts.some((item) => item.value === targetDistrict)) {
+        const targetDistrict = initialSelection?.districtCode;
+        if (targetDistrict && effectiveDistricts.some((item) => item.value === targetDistrict)) {
           setDistrict(targetDistrict);
 
           setLoadingMandals(true);

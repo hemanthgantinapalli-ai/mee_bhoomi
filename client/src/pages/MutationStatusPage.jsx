@@ -35,7 +35,7 @@ export default function MutationStatusPage({ initialMode = 'mutation' }) {
   } = useLandLocations();
 
   const [searchMethod, setSearchMethod] = useState('appNo'); // 'appNo' | 'surveyNo'
-  const [appNumber, setAppNumber] = useState('MUT2026AP009412');
+  const [appNumber, setAppNumber] = useState('');
 
   const [captchaToken, setCaptchaToken] = useState('');
   const [captchaAnswer, setCaptchaAnswer] = useState('');

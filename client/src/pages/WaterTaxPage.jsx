@@ -23,7 +23,7 @@ export default function WaterTaxPage() {
     loadingMandals,
     loadingVillages
   } = useLandLocations();
-  const [khataNo, setKhataNo] = useState('102');
+  const [khataNo, setKhataNo] = useState('');
 
   const [captchaToken, setCaptchaToken] = useState('');
   const [captchaAnswer, setCaptchaAnswer] = useState('');
