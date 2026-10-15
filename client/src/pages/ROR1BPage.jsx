@@ -398,27 +398,30 @@ export default function ROR1BPage({ isVillage1B = false }) {
             </div>
 
             {/* ── Consent Box Underneath ── */}
-            <div style={{ maxWidth: '820px', margin: '20px auto 0' }}>
-              <div className="form-group">
+            {/* ── Consent Box Underneath ── */}
+            <div style={{ maxWidth: '820px', margin: '20px auto 0', display: 'flex', justifyContent: 'center' }}>
+              <div className="form-group" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <p style={{
                   borderRadius: '5px',
-                  padding: '8px 12px',
+                  padding: '6px 12px',
                   boxShadow: '1px 1px 2px 2px #0094ff',
                   backgroundColor: 'azure',
-                  fontSize: '10px',
+                  fontSize: '6px',
                   lineHeight: '1.45',
                   color: '#212529',
-                  margin: 0
+                  margin: 0,
+                  textAlign: 'center',
+                  display: 'inline-block'
                 }}>
-                  <label style={{ cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                  <label style={{ cursor: 'pointer', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center', textAlign: 'center', margin: 0 }}>
                     <input
                       className="form-check-input"
                       type="checkbox"
                       checked={consentChecked}
                       onChange={(e) => setConsentChecked(e.target.checked)}
-                      style={{ marginTop: '2px', cursor: 'pointer', width: '13px', height: '13px' }}
+                      style={{ marginTop: 0, cursor: 'pointer', width: '11px', height: '11px', flexShrink: 0 }}
                     />
-                    <span style={{ fontSize: '10px', lineHeight: '1.45' }}>
+                    <span style={{ fontSize: '6px', lineHeight: '1.45', textAlign: 'center' }}>
                       Demo consent: I agree to view synthetic 1-B (Record of Rights) data in this application. Aadhaar linking status is sample data only and is not verified by UIDAI.<br />
                       (డెమో సమ్మతి: ఈ అప్లికేషన్‌లోని నమూనా 1-బి సమాచారాన్ని చూడటానికి అంగీకరిస్తున్నాను. ఆధార్ లింకింగ్ స్థితి నమూనా సమాచారం మాత్రమే; UIDAI ద్వారా ధృవీకరించబడలేదు.)
                     </span>
