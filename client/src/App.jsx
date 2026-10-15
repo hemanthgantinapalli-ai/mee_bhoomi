@@ -12,6 +12,7 @@ import AadhaarStatusPage from './pages/AadhaarStatusPage';
 import EPassbookPage from './pages/EPassbookPage';
 import MutationStatusPage from './pages/MutationStatusPage';
 import WaterTaxPage from './pages/WaterTaxPage';
+import PhoneOtp from './PhoneOtp';
 
 export default function App() {
   // Support hash routing for direct page access and browser refresh

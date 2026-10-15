@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PhoneOtp from '../PhoneOtp';
 
 // ─────────────────────────────────────────────────────────────────
 // Official MeeBhoomi Main Page
@@ -9,12 +10,24 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
   const VALID_OTP = '975310';
 
   // Login form state
+  const [authMode, setAuthMode] = useState('firebase'); // 'firebase' | 'demo'
   const [mobileNumber, setMobileNumber] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [otpValue, setOtpValue] = useState('');
   const [captchaCode, setCaptchaCode] = useState('7834');
   const [captchaInput, setCaptchaInput] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  const handleFirebaseLogin = (user) => {
+    const rawNumber = user?.phoneNumber || mobileNumber || '+91 9876543210';
+    const citizen = {
+      mobile: rawNumber,
+      masked: rawNumber ? `${rawNumber.slice(0, 5)}******${rawNumber.slice(-2)}` : 'Citizen',
+      name: 'Pattadar Citizen',
+      loginTime: new Date().toLocaleTimeString('en-IN')
+    };
+    onLoginSuccess(citizen);
+  };
 
   // Pre-set or refresh captcha
   const refreshCaptcha = () => {
@@ -534,216 +547,268 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
             justifyContent: 'center'
           }}>
             <h3 style={{
-              fontSize: '24px',
+              fontSize: '22px',
               fontWeight: 700,
               fontFamily: "'Times New Roman', Georgia, serif",
               color: '#1e293b',
               textAlign: 'center',
-              marginBottom: '20px'
+              marginBottom: '16px'
             }}>
-              Login
+              MeeBhoomi Citizen Login
             </h3>
 
-            {!otpSent ? (
-              /* Step 1: Mobile Number Entry */
-              <form onSubmit={handleGetOtp}>
-                <label style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: '#374151',
-                  marginBottom: '8px'
-                }}>
-                  Mobile No.
-                </label>
+            {/* Mode Switch: Real Firebase OTP vs Demo Login */}
+            <div style={{
+              display: 'flex',
+              backgroundColor: '#f1f5f9',
+              borderRadius: '6px',
+              padding: '3px',
+              marginBottom: '18px'
+            }}>
+              <button
+                type="button"
+                onClick={() => { setAuthMode('firebase'); setErrorMsg(''); }}
+                style={{
+                  flex: 1,
+                  padding: '7px 10px',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: authMode === 'firebase' ? 700 : 500,
+                  backgroundColor: authMode === 'firebase' ? '#145808' : 'transparent',
+                  color: authMode === 'firebase' ? '#ffffff' : '#64748b',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                🔒 Real SMS OTP
+              </button>
+              <button
+                type="button"
+                onClick={() => { setAuthMode('demo'); setErrorMsg(''); }}
+                style={{
+                  flex: 1,
+                  padding: '7px 10px',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: authMode === 'demo' ? 700 : 500,
+                  backgroundColor: authMode === 'demo' ? '#145808' : 'transparent',
+                  color: authMode === 'demo' ? '#ffffff' : '#64748b',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                ⚡ Demo Login
+              </button>
+            </div>
 
-                <div style={{ position: 'relative', marginBottom: '16px' }}>
-                  <span style={{
-                    position: 'absolute',
-                    left: '12px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    color: '#9ca3af',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                      <line x1="12" y1="18" x2="12.01" y2="18" />
-                    </svg>
-                  </span>
-                  <input
-                    type="tel"
-                    value={mobileNumber}
-                    onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                    placeholder="Mobile number"
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px 10px 38px',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '6px',
-                      fontSize: '14px',
-                      color: '#1f2937',
-                      outline: 'none',
-                      boxSizing: 'border-box'
-                    }}
-                  />
-                </div>
-
-                {errorMsg && (
-                  <div style={{ color: '#dc2626', fontSize: '12px', marginBottom: '12px', lineHeight: 1.3 }}>
-                    {errorMsg}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  style={{
-                    width: '100%',
-                    backgroundColor: '#145808',
-                    color: '#ffffff',
-                    border: 'none',
-                    borderRadius: '6px',
-                    padding: '12px',
-                    fontSize: '15px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'background-color 0.15s'
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#196f0b')}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#145808')}
-                >
-                  Get OTP
-                </button>
-              </form>
+            {authMode === 'firebase' ? (
+              <PhoneOtp onVerified={handleFirebaseLogin} />
             ) : (
-              /* Step 2: OTP & Captcha Verification */
-              <form onSubmit={handleLoginSubmit}>
-                {/* OTP Input */}
-                <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
-                  Enter OTP
-                </label>
-                <input
-                  type="text"
-                  maxLength={6}
-                  value={otpValue}
-                  onChange={(e) => setOtpValue(e.target.value)}
-                  placeholder="Enter OTP"
-                  style={{
-                    width: '100%',
-                    padding: '8px 10px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '5px',
-                    fontSize: '15px',
-                    letterSpacing: '2px',
-                    textAlign: 'center',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                    marginBottom: '12px'
-                  }}
-                />
+              <>
+                {!otpSent ? (
+                  /* Step 1: Mobile Number Entry */
+                  <form onSubmit={handleGetOtp}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '13px',
+                      fontWeight: 500,
+                      color: '#374151',
+                      marginBottom: '8px'
+                    }}>
+                      Mobile No.
+                    </label>
 
-                {/* Captcha Image & Input */}
-                <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
-                  Enter Captcha
-                </label>
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
-                  {/* Captcha Box */}
-                  <div style={{
-                    backgroundColor: '#f1f5f9',
-                    border: '1px dashed #94a3b8',
-                    borderRadius: '4px',
-                    padding: '6px 14px',
-                    fontSize: '18px',
-                    fontWeight: 800,
-                    fontFamily: 'monospace',
-                    letterSpacing: '4px',
-                    color: '#0f172a',
-                    userSelect: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}>
-                    <span>{captchaCode}</span>
+                    <div style={{ position: 'relative', marginBottom: '16px' }}>
+                      <span style={{
+                        position: 'absolute',
+                        left: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        color: '#9ca3af',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                          <line x1="12" y1="18" x2="12.01" y2="18" />
+                        </svg>
+                      </span>
+                      <input
+                        type="tel"
+                        value={mobileNumber}
+                        onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                        placeholder="Mobile number"
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px 10px 38px',
+                          border: '1px solid #d1d5db',
+                          borderRadius: '6px',
+                          fontSize: '14px',
+                          color: '#1f2937',
+                          outline: 'none',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                    </div>
+
+                    {errorMsg && (
+                      <div style={{ color: '#dc2626', fontSize: '12px', marginBottom: '12px', lineHeight: 1.3 }}>
+                        {errorMsg}
+                      </div>
+                    )}
+
                     <button
-                      type="button"
-                      onClick={refreshCaptcha}
-                      title="Refresh Captcha"
+                      type="submit"
                       style={{
-                        background: 'none',
+                        width: '100%',
+                        backgroundColor: '#145808',
+                        color: '#ffffff',
                         border: 'none',
+                        borderRadius: '6px',
+                        padding: '12px',
+                        fontSize: '15px',
+                        fontWeight: 600,
                         cursor: 'pointer',
-                        padding: 0,
-                        color: '#64748b'
+                        transition: 'background-color 0.15s'
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#196f0b')}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#145808')}
+                    >
+                      Get OTP
+                    </button>
+                  </form>
+                ) : (
+                  /* Step 2: OTP & Captcha Verification */
+                  <form onSubmit={handleLoginSubmit}>
+                    {/* OTP Input */}
+                    <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
+                      Enter OTP
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={6}
+                      value={otpValue}
+                      onChange={(e) => setOtpValue(e.target.value)}
+                      placeholder="Enter OTP (975310)"
+                      style={{
+                        width: '100%',
+                        padding: '8px 10px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '5px',
+                        fontSize: '15px',
+                        letterSpacing: '2px',
+                        textAlign: 'center',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                        marginBottom: '12px'
+                      }}
+                    />
+
+                    {/* Captcha Image & Input */}
+                    <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
+                      Enter Captcha
+                    </label>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
+                      {/* Captcha Box */}
+                      <div style={{
+                        backgroundColor: '#f1f5f9',
+                        border: '1px dashed #94a3b8',
+                        borderRadius: '4px',
+                        padding: '6px 14px',
+                        fontSize: '18px',
+                        fontWeight: 800,
+                        fontFamily: 'monospace',
+                        letterSpacing: '4px',
+                        color: '#0f172a',
+                        userSelect: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}>
+                        <span>{captchaCode}</span>
+                        <button
+                          type="button"
+                          onClick={refreshCaptcha}
+                          title="Refresh Captcha"
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: 0,
+                            color: '#64748b'
+                          }}
+                        >
+                          ↻
+                        </button>
+                      </div>
+
+                      <input
+                        type="text"
+                        maxLength={4}
+                        value={captchaInput}
+                        onChange={(e) => setCaptchaInput(e.target.value)}
+                        placeholder="Code"
+                        style={{
+                          flex: 1,
+                          padding: '8px 10px',
+                          border: '1px solid #d1d5db',
+                          borderRadius: '5px',
+                          fontSize: '14px',
+                          outline: 'none',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                    </div>
+
+                    {errorMsg && (
+                      <div style={{ color: '#dc2626', fontSize: '12px', marginBottom: '10px' }}>
+                        {errorMsg}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      style={{
+                        width: '100%',
+                        backgroundColor: '#145808',
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '6px',
+                        padding: '11px',
+                        fontSize: '15px',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        marginBottom: '8px'
                       }}
                     >
-                      ↻
+                      Login
                     </button>
-                  </div>
 
-                  <input
-                    type="text"
-                    maxLength={4}
-                    value={captchaInput}
-                    onChange={(e) => setCaptchaInput(e.target.value)}
-                    placeholder="Code"
-                    style={{
-                      flex: 1,
-                      padding: '8px 10px',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '5px',
-                      fontSize: '14px',
-                      outline: 'none',
-                      boxSizing: 'border-box'
-                    }}
-                  />
-                </div>
-
-                {errorMsg && (
-                  <div style={{ color: '#dc2626', fontSize: '12px', marginBottom: '10px' }}>
-                    {errorMsg}
-                  </div>
+                    <div style={{ textAlign: 'center' }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOtpSent(false);
+                          setOtpValue('');
+                          setErrorMsg('');
+                        }}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: '#0284c7',
+                          fontSize: '12px',
+                          cursor: 'pointer',
+                          textDecoration: 'underline'
+                        }}
+                      >
+                        Change Mobile Number
+                      </button>
+                    </div>
+                  </form>
                 )}
-
-                <button
-                  type="submit"
-                  style={{
-                    width: '100%',
-                    backgroundColor: '#145808',
-                    color: '#ffffff',
-                    border: 'none',
-                    borderRadius: '6px',
-                    padding: '11px',
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    marginBottom: '8px'
-                  }}
-                >
-                  Login
-                </button>
-
-                <div style={{ textAlign: 'center' }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOtpSent(false);
-                      setOtpValue('');
-                      setErrorMsg('');
-                    }}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: '#0284c7',
-                      fontSize: '12px',
-                      cursor: 'pointer',
-                      textDecoration: 'underline'
-                    }}
-                  >
-                    Change Mobile Number
-                  </button>
-                </div>
-              </form>
+              </>
             )}
 
           </div>
