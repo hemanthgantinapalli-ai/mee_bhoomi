@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   RecaptchaVerifier,
   signInWithPhoneNumber
@@ -10,17 +10,67 @@ export default function PhoneOtp({ onVerified }) {
   const [otp, setOtp] = useState("");
   const [confirmation, setConfirmation] = useState(null);
   const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const recaptchaRef = useRef(null);
   const verifierRef = useRef(null);
 
+  // Initialize reCAPTCHA on container mount
+  useEffect(() => {
+    let isMounted = true;
+
+    const setupVerifier = async () => {
+      if (!recaptchaRef.current) return;
+      try {
+        if (!verifierRef.current) {
+          verifierRef.current = new RecaptchaVerifier(
+            auth,
+            recaptchaRef.current,
+            {
+              size: "normal",
+              callback: () => {
+                setMessage("");
+              },
+              "expired-callback": () => {
+                setMessage("reCAPTCHA expired. Please verify again.");
+              }
+            }
+          );
+          await verifierRef.current.render();
+        }
+      } catch (err) {
+        console.warn("reCAPTCHA init error:", err);
+      }
+    };
+
+    setupVerifier();
+
+    return () => {
+      isMounted = false;
+      if (verifierRef.current) {
+        try {
+          verifierRef.current.clear();
+        } catch (_) {}
+        verifierRef.current = null;
+      }
+    };
+  }, [confirmation]);
+
   async function sendOtp(e) {
     if (e && e.preventDefault) e.preventDefault();
     setMessage("");
+    setIsSuccess(false);
+
+    const cleanPhone = phone.trim().replace(/\s+/g, '');
+    if (!cleanPhone.startsWith('+') || cleanPhone.length < 11) {
+      setMessage("Please enter a valid phone number with country code (e.g. +91 9876543210)");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      if (!verifierRef.current) {
+      if (!verifierRef.current && recaptchaRef.current) {
         verifierRef.current = new RecaptchaVerifier(
           auth,
           recaptchaRef.current,
@@ -31,16 +81,36 @@ export default function PhoneOtp({ onVerified }) {
 
       const result = await signInWithPhoneNumber(
         auth,
-        phone.trim(),
+        cleanPhone,
         verifierRef.current
       );
 
       setConfirmation(result);
-      setMessage("OTP sent. Please check your phone.");
+      setIsSuccess(true);
+      setMessage("OTP sent successfully! Please check your phone for the 6-digit code.");
     } catch (error) {
-      verifierRef.current?.clear();
-      verifierRef.current = null;
-      setMessage(error.message || "Could not send OTP.");
+      console.error("Firebase sendOtp error:", error);
+      if (verifierRef.current) {
+        try { verifierRef.current.clear(); } catch (_) {}
+        verifierRef.current = null;
+      }
+      if (recaptchaRef.current) {
+        recaptchaRef.current.innerHTML = '';
+      }
+
+      let errorNotice = error.message || "Could not send OTP.";
+      if (error.code === 'auth/operation-not-allowed') {
+        errorNotice = "Phone Auth is disabled in your Firebase project. Please enable 'Phone' under Firebase Console > Authentication > Sign-in method.";
+      } else if (error.code === 'auth/unauthorized-domain') {
+        errorNotice = "Domain not authorized. Please add this domain to Firebase Console > Authentication > Settings > Authorized domains.";
+      } else if (error.code === 'auth/invalid-phone-number') {
+        errorNotice = "Invalid phone number format. Please ensure it includes +91 and 10 digits.";
+      } else if (error.code === 'auth/quota-exceeded') {
+        errorNotice = "Daily SMS quota exceeded in Firebase project. You can add test phone numbers in Firebase Console for free unlimited testing.";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorNotice = "Too many attempts from this IP. Please wait a few minutes and try again.";
+      }
+      setMessage(errorNotice);
     } finally {
       setLoading(false);
     }
@@ -51,15 +121,21 @@ export default function PhoneOtp({ onVerified }) {
     if (!confirmation) return;
 
     setMessage("");
+    setIsSuccess(false);
     setLoading(true);
 
     try {
       const userCredential = await confirmation.confirm(otp.trim());
-      setMessage("Phone verified successfully!");
+      setIsSuccess(true);
+      setMessage("Phone verified successfully! Logging you in...");
       if (onVerified) {
-        onVerified(userCredential.user);
+        setTimeout(() => {
+          onVerified(userCredential.user);
+        }, 600);
       }
-    } catch {
+    } catch (error) {
+      console.error("Firebase verifyOtp error:", error);
+      setIsSuccess(false);
       setMessage("Invalid or expired OTP. Please try again.");
     } finally {
       setLoading(false);
