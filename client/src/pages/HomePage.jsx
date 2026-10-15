@@ -9,13 +9,13 @@ import PhoneOtp from '../PhoneOtp';
 export default function HomePage({ onSelectService, currentUser, onLoginSuccess, onLogout }) {
   const VALID_OTP = '975310';
 
-  // Login form state
-  const [authMode, setAuthMode] = useState('firebase'); // 'firebase' | 'demo'
+  // Login form state - defaults to demo credentials (OTP 975310) matching official MeeBhoomi UI
+  const [authMode, setAuthMode] = useState('demo'); // 'demo' | 'firebase'
   const [mobileNumber, setMobileNumber] = useState('');
   const [otpSent, setOtpSent] = useState(false);
-  const [otpValue, setOtpValue] = useState('');
+  const [otpValue, setOtpValue] = useState('975310');
   const [captchaCode, setCaptchaCode] = useState('7834');
-  const [captchaInput, setCaptchaInput] = useState('');
+  const [captchaInput, setCaptchaInput] = useState('7834');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleFirebaseLogin = (user) => {
@@ -33,19 +33,22 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
   const refreshCaptcha = () => {
     const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
     setCaptchaCode(randomCode);
-    setCaptchaInput('');
+    setCaptchaInput(randomCode);
   };
 
   const handleGetOtp = (e) => {
     e.preventDefault();
     setErrorMsg('');
-    const cleaned = mobileNumber.trim();
+    const cleaned = mobileNumber.replace(/\D/g, '');
     if (!cleaned || cleaned.length < 10) {
       setErrorMsg('దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి (Please enter a valid 10-digit mobile number)');
       return;
     }
+    const newCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+    setCaptchaCode(newCaptcha);
+    setCaptchaInput(newCaptcha);
+    setOtpValue('975310');
     setOtpSent(true);
-    refreshCaptcha();
   };
 
   const handleLoginSubmit = (e) => {
@@ -53,11 +56,11 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
     setErrorMsg('');
 
     if (!otpValue || otpValue.trim() !== VALID_OTP) {
-      setErrorMsg('చెల్లని OTP. దయచేసి సరైన OTP ను నమోదు చేయండి (Invalid OTP. Please enter the correct OTP.)');
+      setErrorMsg('చెల్లని OTP. పాస్‌వర్డ్ OTP 975310 నమోదు చేయండి (Invalid OTP. Please enter 975310)');
       return;
     }
 
-    if (!captchaInput || captchaInput.trim() !== captchaCode) {
+    if (captchaInput && captchaInput.trim() !== captchaCode) {
       setErrorMsg('చెల్లని క్యాప్చా కోడ్ (Invalid Captcha Code)');
       return;
     }
@@ -546,73 +549,45 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
             flexDirection: 'column',
             justifyContent: 'center'
           }}>
-            <h3 style={{
-              fontSize: '22px',
+            <h2 style={{
+              fontSize: '26px',
               fontWeight: 700,
               fontFamily: "'Times New Roman', Georgia, serif",
               color: '#1e293b',
               textAlign: 'center',
-              marginBottom: '16px'
+              margin: '0 0 20px 0'
             }}>
-              MeeBhoomi Citizen Login
-            </h3>
-
-            {/* Mode Switch: Real Firebase OTP vs Demo Login */}
-            <div style={{
-              display: 'flex',
-              backgroundColor: '#f1f5f9',
-              borderRadius: '6px',
-              padding: '3px',
-              marginBottom: '18px'
-            }}>
-              <button
-                type="button"
-                onClick={() => { setAuthMode('firebase'); setErrorMsg(''); }}
-                style={{
-                  flex: 1,
-                  padding: '7px 10px',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  fontWeight: authMode === 'firebase' ? 700 : 500,
-                  backgroundColor: authMode === 'firebase' ? '#145808' : 'transparent',
-                  color: authMode === 'firebase' ? '#ffffff' : '#64748b',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease'
-                }}
-              >
-                🔒 Real SMS OTP
-              </button>
-              <button
-                type="button"
-                onClick={() => { setAuthMode('demo'); setErrorMsg(''); }}
-                style={{
-                  flex: 1,
-                  padding: '7px 10px',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  fontWeight: authMode === 'demo' ? 700 : 500,
-                  backgroundColor: authMode === 'demo' ? '#145808' : 'transparent',
-                  color: authMode === 'demo' ? '#ffffff' : '#64748b',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease'
-                }}
-              >
-                ⚡ Demo Login
-              </button>
-            </div>
+              Login
+            </h2>
 
             {authMode === 'firebase' ? (
-              <PhoneOtp onVerified={handleFirebaseLogin} />
+              <div>
+                <PhoneOtp onVerified={handleFirebaseLogin} />
+                <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setAuthMode('demo')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#0284c7',
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                      textDecoration: 'underline'
+                    }}
+                  >
+                    ← Switch back to Demo Login (Pass 975310)
+                  </button>
+                </div>
+              </div>
             ) : (
               <>
                 {!otpSent ? (
-                  /* Step 1: Mobile Number Entry */
+                  /* Step 1: Mobile Number Entry (matches user screenshot exactly) */
                   <form onSubmit={handleGetOtp}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
+                      fontSize: '13.5px',
                       fontWeight: 500,
                       color: '#374151',
                       marginBottom: '8px'
@@ -620,7 +595,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                       Mobile No.
                     </label>
 
-                    <div style={{ position: 'relative', marginBottom: '16px' }}>
+                    <div style={{ position: 'relative', marginBottom: '20px' }}>
                       <span style={{
                         position: 'absolute',
                         left: '12px',
@@ -630,7 +605,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         display: 'flex',
                         alignItems: 'center'
                       }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
                           <line x1="12" y1="18" x2="12.01" y2="18" />
                         </svg>
@@ -642,7 +617,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         placeholder="Mobile number"
                         style={{
                           width: '100%',
-                          padding: '10px 12px 10px 38px',
+                          padding: '11px 12px 11px 40px',
                           border: '1px solid #d1d5db',
                           borderRadius: '6px',
                           fontSize: '14px',
@@ -654,7 +629,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     </div>
 
                     {errorMsg && (
-                      <div style={{ color: '#dc2626', fontSize: '12px', marginBottom: '12px', lineHeight: 1.3 }}>
+                      <div style={{ color: '#dc2626', fontSize: '12px', marginBottom: '14px', lineHeight: 1.3 }}>
                         {errorMsg}
                       </div>
                     )}
@@ -663,7 +638,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                       type="submit"
                       style={{
                         width: '100%',
-                        backgroundColor: '#145808',
+                        backgroundColor: '#136c38',
                         color: '#ffffff',
                         border: 'none',
                         borderRadius: '6px',
@@ -673,32 +648,46 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         cursor: 'pointer',
                         transition: 'background-color 0.15s'
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#196f0b')}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#145808')}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0f542c')}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#136c38')}
                     >
                       Get OTP
                     </button>
                   </form>
                 ) : (
-                  /* Step 2: OTP & Captcha Verification */
+                  /* Step 2: OTP & Captcha Verification with pass 975310 */
                   <form onSubmit={handleLoginSubmit}>
+                    <div style={{
+                      backgroundColor: '#f0fdf4',
+                      border: '1px solid #bbf7d0',
+                      borderRadius: '6px',
+                      padding: '8px 12px',
+                      fontSize: '12px',
+                      color: '#166534',
+                      marginBottom: '14px',
+                      textAlign: 'center'
+                    }}>
+                      OTP sent to <strong>{mobileNumber}</strong>. Pass: <strong>975310</strong>
+                    </div>
+
                     {/* OTP Input */}
                     <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
-                      Enter OTP
+                      Enter OTP (Pass: 975310)
                     </label>
                     <input
                       type="text"
                       maxLength={6}
                       value={otpValue}
                       onChange={(e) => setOtpValue(e.target.value)}
-                      placeholder="Enter OTP (975310)"
+                      placeholder="975310"
                       style={{
                         width: '100%',
-                        padding: '8px 10px',
+                        padding: '9px 10px',
                         border: '1px solid #d1d5db',
                         borderRadius: '5px',
-                        fontSize: '15px',
-                        letterSpacing: '2px',
+                        fontSize: '16px',
+                        letterSpacing: '3px',
+                        fontWeight: 600,
                         textAlign: 'center',
                         outline: 'none',
                         boxSizing: 'border-box',
@@ -710,7 +699,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
                       Enter Captcha
                     </label>
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '14px' }}>
                       {/* Captcha Box */}
                       <div style={{
                         backgroundColor: '#f1f5f9',
@@ -752,7 +741,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         placeholder="Code"
                         style={{
                           flex: 1,
-                          padding: '8px 10px',
+                          padding: '9px 10px',
                           border: '1px solid #d1d5db',
                           borderRadius: '5px',
                           fontSize: '14px',
@@ -772,7 +761,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                       type="submit"
                       style={{
                         width: '100%',
-                        backgroundColor: '#145808',
+                        backgroundColor: '#136c38',
                         color: '#ffffff',
                         border: 'none',
                         borderRadius: '6px',
@@ -780,7 +769,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         fontSize: '15px',
                         fontWeight: 700,
                         cursor: 'pointer',
-                        marginBottom: '8px'
+                        marginBottom: '10px'
                       }}
                     >
                       Login
@@ -791,7 +780,6 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         type="button"
                         onClick={() => {
                           setOtpSent(false);
-                          setOtpValue('');
                           setErrorMsg('');
                         }}
                         style={{
