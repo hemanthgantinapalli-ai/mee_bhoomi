@@ -22,20 +22,10 @@ export default function App() {
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
-  const [currentUser, setCurrentUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem('meebhoomi_citizen');
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
-    try {
-      localStorage.setItem('meebhoomi_citizen', JSON.stringify(user));
-    } catch {}
   };
 
   const handleLogout = () => {

@@ -9,13 +9,13 @@ import PhoneOtp from '../PhoneOtp';
 export default function HomePage({ onSelectService, currentUser, onLoginSuccess, onLogout }) {
   const VALID_OTP = '975310';
 
-  // Login form state - defaults to demo credentials (OTP 975310) matching official MeeBhoomi UI
+  // Login form state - defaults to demo credentials (clean official UI)
   const [authMode, setAuthMode] = useState('demo'); // 'demo' | 'firebase'
   const [mobileNumber, setMobileNumber] = useState('');
   const [otpSent, setOtpSent] = useState(false);
-  const [otpValue, setOtpValue] = useState('975310');
+  const [otpValue, setOtpValue] = useState('');
   const [captchaCode, setCaptchaCode] = useState('7834');
-  const [captchaInput, setCaptchaInput] = useState('7834');
+  const [captchaInput, setCaptchaInput] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleFirebaseLogin = (user) => {
@@ -33,7 +33,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
   const refreshCaptcha = () => {
     const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
     setCaptchaCode(randomCode);
-    setCaptchaInput(randomCode);
+    setCaptchaInput('');
   };
 
   const handleGetOtp = (e) => {
@@ -46,8 +46,8 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
     }
     const newCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
     setCaptchaCode(newCaptcha);
-    setCaptchaInput(newCaptcha);
-    setOtpValue('975310');
+    setCaptchaInput('');
+    setOtpValue('');
     setOtpSent(true);
   };
 
@@ -56,7 +56,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
     setErrorMsg('');
 
     if (!otpValue || otpValue.trim() !== VALID_OTP) {
-      setErrorMsg('చెల్లని OTP. పాస్‌వర్డ్ OTP 975310 నమోదు చేయండి (Invalid OTP. Please enter 975310)');
+      setErrorMsg('చెల్లని OTP. దయచేసి సరైన OTP ను నమోదు చేయండి (Invalid OTP. Please enter the correct OTP.)');
       return;
     }
 
@@ -576,7 +576,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                       textDecoration: 'underline'
                     }}
                   >
-                    ← Switch back to Demo Login (Pass 975310)
+                    ← Switch back to Demo Login
                   </button>
                 </div>
               </div>
@@ -655,31 +655,31 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     </button>
                   </form>
                 ) : (
-                  /* Step 2: OTP & Captcha Verification with pass 975310 */
+                  /* Step 2: OTP & Captcha Verification */
                   <form onSubmit={handleLoginSubmit}>
                     <div style={{
                       backgroundColor: '#f0fdf4',
                       border: '1px solid #bbf7d0',
                       borderRadius: '6px',
                       padding: '8px 12px',
-                      fontSize: '12px',
+                      fontSize: '12.5px',
                       color: '#166534',
                       marginBottom: '14px',
                       textAlign: 'center'
                     }}>
-                      OTP sent to <strong>{mobileNumber}</strong>. Pass: <strong>975310</strong>
+                      OTP sent to <strong>{mobileNumber}</strong>. Please enter the verification code.
                     </div>
 
                     {/* OTP Input */}
                     <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
-                      Enter OTP (Pass: 975310)
+                      Enter OTP
                     </label>
                     <input
                       type="text"
                       maxLength={6}
                       value={otpValue}
                       onChange={(e) => setOtpValue(e.target.value)}
-                      placeholder="975310"
+                      placeholder="Enter OTP"
                       style={{
                         width: '100%',
                         padding: '9px 10px',
