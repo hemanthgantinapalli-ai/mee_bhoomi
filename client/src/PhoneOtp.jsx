@@ -89,28 +89,9 @@ export default function PhoneOtp({ onVerified }) {
       setIsSuccess(true);
       setMessage("OTP sent successfully! Please check your phone for the 6-digit code.");
     } catch (error) {
-      console.error("Firebase sendOtp error:", error);
-      if (verifierRef.current) {
-        try { verifierRef.current.clear(); } catch (_) {}
-        verifierRef.current = null;
-      }
-      if (recaptchaRef.current) {
-        recaptchaRef.current.innerHTML = '';
-      }
-
-      let errorNotice = error.message || "Could not send OTP.";
-      if (error.code === 'auth/operation-not-allowed') {
-        errorNotice = "Phone Auth is disabled in your Firebase project. Please enable 'Phone' under Firebase Console > Authentication > Sign-in method.";
-      } else if (error.code === 'auth/unauthorized-domain') {
-        errorNotice = "Domain not authorized. Please add this domain to Firebase Console > Authentication > Settings > Authorized domains.";
-      } else if (error.code === 'auth/invalid-phone-number') {
-        errorNotice = "Invalid phone number format. Please ensure it includes +91 and 10 digits.";
-      } else if (error.code === 'auth/quota-exceeded') {
-        errorNotice = "Daily SMS quota exceeded in Firebase project. You can add test phone numbers in Firebase Console for free unlimited testing.";
-      } else if (error.code === 'auth/too-many-requests') {
-        errorNotice = "Too many attempts from this IP. Please wait a few minutes and try again.";
-      }
-      setMessage(errorNotice);
+      console.error("Firebase OTP error:", error.code, error.message);
+      alert(`${error.code}: ${error.message}`);
+      setMessage(`${error.code}: ${error.message}`);
     } finally {
       setLoading(false);
     }
