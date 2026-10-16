@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PhoneOtp from '../PhoneOtp';
 
 // ─────────────────────────────────────────────────────────────────
 // Official MeeBhoomi Main Page
@@ -10,24 +9,12 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
   const VALID_OTP = '975310';
 
   // Login form state - defaults to demo credentials (clean official UI)
-  const [authMode, setAuthMode] = useState('demo'); // 'demo' | 'firebase'
   const [mobileNumber, setMobileNumber] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [otpValue, setOtpValue] = useState('');
   const [captchaCode, setCaptchaCode] = useState('7834');
   const [captchaInput, setCaptchaInput] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-
-  const handleFirebaseLogin = (user) => {
-    const rawNumber = user?.phoneNumber || mobileNumber || '+91 9876543210';
-    const citizen = {
-      mobile: rawNumber,
-      masked: rawNumber ? `${rawNumber.slice(0, 5)}******${rawNumber.slice(-2)}` : 'Citizen',
-      name: 'Pattadar Citizen',
-      loginTime: new Date().toLocaleTimeString('en-IN')
-    };
-    onLoginSuccess(citizen);
-  };
 
   // Pre-set or refresh captcha
   const refreshCaptcha = () => {
@@ -560,29 +547,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
               Login
             </h2>
 
-            {authMode === 'firebase' ? (
-              <div>
-                <PhoneOtp onVerified={handleFirebaseLogin} />
-                <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                  <button
-                    type="button"
-                    onClick={() => setAuthMode('demo')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: '#0284c7',
-                      fontSize: '12px',
-                      cursor: 'pointer',
-                      textDecoration: 'underline'
-                    }}
-                  >
-                    ← Switch back to Demo Login
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <>
-                {!otpSent ? (
+            {!otpSent ? (
                   /* Step 1: Mobile Number Entry (matches user screenshot exactly) */
                   <form onSubmit={handleGetOtp}>
                     <label style={{
@@ -795,8 +760,6 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                       </button>
                     </div>
                   </form>
-                )}
-              </>
             )}
 
           </div>
