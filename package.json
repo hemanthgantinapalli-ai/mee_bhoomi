@@ -2,6 +2,9 @@
   "name": "meebhoomi-ap-mern",
   "version": "1.0.0",
   "description": "MeeBhoomi Andhra Pradesh Reference Recreation - Full MERN Stack Application",
+  "workspaces": [
+    "client"
+  ],
   "scripts": {
     "build": "npm run build --prefix client && node -e \"const fs=require('fs'); fs.cpSync('client/dist', 'dist', {recursive:true});\"",
     "start": "npm start --prefix server",
