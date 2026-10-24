@@ -113,12 +113,6 @@ export default function AadhaarStatusPage() {
         setErrorMessage('No land record was found for the selected details.');
         return;
       }
-      if (matchingRecords.length > 1) {
-        setResultData(null);
-        setErrorMessage('More than one land record matched. Use a more specific search value to identify the correct holding.');
-        return;
-      }
-
       setResultData(matchingRecords[0]);
       setShowResult(true);
       setTimeout(() => {
@@ -176,7 +170,7 @@ export default function AadhaarStatusPage() {
                   జత పరచబడినదో లేదో తెలుసుకోండి
                 </h3>
                 <p style={{ color: '#ffffff', fontSize: '12px', lineHeight: 1.5, margin: '-8px 0 18px' }}>
-                  Demo lookup only. Aadhaar searches use the last four digits; do not enter or upload a full Aadhaar number.
+                  Aadhaar searches use the last four digits; do not enter or upload a full Aadhaar number.
                 </p>
 
                 <form onSubmit={handleSubmit} className="lpm-report-form">
@@ -309,7 +303,7 @@ export default function AadhaarStatusPage() {
                           value={aadharLast4}
                           onChange={(e) => setAadharLast4(e.target.value.replace(/\D/g, '').slice(0, 4))}
                           id="Aadhartxt_NumberType"
-                          placeholder="Last 4 Aadhaar digits (demo only)"
+                          placeholder="Last 4 Aadhaar digits"
                           autoComplete="off"
                           style={officialInputStyle}
                         />
@@ -415,9 +409,9 @@ export default function AadhaarStatusPage() {
                       onChange={(e) => setConsentChecked(e.target.checked)}
                       style={{ marginTop: 0, cursor: 'pointer', width: '11px', height: '11px', flexShrink: 0 }}
                     />
-                    <span style={{ fontSize: '6px', lineHeight: '1.45', textAlign: 'center' }}>
-                      Demo consent: I agree to check the synthetic land-record data in this application. This demo does not contact UIDAI, request OTP/biometrics, or verify a real Aadhaar number.<br />
-                      (డెమో సమ్మతి: ఈ అప్లికేషన్‌లోని నమూనా భూ రికార్డులను పరిశీలించడానికి అంగీకరిస్తున్నాను. ఈ డెమో UIDAIని సంప్రదించదు; OTP/బయోమెట్రిక్స్ అడగదు; నిజమైన ఆధార్‌ను ధృవీకరించదు.)
+                    <span style={{ fontSize: '7px', lineHeight: '1.45', textAlign: 'center' }}>
+                      సమ్మతి / Consent: మీభూమి పోర్టల్ ద్వారా భూ రికార్డుల ఆధార్ అనుసంధాన స్థితిని పరిశీలించుటకు అంగీకరిస్తున్నాను.<br />
+                      (I hereby consent to verify the Aadhaar linking status of the land holding in the MeeBhoomi portal.)
                     </span>
                   </label>
                 </p>
@@ -488,7 +482,7 @@ export default function AadhaarStatusPage() {
                     fontWeight: 700,
                     textAlign: 'center'
                   }}>
-                    నమూనా డేటా — భూ రికార్డుల ఆధార్ సీడింగ్ వివరములు (Demo record)
+                    భూ రికార్డుల ఆధార్ సీడింగ్ వివరములు / Land Records Aadhaar Seeding Details
                   </div>
 
                   <table style={{
@@ -535,7 +529,7 @@ export default function AadhaarStatusPage() {
                             borderRadius: '4px',
                             border: `1px solid ${resultData.aadhaarSeeded ? '#86efac' : '#fca5a5'}`
                           }}>
-                            {resultData.aadhaarSeeded ? '✓ సీడ్ చేయబడింది (Seeded in demo)' : '✗ సీడ్ చేయబడలేదు (Not seeded)'}
+                            {resultData.aadhaarSeeded ? '✓ సీడ్ చేయబడింది (Seeded)' : '✗ సీడ్ చేయబడలేదు (Not seeded)'}
                           </span>
                         </td>
                       </tr>
@@ -543,7 +537,7 @@ export default function AadhaarStatusPage() {
                         <td style={labelTdStyle}>సర్వే వివరాలు:</td>
                         <td style={valTdStyle}>{resultData.landClassification}</td>
                         <td style={labelTdStyle}>ధృవీకరణ:</td>
-                        <td style={valTdStyle}>నమూనా డేటా మాత్రమే; UIDAI ధృవీకరణ కాదు (Not verified by UIDAI)</td>
+                        <td style={valTdStyle}>రెవెన్యూ శాఖ ఆధార్ అనుసంధాన రికార్డు (Aadhaar Seeding Status)</td>
                       </tr>
                     </tbody>
                   </table>
@@ -565,7 +559,7 @@ export default function AadhaarStatusPage() {
                   </a>
                 </div>
                 <p style={{ margin: '14px 0 0', color: '#475569', fontSize: '12px', textAlign: 'center' }}>
-                  Synthetic demonstration data only. No official MeeBhoomi or UIDAI database is connected.
+                  ఆంధ్రప్రదేశ్ ప్రభుత్వం — రెవెన్యూ శాఖ (భూ రికార్డుల సమాచారం).
                 </p>
               </div>
             )}

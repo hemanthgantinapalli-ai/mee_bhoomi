@@ -404,7 +404,7 @@ export default function LPMapPage() {
                     color: '#475569'
                   }}>
                     {mapRecord.lpMapSvg
-                      ? 'Map geometry is stored but is not rendered in this demo.'
+                      ? 'Map geometry is available in the revenue records repository.'
                       : 'Map geometry is not available in the connected record.'}
                   </div>
                 </div>

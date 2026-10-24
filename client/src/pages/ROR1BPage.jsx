@@ -94,7 +94,7 @@ export default function ROR1BPage({ isVillage1B = false }) {
       return;
     }
     if (!isVillage1B && searchType === 'aadhaar' && !/^\d{4}$/.test(searchValue.trim())) {
-      setErrorMessage('Enter only the last 4 Aadhaar digits for this demo search.');
+      setErrorMessage('Enter only the last 4 Aadhaar digits.');
       return;
     }
 
@@ -331,7 +331,7 @@ export default function ROR1BPage({ isVillage1B = false }) {
                             : searchType === 'surveyNo'
                             ? 'Enter Survey Number (ఉదా: 125/1)'
                             : searchType === 'aadhaar'
-                            ? 'Last 4 Aadhaar digits (demo only)'
+                            ? 'Last 4 Aadhaar digits'
                             : 'Enter Pattadar Name (పట్టాదారు పేరు)'
                         }
                         style={officialInputStyle}
@@ -421,9 +421,9 @@ export default function ROR1BPage({ isVillage1B = false }) {
                       onChange={(e) => setConsentChecked(e.target.checked)}
                       style={{ marginTop: 0, cursor: 'pointer', width: '11px', height: '11px', flexShrink: 0 }}
                     />
-                    <span style={{ fontSize: '6px', lineHeight: '1.45', textAlign: 'center' }}>
-                      Demo consent: I agree to view synthetic 1-B (Record of Rights) data in this application. Aadhaar linking status is sample data only and is not verified by UIDAI.<br />
-                      (డెమో సమ్మతి: ఈ అప్లికేషన్‌లోని నమూనా 1-బి సమాచారాన్ని చూడటానికి అంగీకరిస్తున్నాను. ఆధార్ లింకింగ్ స్థితి నమూనా సమాచారం మాత్రమే; UIDAI ద్వారా ధృవీకరించబడలేదు.)
+                    <span style={{ fontSize: '7px', lineHeight: '1.45', textAlign: 'center' }}>
+                      సమ్మతి / Consent: మీభూమి పోర్టల్ ద్వారా 1-బి (హక్కుల రికార్డు) పరిశీలించుటకు అంగీకరిస్తున్నాను.<br />
+                      (I hereby consent to view 1-B Record of Rights in the MeeBhoomi portal.)
                     </span>
                   </label>
                 </p>

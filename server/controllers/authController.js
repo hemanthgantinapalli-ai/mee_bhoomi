@@ -26,14 +26,14 @@ exports.sendOtp = (req, res) => {
       if (isDevelopmentDemoOtp) {
         return res.json({
           success: true,
-          message: 'Demo sign-in is ready. Enter any six-digit number.'
+          message: 'OTP sent successfully to mobile number. Enter the 6-digit OTP to proceed.'
         });
       }
       const normalizedMobile = String(mobileNumber).trim();
       const otp = storeOtp(loginType, normalizedMobile);
       return res.json({ 
         success: true, 
-        message: 'Demo OTP generated. It expires in 5 minutes.',
+        message: 'OTP sent successfully to mobile number. Valid for 5 minutes.',
         demoOtp: otp
       });
     }

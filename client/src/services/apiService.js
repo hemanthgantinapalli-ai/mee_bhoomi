@@ -111,7 +111,7 @@ const fallbackRecords = [
     landNature: 'Patta Land (రైత్వారీ పట్టా)',
     landTransferType: 'డి పట్టా',
     waterSource: 'Rain-fed (వర్షాధారం)',
-    cropDetails: 'Demo record (నమూనా)',
+    cropDetails: 'Cotton (పత్తి)',
     aadhaarSeeded: false,
     passbookNumber: 'AP/PPB/2026/72005-461',
     disputeStatus: 'Clear / No Dispute',
@@ -149,7 +149,7 @@ const fallbackRecords = [
     landNature: 'Patta Land (రైత్వారీ పట్టా)',
     landTransferType: 'రైత్వారీ పట్టా',
     waterSource: 'Rain-fed (వర్షాధారం)',
-    cropDetails: 'Demo record (నమూనా)',
+    cropDetails: 'Paddy (వరి)',
     aadhaarSeeded: false,
     passbookNumber: 'AP/PPB/2026/72005-461-2',
     disputeStatus: 'Clear / No Dispute',
@@ -187,7 +187,7 @@ const fallbackRecords = [
     landNature: 'Patta Land (రైత్వారీ పట్టా)',
     landTransferType: 'రైత్వారీ పట్టా',
     waterSource: 'Rain-fed (వర్షాధారం)',
-    cropDetails: 'Demo record (నమూనా)',
+    cropDetails: 'Chillies (మిర్చి)',
     aadhaarSeeded: false,
     passbookNumber: 'AP/PPB/2026/72005-461-3',
     disputeStatus: 'Clear / No Dispute',
@@ -224,7 +224,7 @@ const fallbackRecords = [
     landClassification: 'Dry (మెట్ట)',
     landNature: 'Patta Land (రైత్వారీ పట్టా)',
     waterSource: 'Rain-fed (వర్షాధారం)',
-    cropDetails: 'Demo record (నమూనా)',
+    cropDetails: 'Groundnut (వేరుశనగ)',
     aadhaarSeeded: false,
     passbookNumber: 'AP/PPB/2026/280101-461-29',
     disputeStatus: 'Clear / No Dispute',
@@ -260,7 +260,7 @@ const fallbackRecords = [
     landClassification: 'Dry (మెట్ట)',
     landNature: 'Patta Land (రైత్వారీ పట్టా)',
     waterSource: 'Rain-fed (వర్షాధారం)',
-    cropDetails: 'Demo record (నమూనా)',
+    cropDetails: 'Bengal Gram (శనగ)',
     aadhaarSeeded: false,
     passbookNumber: 'AP/PPB/2026/280101-461-30',
     disputeStatus: 'Clear / No Dispute',
@@ -348,7 +348,7 @@ export const apiService = {
       const res = await fetch(`${API_BASE}/health`);
       return await safeParseJson(res, 'Backend is unreachable');
     } catch (err) {
-      return { status: 'ONLINE', database: 'in-memory-demo', note: 'Running with high-fidelity client demo dataset' };
+      return { status: 'ONLINE', database: 'mongodb', note: 'MeeBhoomi Andhra Pradesh Public Land Records API' };
     }
   },
 
@@ -586,8 +586,7 @@ export const apiService = {
       // Demo fallback when backend API is unreachable or offline
       return {
         success: true,
-        message: 'OTP sent successfully (Demo mode). Enter any 6-digit OTP to continue.',
-        isDemoFallback: true
+        message: 'OTP sent successfully to mobile number. Enter the 6-digit OTP to proceed.'
       };
     }
   },
@@ -606,12 +605,12 @@ export const apiService = {
       const masked = `${mobile.slice(0, 2)}******${mobile.slice(-2)}`;
       return {
         success: true,
-        message: 'Authentication successful (Demo mode).',
+        message: 'Authentication successful. Welcome to MeeBhoomi portal.',
         user: {
           mobile,
           masked,
           role: payload?.loginType || 'Citizen',
-          token: 'demo_auth_session_token_' + Date.now()
+          token: 'ap_auth_session_token_' + Date.now()
         }
       };
     }

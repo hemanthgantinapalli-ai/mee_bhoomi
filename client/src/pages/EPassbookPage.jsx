@@ -449,7 +449,7 @@ export default function EPassbookPage() {
                         <div><strong>మండలం:</strong> {passbookData.mandalNameTe || passbookData.mandalNameEn}</div>
                         <div><strong>గ్రామము:</strong> {passbookData.villageNameTe || passbookData.villageNameEn}</div>
                         <div><strong>మొత్తం విస్తీర్ణం:</strong> {passbookData.totalExtentAcres} ఎకరాలు</div>
-                        <div><strong>ఆధార్ సంఖ్య:</strong> {passbookData.aadhaarSeeded ? 'Linked in demo (number not displayed)' : 'Not linked'}</div>
+                        <div><strong>ఆధార్ సంఖ్య:</strong> {passbookData.aadhaarSeeded ? 'XXXX-XXXX-**** (Seeded)' : 'Not linked'}</div>
                         <div><strong>జారీ తేది:</strong> {passbookData.passbookIssuedDate ? new Date(passbookData.passbookIssuedDate).toLocaleDateString() : '—'}</div>
                       </div>
                     </div>

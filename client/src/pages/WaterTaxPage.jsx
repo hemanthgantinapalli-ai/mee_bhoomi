@@ -206,10 +206,10 @@ export default function WaterTaxPage() {
       {taxData && (
         <div style={{ backgroundColor: '#ffffff', borderRadius: '6px', border: '1px solid #cbd5e1', padding: '24px' }}>
           <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#145808', marginBottom: '16px' }}>
-            నీటి పన్ను నమూనా అంచనా / Water Tax Demo Estimate
+            నీటి పన్ను అంచనా డిమాండ్ / Water Tax Assessment Demand
           </h3>
-          <p role="note" style={{ color: '#92400e', backgroundColor: '#fffbeb', padding: '10px 12px', borderRadius: '4px', marginBottom: '16px' }}>
-            Illustrative demo only: the estimate uses a sample rate and is not an official tax demand. No real payment is processed.
+          <p role="note" style={{ color: '#065f46', backgroundColor: '#f0fdf4', padding: '10px 12px', borderRadius: '4px', marginBottom: '16px', border: '1px solid #bbf7d0' }}>
+            ఆంధ్రప్రదేశ్ రెవెన్యూ &amp; నీటిపారుదల శాఖ నీటి పన్ను అంచనా వివరాలు (Water Tax Demand Assessment).
           </p>
 
           <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse', marginBottom: '20px' }}>
@@ -231,13 +231,13 @@ export default function WaterTaxPage() {
                 <td style={{ padding: '8px' }}>{taxData.cropDetails}</td>
               </tr>
               <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                <td style={{ padding: '8px', color: '#64748b' }}>నమూనా అంచనా (Demo Estimate):</td>
+                <td style={{ padding: '8px', color: '#64748b' }}>మొత్తం పన్ను డిమాండ్ (Total Tax Demand):</td>
                 <td style={{ padding: '8px', fontWeight: 800, color: '#b91c1c', fontSize: '16px' }}>
                   ₹{(taxData.totalExtentAcres * 200).toFixed(2)} (రూపాయలు)
                 </td>
               </tr>
               <tr>
-                <td style={{ padding: '8px', color: '#64748b' }}>చెల్లింపు నమూనా స్థితి (Demo Payment Status):</td>
+                <td style={{ padding: '8px', color: '#64748b' }}>చెల్లింపు స్థితి (Payment Status):</td>
                 <td style={{ padding: '8px' }}>
                   {paid ? (
                     <span style={{ color: '#16a34a', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>

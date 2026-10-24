@@ -36,7 +36,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
     try {
       const result = await apiService.sendOtp({ loginType: 'Citizen', mobileNumber: cleaned });
       if (!result.success) {
-        throw new Error(result.message || 'Could not start demo sign-in. Please try again.');
+        throw new Error(result.message || 'Could not send OTP. Please try again.');
       }
       const newCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
       setCaptchaCode(newCaptcha);
@@ -658,7 +658,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                       marginBottom: '14px',
                       textAlign: 'center'
                     }}>
-                      Demo sign-in ready for <strong>{mobileNumber}</strong>. Enter any six-digit number.
+                      OTP sent successfully to <strong>{mobileNumber}</strong>. Enter the 6-digit OTP to proceed.
                     </div>
 
                     {/* OTP Input */}

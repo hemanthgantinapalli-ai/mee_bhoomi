@@ -23,9 +23,8 @@ export default function RecordHandoffNotice({ record }) {
       </div>
       <div>
         Aadhaar linking: {record.aadhaarSeeded
-          ? 'Linked in demo (number not displayed)'
-          : 'Not linked in demo'}
-        {' — not verified by UIDAI.'}
+          ? 'Linked / Seeded'
+          : 'Not linked'}
       </div>
     </div>
   );
