@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiService } from '../services/apiService';
 
 // ─────────────────────────────────────────────────────────────────
 // Official MeeBhoomi Main Page
@@ -6,12 +7,12 @@ import React, { useState } from 'react';
 // State 2: Post-login Dashboard (/VAdangal/Index) matching official MeeBhoomi exactly!
 // ─────────────────────────────────────────────────────────────────
 export default function HomePage({ onSelectService, currentUser, onLoginSuccess, onLogout }) {
-  const VALID_OTP = '975310';
-
   // Login form state - defaults to demo credentials (clean official UI)
   const [mobileNumber, setMobileNumber] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [otpValue, setOtpValue] = useState('');
+  const [isOtpSending, setIsOtpSending] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [captchaCode, setCaptchaCode] = useState('7834');
   const [captchaInput, setCaptchaInput] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -23,27 +24,39 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
     setCaptchaInput('');
   };
 
-  const handleGetOtp = (e) => {
+  const handleGetOtp = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     const cleaned = mobileNumber.replace(/\D/g, '');
-    if (!cleaned || cleaned.length < 10) {
+    if (!/^[6-9]\d{9}$/.test(cleaned)) {
       setErrorMsg('దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి (Please enter a valid 10-digit mobile number)');
       return;
     }
-    const newCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
-    setCaptchaCode(newCaptcha);
-    setCaptchaInput('');
-    setOtpValue('');
-    setOtpSent(true);
+    setIsOtpSending(true);
+    try {
+      const result = await apiService.sendOtp({ loginType: 'Citizen', mobileNumber: cleaned });
+      if (!result.success) {
+        throw new Error(result.message || 'Could not start demo sign-in. Please try again.');
+      }
+      const newCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+      setCaptchaCode(newCaptcha);
+      setCaptchaInput('');
+      setOtpValue('');
+      setMobileNumber(cleaned);
+      setOtpSent(true);
+    } catch (error) {
+      setErrorMsg(error.message || 'Could not send OTP. Please try again.');
+    } finally {
+      setIsOtpSending(false);
+    }
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
 
-    if (!otpValue || otpValue.trim() !== VALID_OTP) {
-      setErrorMsg('చెల్లని OTP. దయచేసి సరైన OTP ను నమోదు చేయండి (Invalid OTP. Please enter the correct OTP.)');
+    if (!/^\d{6}$/.test(otpValue.trim())) {
+      setErrorMsg('దయచేసి 6 అంకెల OTP నమోదు చేయండి (Please enter the six-digit OTP.)');
       return;
     }
 
@@ -52,14 +65,25 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
       return;
     }
 
-    const citizen = {
-      mobile: mobileNumber.trim(),
-      masked: `${mobileNumber.trim().slice(0, 2)}******${mobileNumber.trim().slice(-2)}`,
-      name: 'Pattadar Citizen',
-      loginTime: new Date().toLocaleTimeString('en-IN')
-    };
-
-    onLoginSuccess(citizen);
+    setIsLoggingIn(true);
+    try {
+      const result = await apiService.verifyOtp({
+        mobileNumber: mobileNumber.replace(/\D/g, ''),
+        otp: otpValue.trim()
+      });
+      if (!result.success || !result.user) {
+        throw new Error(result.message || 'OTP verification failed.');
+      }
+      onLoginSuccess({
+        ...result.user,
+        name: 'Pattadar Citizen',
+        loginTime: new Date().toLocaleTimeString('en-IN')
+      });
+    } catch (error) {
+      setErrorMsg(error.message || 'OTP verification failed. Please try again.');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   const preLoginCards = [
@@ -601,6 +625,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
 
                     <button
                       type="submit"
+                      disabled={isOtpSending}
                       style={{
                         width: '100%',
                         backgroundColor: '#136c38',
@@ -610,13 +635,14 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         padding: '12px',
                         fontSize: '15px',
                         fontWeight: 600,
-                        cursor: 'pointer',
+                        cursor: isOtpSending ? 'wait' : 'pointer',
+                        opacity: isOtpSending ? 0.7 : 1,
                         transition: 'background-color 0.15s'
                       }}
                       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0f542c')}
                       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#136c38')}
                     >
-                      Get OTP
+                      {isOtpSending ? 'Generating...' : 'Get OTP'}
                     </button>
                   </form>
                 ) : (
@@ -632,7 +658,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                       marginBottom: '14px',
                       textAlign: 'center'
                     }}>
-                      OTP sent to <strong>{mobileNumber}</strong>. Please enter the verification code.
+                      Demo sign-in ready for <strong>{mobileNumber}</strong>. Enter any six-digit number.
                     </div>
 
                     {/* OTP Input */}
@@ -641,9 +667,10 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                     </label>
                     <input
                       type="text"
+                      inputMode="numeric"
                       maxLength={6}
                       value={otpValue}
-                      onChange={(e) => setOtpValue(e.target.value)}
+                      onChange={(e) => setOtpValue(e.target.value.replace(/\D/g, '').slice(0, 6))}
                       placeholder="Enter OTP"
                       style={{
                         width: '100%',
@@ -724,6 +751,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
 
                     <button
                       type="submit"
+                      disabled={isLoggingIn}
                       style={{
                         width: '100%',
                         backgroundColor: '#136c38',
@@ -733,11 +761,12 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         padding: '11px',
                         fontSize: '15px',
                         fontWeight: 700,
-                        cursor: 'pointer',
+                        cursor: isLoggingIn ? 'wait' : 'pointer',
+                        opacity: isLoggingIn ? 0.7 : 1,
                         marginBottom: '10px'
                       }}
                     >
-                      Login
+                      {isLoggingIn ? 'Verifying...' : 'Login'}
                     </button>
 
                     <div style={{ textAlign: 'center' }}>
@@ -745,6 +774,7 @@ export default function HomePage({ onSelectService, currentUser, onLoginSuccess,
                         type="button"
                         onClick={() => {
                           setOtpSent(false);
+                          setOtpValue('');
                           setErrorMsg('');
                         }}
                         style={{

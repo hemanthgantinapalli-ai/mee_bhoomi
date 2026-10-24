@@ -77,13 +77,14 @@ npm install
 npm run dev
 ```
 
-### 5. Vercel Multi-Service Deployment
+### 5. Vercel Deployment
 
-The root `vercel.json` defines a Vite `client` service and an Express `server`
-service. Select **Services** as the Vercel project framework preset. Requests
-under `/api/` route to Express without changing the path; other requests route
-to the Vite frontend. The browser uses the same-origin `/api` URL, while the
-Vite development proxy continues to forward local API calls to port 5000.
+Import the repository root as the Vercel project (set **Root Directory** to
+`.`), use the **Other** framework preset, and keep the root `vercel.json`
+build/output settings. The Vite frontend is built into `dist`; `/api/*` is
+handled by the Express function in `api/[...path].js`. The browser uses the
+same-origin `/api` URL, while the Vite development proxy forwards local API
+calls to port 5000.
 
 Configure these variables in Vercel project settings:
 
@@ -92,6 +93,9 @@ Configure these variables in Vercel project settings:
 - `FRONTEND_URL`: optional; set to the deployed frontend origin when using a
   custom domain. Vercel's `VERCEL_URL` is used for deployment URLs by default.
 - `NODE_ENV=production`: ensure the backend runs with production behavior.
+- `ALLOW_DEMO_OTP=true`: optional; enables the public demo login to accept any
+  six-digit value without sending SMS. This is intentionally not secure
+  authentication and must not be enabled for accounts or protected data.
 
 Do not prefix backend secrets with `VITE_`, commit `.env` files, or enable
 `ALLOW_IN_MEMORY_FALLBACK` in production. MongoDB Atlas connectivity from Vercel
@@ -99,7 +103,10 @@ must be authorized through a restricted network access configuration. Vercel
 uses dynamic egress IPs by default; use Vercel Static IPs or Secure Compute and
 allowlist those addresses rather than opening Atlas to `0.0.0.0/0`.
 
-The login OTP remains a local demo flow and does not send SMS. No SMS provider
+The login OTP is a demo flow and does not send SMS. In local development it
+accepts any six-digit value. On Vercel, enable `ALLOW_DEMO_OTP=true` only when
+the deployment is intentionally a public demo; otherwise the server requires
+an issued OTP, which needs an SMS provider to deliver. No SMS provider
 credentials are used or supported by the current implementation.
 
 ---

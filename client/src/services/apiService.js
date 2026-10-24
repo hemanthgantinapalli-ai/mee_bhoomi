@@ -575,46 +575,20 @@ export const apiService = {
 
   // Auth / OTP
   async sendOtp(payload) {
-    try {
-      const res = await fetch(`${API_BASE}/auth/otp/send`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      return await safeParseJson(res, 'Failed to send OTP.');
-    } catch (err) {
-      if (payload && (payload.mobileNumber || payload.username || payload.uid)) {
-        return {
-          success: true,
-          message: 'OTP sent successfully to registered mobile number.',
-          demoOtp: '975310'
-        };
-      }
-      throw err;
-    }
+    const res = await fetch(`${API_BASE}/auth/otp/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return await safeParseJson(res, 'Failed to send OTP.');
   },
 
   async verifyOtp(payload) {
-    try {
-      const res = await fetch(`${API_BASE}/auth/otp/verify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      return await safeParseJson(res, 'Failed to verify OTP.');
-    } catch (err) {
-      if (payload && payload.otp === '975310') {
-        return {
-          success: true,
-          message: 'OTP verified successfully.',
-          user: {
-            mobile: payload.mobileNumber || '8688778104',
-            masked: `${(payload.mobileNumber || '8688778104').slice(0, 2)}******${(payload.mobileNumber || '8688778104').slice(-2)}`,
-            role: 'Citizen'
-          }
-        };
-      }
-      throw err;
-    }
+    const res = await fetch(`${API_BASE}/auth/otp/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return await safeParseJson(res, 'Failed to verify OTP.');
   }
 };

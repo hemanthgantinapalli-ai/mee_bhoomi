@@ -1,5 +1,6 @@
 const assert = require('assert');
 const CaptchaService = require('../services/captchaService');
+const authController = require('../controllers/authController');
 const recordController = require('../controllers/recordController');
 const districtController = require('../controllers/districtController');
 const { validateSearchInput } = require('../middleware/validator');
@@ -8,6 +9,7 @@ const { inMemoryData, upsertMissing } = require('../seeds/seedData');
 
 process.env.NODE_ENV = 'test';
 process.env.CAPTCHA_SECRET = 'test_secret_key_123';
+process.env.ALLOW_DEMO_OTP = 'false';
 
 console.log('--- Starting MeeBhoomi API & Captcha Test Suite ---');
 
@@ -36,6 +38,161 @@ async function runTests() {
       failed++;
     }
   }
+
+  await testAsync('Authentication: generated OTP is random, matched, and single-use', async () => {
+    const makeResponse = () => ({
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    });
+    const sendResponse = makeResponse();
+
+    authController.sendOtp({
+      body: { loginType: 'Citizen', mobileNumber: '9876543210' }
+    }, sendResponse);
+
+    assert.strictEqual(sendResponse.statusCode, 200);
+    assert.match(sendResponse.body.demoOtp, /^\d{6}$/);
+
+    const wrongOtp = sendResponse.body.demoOtp === '000000' ? '000001' : '000000';
+    const invalidResponse = makeResponse();
+    authController.verifyOtp({
+      body: { mobileNumber: '9876543210', otp: wrongOtp }
+    }, invalidResponse);
+    assert.strictEqual(invalidResponse.statusCode, 400);
+
+    const validResponse = makeResponse();
+    authController.verifyOtp({
+      body: { mobileNumber: '9876543210', otp: sendResponse.body.demoOtp }
+    }, validResponse);
+    assert.strictEqual(validResponse.statusCode, 200);
+    assert.strictEqual(validResponse.body.success, true);
+
+    const replayResponse = makeResponse();
+    authController.verifyOtp({
+      body: { mobileNumber: '9876543210', otp: sendResponse.body.demoOtp }
+    }, replayResponse);
+    assert.strictEqual(replayResponse.statusCode, 400);
+  });
+
+  await testAsync('Authentication: development demo accepts any six digits without revealing an OTP', async () => {
+    const previousNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'development';
+    const response = {
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    };
+
+    try {
+      authController.sendOtp({
+        body: { loginType: 'Citizen', mobileNumber: '9876543210' }
+      }, response);
+      assert.strictEqual(response.statusCode, 200);
+      assert.strictEqual(Object.hasOwn(response.body, 'demoOtp'), false);
+
+      const loginResponse = {
+        statusCode: 200,
+        body: null,
+        status(code) {
+          this.statusCode = code;
+          return this;
+        },
+        json(payload) {
+          this.body = payload;
+          return this;
+        }
+      };
+      authController.verifyOtp({
+        body: { mobileNumber: '9876543210', otp: '123456' }
+      }, loginResponse);
+      assert.strictEqual(loginResponse.statusCode, 200);
+      assert.strictEqual(loginResponse.body.success, true);
+
+      const invalidResponse = {
+        statusCode: 200,
+        body: null,
+        status(code) {
+          this.statusCode = code;
+          return this;
+        },
+        json(payload) {
+          this.body = payload;
+          return this;
+        }
+      };
+      authController.verifyOtp({
+        body: { mobileNumber: '9876543210', otp: '12345x' }
+      }, invalidResponse);
+      assert.strictEqual(invalidResponse.statusCode, 400);
+    } finally {
+      process.env.NODE_ENV = previousNodeEnv;
+    }
+  });
+
+  await testAsync('Authentication: production demo login requires explicit opt-in', async () => {
+    const previousNodeEnv = process.env.NODE_ENV;
+    const previousDemoOtpSetting = process.env.ALLOW_DEMO_OTP;
+    const makeResponse = () => ({
+      statusCode: 200,
+      body: null,
+      status(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json(payload) {
+        this.body = payload;
+        return this;
+      }
+    });
+
+    try {
+      process.env.NODE_ENV = 'production';
+      process.env.ALLOW_DEMO_OTP = 'false';
+      const sendResponse = makeResponse();
+      authController.sendOtp({
+        body: { loginType: 'Citizen', mobileNumber: '9876543210' }
+      }, sendResponse);
+      assert.match(sendResponse.body.demoOtp, /^\d{6}$/);
+
+      const deniedResponse = makeResponse();
+      authController.verifyOtp({
+        body: { mobileNumber: '9876543210', otp: '123456' }
+      }, deniedResponse);
+      assert.strictEqual(deniedResponse.statusCode, 400);
+
+      process.env.ALLOW_DEMO_OTP = 'true';
+      const demoSendResponse = makeResponse();
+      authController.sendOtp({
+        body: { loginType: 'Citizen', mobileNumber: '9876543210' }
+      }, demoSendResponse);
+      assert.strictEqual(Object.hasOwn(demoSendResponse.body, 'demoOtp'), false);
+
+      const demoVerifyResponse = makeResponse();
+      authController.verifyOtp({
+        body: { mobileNumber: '9876543210', otp: '654321' }
+      }, demoVerifyResponse);
+      assert.strictEqual(demoVerifyResponse.statusCode, 200);
+      assert.strictEqual(demoVerifyResponse.body.success, true);
+    } finally {
+      process.env.NODE_ENV = previousNodeEnv;
+      process.env.ALLOW_DEMO_OTP = previousDemoOtpSetting;
+    }
+  });
 
   // 1. CAPTCHA Tests
   test('CAPTCHA: generates valid SVG and cryptographic token', () => {
